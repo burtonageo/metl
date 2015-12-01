@@ -5,3 +5,6 @@ authors = ["George Burton <burtonageo@gmail.com>"]
 
 [dependencies.metal-sys]
 path = "."
+
+[dev-dependencies]
+libc = "0.1.8"
