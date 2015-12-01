@@ -3,4 +3,9 @@ name = "metal-sys"
 version = "0.1.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
 
-[dependencies]
+[target.x86_64-apple-darwin.dependencies]
+libc = "0.1.8"
+objc = "0.1.8"
+cocoa = "0.1.4"
+core-foundation = "0"
+core-graphics = "0"
