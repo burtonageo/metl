@@ -1,0 +1,6 @@
+[package]
+name = "metal-sys"
+version = "0.1.0"
+authors = ["George Burton <burtonageo@gmail.com>"]
+
+[dependencies]
