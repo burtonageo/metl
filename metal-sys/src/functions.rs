@@ -1,7 +1,7 @@
 use cocoa::base::id;
 use cocoa::foundation::NSUInteger;
 use libc::c_void;
-use {MTLClearColor, MTLSize, MTLOrigin, MTLRegion};
+use {MTLClearColor, MTLOrigin, MTLRegion, MTLSize};
 
 #[link(name = "Metal", kind = "framework")]
 extern {
@@ -10,11 +10,7 @@ extern {
 }
 
 pub fn MTLOriginMake(x: NSUInteger, y: NSUInteger, z: NSUInteger) -> MTLOrigin {
-    MTLOrigin {
-        x: x,
-        y: y,
-        z: z
-    }
+    MTLOrigin { x: x, y: y, z: z }
 }
 
 pub fn MTLRegionMake1D(x: NSUInteger, width: NSUInteger) -> MTLRegion {
@@ -36,14 +32,15 @@ pub fn MTLRegionMake3D(x: NSUInteger,
                        z: NSUInteger,
                        width: NSUInteger,
                        height: NSUInteger,
-                       depth: NSUInteger) -> MTLRegion {
+                       depth: NSUInteger)
+                       -> MTLRegion {
     MTLRegion {
         origin: MTLOriginMake(x, y, z),
         size: MTLSizeMake(width, height, depth)
     }
 }
 
-pub fn MTLSizeMake (width: NSUInteger, height: NSUInteger, depth: NSUInteger) -> MTLSize {
+pub fn MTLSizeMake(width: NSUInteger, height: NSUInteger, depth: NSUInteger) -> MTLSize {
     MTLSize {
         width: width,
         height: height,

@@ -1,7 +1,7 @@
 use block::Block;
 use cocoa::base::{BOOL, id};
 use cocoa::foundation::{NSString, NSUInteger};
-//use libc::c_void;
+// use libc::c_void;
 use {MTLFeatureSet, MTLSize};
 
 pub type MTLNewLibraryCompletionHandler = Block<(id,), id>;

@@ -14,33 +14,10 @@ mod functions;
 mod protocols;
 mod types;
 
-pub use constants::{
-    MTLFeatureSet,
-    MTLCompareFunction,
-    MTLPipelineOption,
-    MTLPixelFormat,
-};
+pub use constants::{MTLCompareFunction, MTLFeatureSet, MTLPipelineOption, MTLPixelFormat};
 
-pub use functions::{
-    MTLCopyAllDevices,
-    MTLCreateSystemDefaultDevice,
-    MTLOriginMake,
-    MTLRegionMake1D,
-    MTLRegionMake2D,
-    MTLRegionMake3D,
-    MTLSizeMake,
-    MTLClearColorMake
-};
+pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLOriginMake,
+                    MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
-pub use types::{
-    MTLClearColor,
-    MTLOrigin,
-    MTLRegion,
-    MTLScissorRect,
-    MTLSize,
-    MTLViewport,
-    MTLDrawPrimitivesIndirectArguments,
-    MTLDrawIndexedPrimitivesIndirectArguments,
-    MTLDispatchThreadgroupsIndirectArguments
-};
-
+pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments, MTLDrawIndexedPrimitivesIndirectArguments,
+                MTLDrawPrimitivesIndirectArguments, MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};

@@ -8,7 +8,7 @@
 #[cfg(target_os = "ios")]
 #[repr(C, usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub enum MTLFeatureSet{
+pub enum MTLFeatureSet {
     /// The baseline feature set supported by the first generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A7 GPU.
     ///
@@ -16,7 +16,7 @@ pub enum MTLFeatureSet{
     ///
     /// Available in iOS 8.0 and later.
     MTLFeatureSet_iOS_GPUFamily1_v1 = 0,
-    
+
     /// The baseline feature set supported by the second generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A8 GPU.
     ///
@@ -24,7 +24,7 @@ pub enum MTLFeatureSet{
     ///
     /// Available in iOS 8.0 and later.
     MTLFeatureSet_iOS_GPUFamily2_v1 = 1,
-    
+
     /// The extended feature set supported by the first generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A7 GPU.
     ///
@@ -72,9 +72,9 @@ pub enum MTLFeatureSet {
 #[repr(C, usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLPipelineOption {
-   MTLPipelineOptionNone = 0,
-   MTLPipelineOptionArgumentInfo = 1 << 0,
-   MTLPipelineOptionBufferTypeInfo = 1 << 1
+    MTLPipelineOptionNone = 0,
+    MTLPipelineOptionArgumentInfo = 1 << 0,
+    MTLPipelineOptionBufferTypeInfo = 1 << 1
 }
 
 #[repr(C, usize)]

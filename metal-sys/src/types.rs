@@ -138,10 +138,10 @@ pub struct MTLDrawIndexedPrimitivesIndirectArguments {
     pub baseInstance: uint32_t
 }
 
- /// The data layout required for dispatching threadgroups via indirect buffer calls.
- #[repr(C)]
- #[derive(Clone, Copy, Eq, Hash, PartialEq)]
- pub struct MTLDispatchThreadgroupsIndirectArguments {
-     /// The number of threadgroups for the grid, in each dimension.
-     threadgroupsPerGrid: [uint32_t; 3]
- }
+/// The data layout required for dispatching threadgroups via indirect buffer calls.
+#[repr(C)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+pub struct MTLDispatchThreadgroupsIndirectArguments {
+    /// The number of threadgroups for the grid, in each dimension.
+    threadgroupsPerGrid: [uint32_t; 3]
+}
