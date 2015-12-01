@@ -1,3 +1,5 @@
+#![allow(non_snake_case)]
+
 extern crate cocoa;
 extern crate core_foundation;
 extern crate core_graphics;
@@ -7,7 +9,16 @@ extern crate objc;
 mod classes;
 mod functions;
 mod protocols;
+mod types;
 
-#[test]
-fn it_works() {
-}
+pub use types::{
+    MTLClearColor,
+    MTLOrigin,
+    MTLRegion,
+    MTLScissorRect,
+    MTLSize,
+    MTLViewport,
+    MTLDrawPrimitivesIndirectArguments,
+    MTLDrawIndexedPrimitivesIndirectArguments,
+    MTLDispatchThreadgroupsIndirectArguments
+};
