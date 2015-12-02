@@ -1,5 +1,5 @@
 use cocoa::base::{id, nil};
-use cocoa::foundation::NSString;
+use cocoa::foundation::{NSUInteger, NSString};
 use sys::{MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
 use std::error::Error;
@@ -28,6 +28,10 @@ impl Device {
 
     pub fn name(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.name().UTF8String()) }.to_string_lossy()
+    }
+
+    pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
+        unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) != 0 }
     }
 }
 
