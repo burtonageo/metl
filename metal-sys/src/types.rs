@@ -24,7 +24,7 @@ pub struct MTLClearColor {
 
 /// A location of a pixel in an image or texture, relative to the upper-left corner which is (0,0).
 #[repr(C)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLOrigin {
     /// The x coordinate of the location.
     pub x: NSUInteger,
@@ -49,7 +49,7 @@ pub struct MTLRegion {
 
 /// A rectangle for the scissor fragment test.
 #[repr(C)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLScissorRect {
     /// The x window coordinate of the upper-left corner of the scissor rectangle.
     pub x: NSUInteger,
@@ -66,7 +66,7 @@ pub struct MTLScissorRect {
 
 /// A set of dimensions to declare the size of an object, such as an image, texture, threadgroup, or grid.
 #[repr(C)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLSize {
     /// The x dimension of the object size.
     pub width: NSUInteger,
@@ -103,7 +103,7 @@ pub struct MTLViewport {
 
 /// The data layout required for drawing primitives via indirect buffer calls.
 #[repr(C)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLDrawPrimitivesIndirectArguments {
     /// The number of indices to draw.
     pub vertexCount: uint32_t,
@@ -120,7 +120,7 @@ pub struct MTLDrawPrimitivesIndirectArguments {
 
 /// The data layout required for drawing indexed primitives via indirect buffer calls.
 #[repr(C)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLDrawIndexedPrimitivesIndirectArguments {
     /// For each instance, the number of indices to read from the index buffer.
     pub indexCount: uint32_t,
@@ -140,7 +140,7 @@ pub struct MTLDrawIndexedPrimitivesIndirectArguments {
 
 /// The data layout required for dispatching threadgroups via indirect buffer calls.
 #[repr(C)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLDispatchThreadgroupsIndirectArguments {
     /// The number of threadgroups for the grid, in each dimension.
     threadgroupsPerGrid: [uint32_t; 3]
