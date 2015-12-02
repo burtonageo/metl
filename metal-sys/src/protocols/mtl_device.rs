@@ -47,13 +47,16 @@ pub trait MTLDevice {
     unsafe fn newStencilDepthStateWithDescriptor(self, descriptor: id) -> id;
     unsafe fn newRenderPipleineStateWithDescriptor_completionHandler(
                                                     self,
+                                                    descriptor: id,
                                                     completionHandler: MTLNewRenderPipleineStateCompletionHandler);
     unsafe fn newRenderPipelineStateWithDescriptor_options_completionHandler(
                                         self,
+                                        descriptor: id,
                                         options: MTLPipelineOption,
                                         completionHandler: MTLNewRenderPipelineStateWithReflectionCompletionHandler);
-    unsafe fn newRenderPipelineStateWithDescriptor_error(self, error: id);
+    unsafe fn newRenderPipelineStateWithDescriptor_error(self, descriptor: id, error: id);
     unsafe fn newRenderPipelineStateWithDescriptor_options_reflection(self,
+                                                                      descriptor: id,
                                                                       options: MTLPipelineOption,
                                                                       reflection: id,
                                                                       error: id);
@@ -151,57 +154,65 @@ impl MTLDevice for id {
     }
 
     unsafe fn newBufferWithBytes_Length_Options(self, pointer: *mut c_void, length: NSUInteger, options: id) -> id {
-        unimplemented!()
+        msg_send![self, newBufferWithBytes:pointer length:length options:options]
     }
 
     unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self,
                                                                   pointer: *mut c_void,
                                                                   length: NSUInteger,
                                                                   deallocator: Block<(*mut c_void, NSUInteger), ()>) {
-        unimplemented!()
+        msg_send![self, newBufferWithBytesNoCopy:pointer length:length deallocator:deallocator]
     }
 
     unsafe fn newTextureWithDescriptor(self, descriptor: id) -> id {
-        unimplemented!()
+        msg_send![self, newTextureWithDescriptor:descriptor]
     }
 
     unsafe fn newSamplerStateWithDescriptor(self, descriptor: id) -> id {
-        unimplemented!()
+        msg_send![self, newSamplerStateWithDescriptor:descriptor]
     }
 
     unsafe fn newStencilDepthStateWithDescriptor(self, descriptor: id) -> id {
-        unimplemented!()
+        msg_send![self, newStencilDepthStateWithDescriptor:descriptor]
     }
 
     unsafe fn newRenderPipleineStateWithDescriptor_completionHandler(
                                                     self,
+                                                    descriptor: id,
                                                     completionHandler: MTLNewRenderPipleineStateCompletionHandler) {
-        unimplemented!()
+        msg_send![self, newRenderPipleineStateWithDescriptor:descriptor completionHandler:completionHandler]
     }
 
     unsafe fn newRenderPipelineStateWithDescriptor_options_completionHandler(
                                         self,
+                                        descriptor: id,
                                         options: MTLPipelineOption,
                                         completionHandler: MTLNewRenderPipelineStateWithReflectionCompletionHandler) {
-        unimplemented!()
+        msg_send![self, newRenderPipelineStateWithDescriptor:descriptor
+                                                     options:options
+                                           completionHandler:completionHandler]
     }
 
-    unsafe fn newRenderPipelineStateWithDescriptor_error(self, error: id) {
-        unimplemented!()
+    unsafe fn newRenderPipelineStateWithDescriptor_error(self, descriptor: id, error: id) {
+        msg_send![self, newRenderPipelineStateWithDescriptor:descriptor error:error]
     }
 
     unsafe fn newRenderPipelineStateWithDescriptor_options_reflection(self,
+                                                                      descriptor: id,
                                                                       options: MTLPipelineOption,
                                                                       reflection: id,
                                                                       error: id) {
-        unimplemented!()
+        msg_send![self, newRenderPipelineStateWithDescriptor:descriptor
+                                                     options:options
+                                                  reflection:reflection
+                                                       error:error]
     }
 
     unsafe fn newComputePipelineStateWithFunction_completionHandler(
                                                         self,
                                                         function: id,
                                                         completionHandler: MTLNewComputePipelineStateCompletionHandler) {
-        unimplemented!()
+        msg_send![self, newComputePipelineStateWithFunction:function completionHandler:completionHandler]
     }
 
     unsafe fn newComputePipelineStateWithFunction_options_completionHandler(
@@ -209,11 +220,13 @@ impl MTLDevice for id {
                                         function: id,
                                         options: MTLPipelineOption,
                                         completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
-        unimplemented!()
+        msg_send![self, newComputePipelineStateWithFunction:function
+                                                    options:options
+                                          completionHandler:completionHandler]
     }
 
     unsafe fn newComputePipelineStateWithFunction_error(self, function: id, error: id) {
-        unimplemented!()
+        msg_send![self, newComputePipelineStateWithFunction:function error:error]
     }
 
     unsafe fn newComputePipelineStateWithFunction_options_reflection_error(self,
@@ -221,20 +234,26 @@ impl MTLDevice for id {
                                                                            options: MTLPipelineOption,
                                                                            reflection: id,
                                                                            error: id) {
-        unimplemented!()
+        msg_send![self, newComputePipelineStateWithFunction:function options:options reflection:reflection error:error]
     }
 
-    unsafe fn newComputePipelineStateWithDescriptor_options_completionHandler(self,
-                                        descriptor: id,
-                                        options: MTLPipelineOption,
-                                        completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
-        unimplemented!()
+    unsafe fn newComputePipelineStateWithDescriptor_options_completionHandler(
+                    self,
+                    descriptor: id,
+                    options: MTLPipelineOption,
+                    completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
+        msg_send![self, newComputePipelineStateWithDescriptor:descriptor
+                                                      options:options
+                                            completionHandler:completionHandler]
     }
     unsafe fn newComputePipelineStateWithDescriptor_options_reflection_error(self,
                                                                              descriptor: id,
                                                                              options: MTLPipelineOption,
                                                                              reflection: id,
                                                                              error: id) {
-        unimplemented!()
+        msg_send![self, newComputePipelineStateWithDescriptor:descriptor
+                                                      options:options
+                                                   reflection:reflection
+                                                        error:error]
     }
 }
