@@ -5,6 +5,7 @@ use std::borrow::Cow;
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
 use std::ffi::CStr;
+use {Size};
 
 pub struct Device(id);
 
@@ -28,6 +29,10 @@ impl Device {
 
     pub fn is_low_power(&self) -> bool {
         unsafe { self.0.lowPower() != 0 }
+    }
+
+    pub fn max_threads_per_group(&self) -> Size {
+        unsafe { self.0.maxThreadsPerGroup() }
     }
 
     pub fn name(&self) -> Cow<str> {
