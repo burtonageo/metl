@@ -6,6 +6,7 @@ extern crate cocoa;
 extern crate core_foundation;
 extern crate core_graphics;
 extern crate libc;
+#[macro_use]
 extern crate objc;
 
 mod classes;
