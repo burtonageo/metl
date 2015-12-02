@@ -20,7 +20,7 @@ pub use constants::{MTLCompareFunction, MTLFeatureSet, MTLPipelineOption, MTLPix
 pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLOriginMake,
                     MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
-pub use protocols::{MTLDevice};
+pub use protocols::{MTLCommandQueue, MTLDevice};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments, MTLDrawIndexedPrimitivesIndirectArguments,
                 MTLDrawPrimitivesIndirectArguments, MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};
