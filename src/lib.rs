@@ -22,7 +22,7 @@ pub fn clear_color(red: f64, green: f64, blue: f64, alpha: f64) -> ClearColor {
 }
 
 pub fn origin(x: usize, y: usize, z: usize) -> Origin {
-    sys::MTLOriginMake(x, y, z)
+    sys::MTLOriginMake(x as NSUInteger, y as NSUInteger, z as NSUInteger)
 }
 
 pub fn region_1d(x: usize, width: usize) -> Region {
@@ -43,5 +43,5 @@ pub fn region_3d(x: usize, y: usize, z: usize, width: usize, height: usize, dept
 }
 
  pub fn size(width: usize, height: usize, depth: usize) -> Size {
-     sys::MTLSizeMake(width, height, depth)
+     sys::MTLSizeMake(width as NSUInteger, height as NSUInteger, depth as NSUInteger)
  }
