@@ -5,8 +5,8 @@ pub trait MTLCommandQueue {
     unsafe fn commandBufferWithUnretainedReferences(self) -> id;
     unsafe fn insertDebugCaptureBoundary(self);
 
-    unsafe fn getDevice(self) -> id;
-    unsafe fn getLabel(self) -> id;
+    unsafe fn device(self) -> id;
+    unsafe fn label(self) -> id;
     unsafe fn setLabel(self, id);
 }
 
@@ -23,12 +23,12 @@ impl MTLCommandQueue for id {
         msg_send![self, insertDebugCaptureBoundary]
     }
     
-    unsafe fn getDevice(self) -> id {
-        msg_send![self, getDevice]
+    unsafe fn device(self) -> id {
+        msg_send![self, device]
     }
 
-    unsafe fn getLabel(self) -> id {
-        msg_send![self, getLabel]
+    unsafe fn label(self) -> id {
+        msg_send![self, label]
     }
 
     unsafe fn setLabel(self, label: id) {

@@ -41,11 +41,11 @@ impl CommandQueue {
     }
 
     pub fn get_label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.getLabel().UTF8String()).to_string_lossy() }
+        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
     }
 
     pub fn get_device(&self) -> Device {
-        let device = unsafe { self.0.getDevice() };
+        let device = unsafe { self.0.device() };
         _make_device(device)
     }
 }
