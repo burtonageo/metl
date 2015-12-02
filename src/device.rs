@@ -1,7 +1,9 @@
 use cocoa::base::{id, nil};
+use cocoa::foundation::NSString;
 use sys::{MTLCreateSystemDefaultDevice, MTLDevice};
-use std::default::Default;
+use std::ffi::CString;
 use std::ptr;
+use std::str::FromStr;
 
 pub struct Device(id);
 
@@ -21,5 +23,11 @@ impl Device {
 
     pub fn is_low_power(&self) -> bool {
         unsafe { self.0.lowPower() != 0 }
+    }
+
+    /// BEWARE: using this fn causes the process to exit abnormally.
+    pub fn name(&self) -> String {
+        let device_name_cstring = unsafe { CString::from_ptr(self.0.name().UTF8String()) };
+        device_name_cstring.clone().into_string().unwrap_or(String::new())
     }
 }
