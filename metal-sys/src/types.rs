@@ -13,10 +13,10 @@ pub struct MTLClearColor {
     pub red: f64,
 
     /// The green color channel.
-    pub blue: f64,
+    pub green: f64,
 
     /// The blue color channel.
-    pub green: f64,
+    pub blue: f64,
 
     /// The alpha color channel.
     pub alpha: f64
@@ -143,5 +143,5 @@ pub struct MTLDrawIndexedPrimitivesIndirectArguments {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLDispatchThreadgroupsIndirectArguments {
     /// The number of threadgroups for the grid, in each dimension.
-    threadgroupsPerGrid: [uint32_t; 3]
+    pub threadgroupsPerGrid: [uint32_t; 3]
 }
