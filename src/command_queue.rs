@@ -45,7 +45,7 @@ impl CommandQueue {
     }
 
     pub fn get_device(&self) -> Device {
-        unsafe { _make_device(self.0.device()) };
+        unsafe { _make_device(self.0.device()) }
     }
 }
 
