@@ -11,42 +11,22 @@
 pub enum MTLFeatureSet {
     /// The baseline feature set supported by the first generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A7 GPU.
-    ///
-    /// #Availablility
-    ///
-    /// Available in iOS 8.0 and later.
     MTLFeatureSet_iOS_GPUFamily1_v1 = 0,
 
     /// The baseline feature set supported by the second generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A8 GPU.
-    ///
-    /// #Availablility
-    ///
-    /// Available in iOS 8.0 and later.
     MTLFeatureSet_iOS_GPUFamily2_v1 = 1,
 
     /// The extended feature set supported by the first generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A7 GPU.
-    ///
-    /// #Availablility
-    ///
-    /// Available in iOS 9.0 and later.
     MTLFeatureSet_iOS_GPUFamily1_v2 = 2,
 
     /// The extended feature set supported by the second generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A8 GPU.
-    ///
-    /// #Availablility
-    ///
-    /// Available in iOS 9.0 and later.
     MTLFeatureSet_iOS_GPUFamily2_v2 = 3,
 
     /// The feature set supported by the third generation of iOS GPUs that support Metal.
     /// This feature set is supported by the A9 GPU.
-    ///
-    /// #Availablility
-    ///
-    /// Available in iOS 9.0 and later.
     MTLFeatureSet_iOS_GPUFamily3_v1 = 4
 }
 
