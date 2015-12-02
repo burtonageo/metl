@@ -18,6 +18,10 @@ impl Device {
         }
     }
 
+    pub unsafe fn get_raw(&self) -> id {
+        self.0
+    }
+
     pub fn is_headless(&self) -> bool {
         unsafe { self.0.headless() != 0 }
     }
