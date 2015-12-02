@@ -1,3 +1,5 @@
+#![feature(cstring_into, cstr_memory2)]
+
 extern crate metal_sys;
 extern crate cocoa;
 
