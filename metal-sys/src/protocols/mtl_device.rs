@@ -1,6 +1,8 @@
+#![allow(unused_variables)]
+
 use block::Block;
 use cocoa::base::{BOOL, id};
-use cocoa::foundation::{NSString, NSUInteger};
+use cocoa::foundation::NSUInteger;
 use libc::c_void;
 use {MTLFeatureSet, MTLPipelineOption, MTLSize};
 
@@ -81,4 +83,158 @@ pub trait MTLDevice {
                                                                              options: MTLPipelineOption,
                                                                              reflection: id,
                                                                              error: id);
+}
+
+impl MTLDevice for id {
+    unsafe fn depth24Stencil8PixelFormatSupported(self) -> BOOL {
+        msg_send![self, isDepth24Stencil8PixelFormatSupported]
+    }
+
+    unsafe fn headless(self) -> BOOL {
+        msg_send![self, isHeadless]
+    }
+
+    unsafe fn lowPower(self) -> BOOL {
+        msg_send![self, isLowPower]
+    }
+
+    unsafe fn maxThreadsPerGroup(self) -> MTLSize {
+        msg_send![self, maxThreadsPerThreadgroup]
+    }
+
+    unsafe fn name(self) -> id {
+        msg_send![self, name]
+    }
+
+    unsafe fn supportsFeatureSet(self, featureSet: MTLFeatureSet) -> BOOL {
+        msg_send![self, supportsFeatureSet:featureSet]
+    }
+
+    unsafe fn supportsTextureSampleCount(self, textureSampleCount: NSUInteger) -> BOOL {
+        msg_send![self, supportsTextureSampleCount:textureSampleCount]
+    }
+
+    unsafe fn newDefaultLibrary(self) -> id {
+        msg_send![self, newDefaultLibrary]
+    }
+
+    unsafe fn newLibraryWithFile_error(self, filePath: id, error: id) -> id {
+        msg_send![self, newLibraryWithFile:filePath error:error]
+    }
+
+    unsafe fn newLibraryWithSource_options_completionHandler(self,
+                                                             source: id,
+                                                             options: id,
+                                                             completionHandler: MTLNewLibraryCompletionHandler) {
+        msg_send![self, newLibraryWithSource:source options:options completionHandler:completionHandler]
+    }
+
+    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id) {
+        msg_send![self, newLibraryWithSource:source options:options error:error]
+    }
+
+    unsafe fn newLibraryWithData_error(self, data: id, error: id) {
+        msg_send![self, newLibraryWithData:data error:error]
+    }
+
+
+    unsafe fn newCommandQueue(self) -> id {
+        msg_send![self, newCommandQueue]
+    }
+
+    unsafe fn newCommandQueueWithMaxCommandBufferCount(self, maxCommandBufferCount: NSUInteger) -> id {
+        msg_send![self, newCommandQueueWithMaxCommandBufferCount:maxCommandBufferCount]
+    }
+
+    unsafe fn newBufferWithLength_Options(self, length: NSUInteger, options: id) -> id {
+        msg_send![self, newBufferWithLength:length options:options]
+    }
+
+    unsafe fn newBufferWithBytes_Length_Options(self, pointer: *mut c_void, length: NSUInteger, options: id) -> id {
+        unimplemented!()
+    }
+
+    unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self,
+                                                                  pointer: *mut c_void,
+                                                                  length: NSUInteger,
+                                                                  deallocator: Block<(*mut c_void, NSUInteger), ()>) {
+        unimplemented!()
+    }
+
+    unsafe fn newTextureWithDescriptor(self, descriptor: id) -> id {
+        unimplemented!()
+    }
+
+    unsafe fn newSamplerStateWithDescriptor(self, descriptor: id) -> id {
+        unimplemented!()
+    }
+
+    unsafe fn newStencilDepthStateWithDescriptor(self, descriptor: id) -> id {
+        unimplemented!()
+    }
+
+    unsafe fn newRenderPipleineStateWithDescriptor_completionHandler(
+                                                    self,
+                                                    completionHandler: MTLNewRenderPipleineStateCompletionHandler) {
+        unimplemented!()
+    }
+
+    unsafe fn newRenderPipelineStateWithDescriptor_options_completionHandler(
+                                        self,
+                                        options: MTLPipelineOption,
+                                        completionHandler: MTLNewRenderPipelineStateWithReflectionCompletionHandler) {
+        unimplemented!()
+    }
+
+    unsafe fn newRenderPipelineStateWithDescriptor_error(self, error: id) {
+        unimplemented!()
+    }
+
+    unsafe fn newRenderPipelineStateWithDescriptor_options_reflection(self,
+                                                                      options: MTLPipelineOption,
+                                                                      reflection: id,
+                                                                      error: id) {
+        unimplemented!()
+    }
+
+    unsafe fn newComputePipelineStateWithFunction_completionHandler(
+                                                        self,
+                                                        function: id,
+                                                        completionHandler: MTLNewComputePipelineStateCompletionHandler) {
+        unimplemented!()
+    }
+
+    unsafe fn newComputePipelineStateWithFunction_options_completionHandler(
+                                        self,
+                                        function: id,
+                                        options: MTLPipelineOption,
+                                        completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
+        unimplemented!()
+    }
+
+    unsafe fn newComputePipelineStateWithFunction_error(self, function: id, error: id) {
+        unimplemented!()
+    }
+
+    unsafe fn newComputePipelineStateWithFunction_options_reflection_error(self,
+                                                                           function: id,
+                                                                           options: MTLPipelineOption,
+                                                                           reflection: id,
+                                                                           error: id) {
+        unimplemented!()
+    }
+
+    unsafe fn newComputePipelineStateWithDescriptor_options_completionHandler(self,
+                                        descriptor: id,
+                                        options: MTLPipelineOption,
+                                        completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
+        unimplemented!()
+    }
+    unsafe fn newComputePipelineStateWithDescriptor_options_reflection_error(self,
+                                                                             descriptor: id,
+                                                                             options: MTLPipelineOption,
+                                                                             reflection: id,
+                                                                             error: id) {
+        unimplemented!()
+    }
 }
