@@ -1,9 +1,8 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use sys::{MTLCreateSystemDefaultDevice, MTLDevice};
-use std::ffi::CString;
-use std::ptr;
-use std::str::FromStr;
+use std::borrow::Cow;
+use std::ffi::CStr;
 
 pub struct Device(id);
 
@@ -26,8 +25,7 @@ impl Device {
     }
 
     /// BEWARE: using this fn causes the process to exit abnormally.
-    pub fn name(&self) -> String {
-        let device_name_cstring = unsafe { CString::from_ptr(self.0.name().UTF8String()) };
-        device_name_cstring.clone().into_string().unwrap_or(String::new())
+    pub fn name(&self) -> Cow<str> {
+        unsafe { CStr::from_ptr(self.0.name().UTF8String()) }.to_string_lossy()
     }
 }
