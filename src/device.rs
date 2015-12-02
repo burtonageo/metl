@@ -27,7 +27,7 @@ impl Device {
     }
 
     pub fn name(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.name().UTF8String()) }.to_string_lossy()
+        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
     }
 
     pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
