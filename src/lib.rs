@@ -19,7 +19,7 @@ pub use sys::MTLDrawPrimitivesIndirectArguments as DrawPrimitivesIndirectArgumen
 pub use sys::MTLDrawIndexedPrimitivesIndirectArguments as DrawIndexedPrimitivesIndirectArguments;
 pub use sys::MTLDispatchThreadgroupsIndirectArguments as DispatchThreadgroupsIndirectArguments;
 
-pub use device::Device;
+pub use device::{Device, DeviceError};
 
 pub fn clear_color(red: f64, green: f64, blue: f64, alpha: f64) -> ClearColor {
     sys::MTLClearColorMake(red, green, blue, alpha)
