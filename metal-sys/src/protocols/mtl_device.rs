@@ -209,17 +209,17 @@ impl MTLDevice for id {
     }
 
     unsafe fn newComputePipelineStateWithFunction_completionHandler(
-                                                        self,
-                                                        function: id,
-                                                        completionHandler: MTLNewComputePipelineStateCompletionHandler) {
+                  self,
+                  function: id,
+                  completionHandler: MTLNewComputePipelineStateCompletionHandler) {
         msg_send![self, newComputePipelineStateWithFunction:function completionHandler:completionHandler]
     }
 
     unsafe fn newComputePipelineStateWithFunction_options_completionHandler(
-                                        self,
-                                        function: id,
-                                        options: MTLPipelineOption,
-                                        completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
+                   self,
+                   function: id,
+                   options: MTLPipelineOption,
+                   completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
         msg_send![self, newComputePipelineStateWithFunction:function
                                                     options:options
                                           completionHandler:completionHandler]
@@ -238,10 +238,10 @@ impl MTLDevice for id {
     }
 
     unsafe fn newComputePipelineStateWithDescriptor_options_completionHandler(
-                    self,
-                    descriptor: id,
-                    options: MTLPipelineOption,
-                    completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
+                   self,
+                   descriptor: id,
+                   options: MTLPipelineOption,
+                   completionHandler: MTLNewComputePipelineStateWithReflectionCompletionHandler) {
         msg_send![self, newComputePipelineStateWithDescriptor:descriptor
                                                       options:options
                                             completionHandler:completionHandler]
