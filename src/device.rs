@@ -26,7 +26,6 @@ impl Device {
         unsafe { self.0.lowPower() != 0 }
     }
 
-    /// BEWARE: using this fn causes the process to exit abnormally.
     pub fn name(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.name().UTF8String()) }.to_string_lossy()
     }
