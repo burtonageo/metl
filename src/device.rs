@@ -39,6 +39,13 @@ impl Device {
     }
 }
 
+/// Internal utility function to create a Device without exposing internals.
+/// Not exported publicly from this crate.
+#[doc(hidden)]
+pub fn _make_device(device: id) -> Device {
+    Device(device)
+}
+
 #[derive(Clone, Debug)]
 pub enum DeviceError {
     ConstructionFailed
