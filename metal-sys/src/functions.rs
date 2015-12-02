@@ -1,6 +1,5 @@
 use cocoa::base::id;
 use cocoa::foundation::NSUInteger;
-use libc::c_void;
 use {MTLClearColor, MTLOrigin, MTLRegion, MTLSize};
 
 #[link(name = "Metal", kind = "framework")]
