@@ -8,6 +8,3 @@ cocoa = "0.1.4"
 
 [dependencies.metal-sys]
 path = "."
-
-[dev-dependencies]
-libc = "0.1.8"

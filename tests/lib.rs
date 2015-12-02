@@ -1,5 +1,4 @@
 extern crate mtl;
-extern crate libc;
 
 use mtl::{CommandQueue, Device};
 
