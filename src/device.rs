@@ -60,11 +60,11 @@ impl Device {
     }
 
     pub fn is_headless(&self) -> bool {
-        unsafe { self.0.headless() != 0 }
+        unsafe { self.0.headless() == YES }
     }
 
     pub fn is_low_power(&self) -> bool {
-        unsafe { self.0.lowPower() != 0 }
+        unsafe { self.0.lowPower() == YES }
     }
 
     pub fn max_threads_per_group(&self) -> Size {
@@ -76,7 +76,7 @@ impl Device {
     }
 
     pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
-        unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) != 0 }
+        unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) == YES }
     }
 }
 
