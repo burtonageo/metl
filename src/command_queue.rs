@@ -12,7 +12,7 @@ use {Device};
 pub struct CommandQueue(id);
 
 impl CommandQueue {
-    pub fn new(device: &Device) -> Result<Self, CommandQueueError> {
+    pub fn new(device: &mut Device) -> Result<Self, CommandQueueError> {
         let command_queue = unsafe { device.get_raw().newCommandQueue() };
         if command_queue != nil {
             Ok(CommandQueue(command_queue))
@@ -21,7 +21,7 @@ impl CommandQueue {
         }
     }
 
-    pub fn with_max_command_buffer_count(device: &Device,
+    pub fn with_max_command_buffer_count(device: &mut Device,
                                          max_command_buffer_count: usize) -> Result<Self, CommandQueueError> {
         let command_queue = unsafe {
             device.get_raw().newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
@@ -33,11 +33,11 @@ impl CommandQueue {
         }
     }
 
-    pub fn insert_debug_capture_boundary(&self) {
+    pub fn insert_debug_capture_boundary(&mut self) {
         unsafe { self.0.insertDebugCaptureBoundary(); }
     }
 
-    pub fn set_label<S: AsRef<str>>(&self, label: S) {
+    pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
         unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label.as_ref())) }
     }
 
