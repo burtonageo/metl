@@ -11,7 +11,7 @@ fn get_device() {
 #[test]
 fn get_device_name() {
     let device = Device::system_default_device().unwrap();
-    assert!(!device.name().into_owned().is_empty());
+    assert!(!device.get_name().into_owned().is_empty());
 }
 
 #[test]
