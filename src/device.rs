@@ -29,8 +29,6 @@ impl Device {
         }
     }
 
-    pub unsafe fn get_raw(&self) -> id {self.0}
-
     pub unsafe fn into_raw(self) -> id {
         self.0
     }
@@ -85,6 +83,13 @@ impl Device {
 #[doc(hidden)]
 pub unsafe fn _make_device(device: id) -> Device {
     Device(device)
+}
+
+/// Internal utility function to get a Device's id without consuming it.
+/// Not exported publicly from this crate.
+#[doc(hidden)]
+pub unsafe fn _device_get_raw(device: &Device) -> id {
+    device.0
 }
 
 #[derive(Clone, Debug)]

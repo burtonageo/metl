@@ -1,6 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
-use device::_make_device;
+use device::{_device_get_raw, _make_device};
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::error::Error;
@@ -13,7 +13,7 @@ pub struct CommandQueue(id);
 
 impl CommandQueue {
     pub fn new(device: &mut Device) -> Result<Self, CommandQueueError> {
-        let command_queue = unsafe { device.get_raw().newCommandQueue() };
+        let command_queue = unsafe { _device_get_raw(device).newCommandQueue() };
         if command_queue != nil {
             Ok(CommandQueue(command_queue))
         } else {
@@ -24,7 +24,7 @@ impl CommandQueue {
     pub fn with_max_command_buffer_count(device: &mut Device,
                                          max_command_buffer_count: usize) -> Result<Self, CommandQueueError> {
         let command_queue = unsafe {
-            device.get_raw().newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
+            _device_get_raw(device).newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
         };
         if command_queue != nil {
             Ok(CommandQueue(command_queue))
