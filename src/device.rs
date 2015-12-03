@@ -32,7 +32,7 @@ impl Device {
     }
 
     pub fn max_threads_per_group(&self) -> Size {
-        unsafe { self.0.maxThreadsPerGroup() }
+        unsafe { self.0.maxThreadsPerGroup().into() }
     }
 
     pub fn name(&self) -> Cow<str> {
