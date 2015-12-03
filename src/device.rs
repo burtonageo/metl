@@ -78,13 +78,6 @@ impl Device {
     }
 }
 
-/// Internal utility function to create a Device without exposing internals.
-/// Not exported publicly from this crate.
-#[doc(hidden)]
-pub unsafe fn _make_device(device: id) -> Device {
-    Device(device)
-}
-
 /// Internal utility function to get a Device's id without consuming it.
 /// Not exported publicly from this crate.
 #[doc(hidden)]

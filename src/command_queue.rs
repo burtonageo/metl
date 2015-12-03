@@ -1,6 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
-use device::{_device_get_raw, _make_device};
+use device::_device_get_raw;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::error::Error;
@@ -46,7 +46,7 @@ impl CommandQueue {
     }
 
     pub fn get_device(&self) -> Device {
-        unsafe { _make_device(self.0.device()) }
+        unsafe { Device::from_raw_unchecked(self.0.device()) }
     }
 }
 
