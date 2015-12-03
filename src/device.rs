@@ -7,6 +7,14 @@ use std::fmt::{self, Display, Formatter};
 use std::ffi::CStr;
 use {Size};
 
+pub trait ReadOnlyDevice {
+    pub fn is_headless(&self) -> bool;
+    pub fn is_low_power(&self) -> bool;
+    pub fn max_threads_per_group(&self) -> bool;
+    pub fn get_name(&self) -> Cow<str>;
+    pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool;
+}
+
 pub struct Device(id);
 
 impl Device {
