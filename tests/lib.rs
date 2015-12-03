@@ -24,3 +24,12 @@ fn set_get_command_queue_label() {
 
     assert_eq!(command_queue.get_label().into_owned(), dummy_command_queue_name.to_string());
 }
+
+#[test]
+fn insert_debug_capture_boundary_on_command_queue() {
+    let device = Device::system_default_device().unwrap();
+    let command_queue = CommandQueue::new(&device).unwrap();
+    command_queue.insert_debug_capture_boundary();
+
+    // if nothing panics/fails here, everything is okay
+}
