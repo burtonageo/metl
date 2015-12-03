@@ -53,7 +53,7 @@ impl CommandQueue {
 /// Internal utility function to create a CommandQueue without exposing internals.
 /// Not exported publicly from this crate.
 #[doc(hidden)]
-pub fn _make_command_queue(command_queue: id) -> CommandQueue {
+pub unsafe fn _make_command_queue(command_queue: id) -> CommandQueue {
     CommandQueue(command_queue)
 }
 
