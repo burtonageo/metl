@@ -1,5 +1,7 @@
-extern crate metal_sys;
 extern crate cocoa;
+extern crate metal_sys;
+#[macro_use]
+extern crate objc;
 
 mod device;
 mod command_queue;
