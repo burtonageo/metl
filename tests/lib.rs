@@ -1,6 +1,9 @@
 extern crate mtl;
+extern crate cocoa;
 
-use mtl::{CommandQueue, Device};
+use mtl::{CommandQueue, Device, DeviceError};
+use cocoa::base::nil;
+use cocoa::foundation::NSString;
 
 #[test]
 fn get_device() {
@@ -32,4 +35,39 @@ fn insert_debug_capture_boundary_on_command_queue() {
     command_queue.insert_debug_capture_boundary();
 
     // if nothing panics/fails here, everything is okay
+}
+
+#[test]
+fn device_from_to_raw() {
+    let device = Device::system_default_device().unwrap();
+    let raw = unsafe { device.into_raw() };
+    let device = Device::from_raw(raw);
+    assert!(device.is_ok());
+}
+
+#[test]
+fn device_from_wrong_type() {
+    let some_string = unsafe { NSString::alloc(nil).init_str("Hello") };
+    let device_result = Device::from_raw(some_string);
+    match device_result {
+        Result::Err(DeviceError::ConstructedFromWrongPointerType) => {
+            // pass
+        }
+        _ => {
+            assert!(false)
+        }
+    }
+}
+
+#[test]
+fn device_from_nullptr() {
+    let device_result = Device::from_raw(nil);
+    match device_result {
+        Result::Err(DeviceError::ConstructedFromNil) => {
+            // pass
+        }
+        _ => {
+            assert!(false)
+        }
+    }
 }
