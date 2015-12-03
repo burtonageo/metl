@@ -11,4 +11,4 @@ pub mod sys {
 
 pub use device::{Device, DeviceError};
 pub use command_queue::{CommandQueue, CommandQueueError};
-pub use value_types::{ClearColor, Region, ScissorRect, Size, Viewport};
+pub use value_types::{ClearColor, Origin, Region, ScissorRect, Size, Viewport};

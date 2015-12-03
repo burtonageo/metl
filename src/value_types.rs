@@ -51,9 +51,9 @@ impl Into<MTLClearColor> for ClearColor {
 
 #[derive(Clone, Copy, Default, Debug, Hash, PartialEq, Eq)]
 pub struct Origin {
-    x: usize,
-    y: usize,
-    z: usize
+    pub x: usize,
+    pub y: usize,
+    pub z: usize
 }
 
 impl Origin {
@@ -92,8 +92,8 @@ impl Into<MTLOrigin> for Origin {
 
 #[derive(Clone, Copy, Default, Debug, Hash, PartialEq, Eq)]
 pub struct Region {
-    size: Size,
-    origin: Origin
+    pub size: Size,
+    pub origin: Origin
 }
 
 impl Region {
@@ -140,10 +140,10 @@ impl Into<MTLRegion> for Region {
 
 #[derive(Clone, Copy, Default, Debug, Hash, PartialEq, Eq)]
 pub struct ScissorRect {
-    x: usize,
-    y: usize,
-    width: usize,
-    height: usize
+    pub x: usize,
+    pub y: usize,
+    pub width: usize,
+    pub height: usize
 }
 
 impl From<MTLScissorRect> for ScissorRect {
@@ -170,9 +170,9 @@ impl Into<MTLScissorRect> for ScissorRect {
 
 #[derive(Clone, Copy, Default, Debug, Hash, PartialEq, Eq)]
 pub struct Size {
-    width: usize,
-    height: usize,
-    depth: usize
+    pub width: usize,
+    pub height: usize,
+    pub depth: usize
 }
 
 impl Size {
