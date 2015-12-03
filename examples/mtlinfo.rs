@@ -1,0 +1,24 @@
+//! A simple example which prints out information about available Metal devices
+
+extern crate mtl;
+
+#[cfg(not(any(target_os = "macos", target_os = "ios")))]
+fn main() {
+    println!("Metal is not supported on this platform");
+}
+
+#[cfg(any(target_os = "macos", target_os = "ios"))]
+fn main() {
+    let device = match mtl::Device::system_default_device() {
+        Ok(device) => device,
+        Err(e) => {
+            use std::error::Error;
+            println!("{}", e.description());
+            return;
+        }
+    };
+
+    println!("Device: {}", device.get_name());
+    println!("Is low power: {}", device.is_low_power());
+    println!("Is headless: {}", device.is_headless());
+}
