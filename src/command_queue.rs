@@ -2,6 +2,7 @@ use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
 use device::_make_device;
 use std::borrow::Cow;
+use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
@@ -36,8 +37,8 @@ impl CommandQueue {
         unsafe { self.0.insertDebugCaptureBoundary(); }
     }
 
-    pub fn set_label(&self, label: &str) {
-        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
+    pub fn set_label<S: AsRef<str>>(&self, label: S) {
+        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label.as_ref())) }
     }
 
     pub fn get_label(&self) -> Cow<str> {
