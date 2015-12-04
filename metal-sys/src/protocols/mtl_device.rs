@@ -6,35 +6,34 @@ use cocoa::foundation::NSUInteger;
 use libc::c_void;
 use {MTLFeatureSet, MTLPipelineOption, MTLSize};
 
-/// The MTLDevice protocol defines the interface to a single graphics processor (GPU). You use
+/// The `MTLDevice` protocol defines the interface to a single graphics processor (GPU). You use
 /// an object that conforms to this protocol to query the capabilities of the processor and to
 /// allocate objects used to access those capabilities.
 ///
 /// Your app does not define classes that implement this protocol; it is used by Metal to provide
-/// a device object to your app. To obtain a system device, call the MTLCreateSystemDefaultDevice
-/// function or select a result from the MTLCopyAllDevices function.
+/// a device object to your app. To obtain a system device, call the `MTLCreateSystemDefaultDevice`
+/// function or select a result from the `MTLCopyAllDevices` function.
 ///
 /// Most objects in Metal that perform graphics rendering and computational work are associated
 /// directly with a specific device. For example, texture objects are created by a device object
-/// and can be used only with that device. Most methods on a MTLDevice object create non-transient
+/// and can be used only with that device. Most methods on a `MTLDevice` object create non-transient
 /// objects, including command queues, resources (such as buffers and textures), and pipeline states.
 /// These objects can be expensive to create and you are encouraged to create them soon after your
 /// app launches and reuse them throughout the lifetime of your app. Avoid creating these objects
 /// in performance sensitive code.
-#[cfg(any(target_os = "macos", target_os = "ios"))]
 pub trait MTLDevice {
     /// A Boolean value that indicates whether a device supports a packed depth/stencil buffer. (read-only)
     ///
     /// # Discussion
     ///
-    /// If the value is YES, the device supports the MTLPixelFormatDepth24Unorm_Stencil8 pixel format.
+    /// If the value is `YES`, the device supports the MTLPixelFormatDepth24Unorm_Stencil8 pixel format.
     unsafe fn depth24Stencil8PixelFormatSupported(self) -> BOOL;
 
     /// A Boolean value that indicates whether a device is configured as headless. (read-only)
     ///
     /// # Discussion
     ///
-    /// If the value is YES, the device can not and does not have any displays attached.
+    /// If the value is `YES`, the device can not and does not have any displays attached.
     unsafe fn headless(self) -> BOOL;
 
     /// Boolean value that indicates whether a device is low-power. (read-only)
@@ -74,7 +73,7 @@ pub trait MTLDevice {
     ///
     /// # Return Value
     ///
-    /// YES if the feature set is supported by the device; otherwise NO
+    /// `YES` if the feature set is supported by the device; otherwise `NO`.
     ///
     /// # Discussion
     ///
@@ -93,7 +92,7 @@ pub trait MTLDevice {
     ///
     /// # Return Value
     ///
-    /// YES if the sample count is supported by the device; otherwise NO.
+    /// `YES` if the sample count is supported by the device; otherwise `NO`.
     ///
     /// # Discussion
     ///
