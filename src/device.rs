@@ -39,14 +39,21 @@ impl Device {
         devices_vec
     }
 
+    /// Get the underlying pointer to the device. Releases ownership.
     pub unsafe fn into_raw(self) -> id {
         self.0
     }
 
+    /// Create a `Device` from a raw pointer. Does no error checking, so it
+    /// will cause errors if the device is nil, or does not conform to the
+    /// MTLDevice protocol.
     pub unsafe fn from_raw_unchecked(device_ptr: id) -> Self {
         Device(device_ptr)
     }
 
+    /// Create a `Device` from a raw pointer. If the pointer is not nil and
+    /// conforms to the `MTLDevice` protocol, then a `Device` will be created,
+    /// otherwise returns a `DeviceError`.
     pub fn from_raw(device_ptr: id) -> Result<Self, DeviceError> {
         #[link(name = "Foundation", kind = "framework")]
         extern {
