@@ -9,6 +9,7 @@ use std::ffi::CStr;
 use {Size};
 
 pub trait ReadOnlyDevice {
+    fn is_depth24_stencil8_pixel_format_supported(&self) -> bool;
     fn is_headless(&self) -> bool;
     fn is_low_power(&self) -> bool;
     fn max_threads_per_group(&self) -> bool;
@@ -65,6 +66,10 @@ impl Device {
         } else {
             Ok(Device(device_ptr))
         }
+    }
+
+    pub fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
+        unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
     }
 
     pub fn is_headless(&self) -> bool {
