@@ -59,6 +59,13 @@ pub unsafe fn _make_command_queue(command_queue: id) -> CommandQueue {
     CommandQueue(command_queue)
 }
 
+/// Internal utility function to get a CommandQueue's id without consuming it.
+/// Not exported publicly from this crate.
+#[doc(hidden)]
+pub unsafe fn _get_raw_command_queue(command_queue: &CommandQueue) -> id {
+    command_queue.0
+}
+
 #[derive(Clone, Debug)]
 pub enum CommandQueueError {
     CouldNotCreate
