@@ -38,6 +38,15 @@ fn insert_debug_capture_boundary_on_command_queue() {
 }
 
 #[test]
+fn device_ref_points_to_device() {
+    let mut device = Device::system_default_device().unwrap();
+    let command_queue = CommandQueue::new(&mut device).unwrap();
+    let device_ref = command_queue.get_device();
+
+    assert!(device_ref.is_reference_to(&device));
+}
+
+#[test]
 fn device_from_to_raw() {
     let device = Device::system_default_device().unwrap();
     let raw = unsafe { device.into_raw() };

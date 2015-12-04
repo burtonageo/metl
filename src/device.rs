@@ -106,7 +106,6 @@ pub unsafe fn _device_get_raw(device: &Device) -> id {
 pub struct DeviceRef(id);
 
 impl DeviceRef {
-    // TODO(George): Is this correct?
     pub fn is_reference_to(&self, device: &Device) -> bool {
         self.0 == device.0
     }
