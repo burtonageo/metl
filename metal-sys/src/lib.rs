@@ -22,5 +22,11 @@ pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefault
 
 pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLDevice};
 
+pub use protocols::{MTLNewLibraryCompletionHandler,
+                    MTLNewRenderPipleineStateCompletionHandler,
+                    MTLNewRenderPipelineStateWithReflectionCompletionHandler,
+                    MTLNewComputePipelineStateCompletionHandler,
+                    MTLNewComputePipelineStateWithReflectionCompletionHandler};
+
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments, MTLDrawIndexedPrimitivesIndirectArguments,
                 MTLDrawPrimitivesIndirectArguments, MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};
