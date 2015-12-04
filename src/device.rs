@@ -4,8 +4,8 @@ use objc::runtime::{BOOL, NO, YES};
 use sys::{MTLCreateSystemDefaultDevice, MTLCopyAllDevices, MTLDevice};
 use std::borrow::Cow;
 use std::error::Error;
-use std::fmt::{self, Display, Formatter};
 use std::ffi::CStr;
+use std::fmt::{self, Display, Formatter};
 use {Size};
 
 pub trait ReadOnlyDevice {
