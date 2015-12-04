@@ -26,7 +26,7 @@ pub trait MTLDevice {
     ///
     /// # Discussion
     ///
-    /// If the value is `YES`, the device supports the MTLPixelFormatDepth24Unorm_Stencil8 pixel format.
+    /// If the value is `YES`, the device supports the `MTLPixelFormatDepth24Unorm_Stencil8` pixel format.
     unsafe fn depth24Stencil8PixelFormatSupported(self) -> BOOL;
 
     /// A Boolean value that indicates whether a device is configured as headless. (read-only)
