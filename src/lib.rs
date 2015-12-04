@@ -11,6 +11,6 @@ pub mod sys {
     pub use metal_sys::*;
 }
 
-pub use device::{Device, DeviceError, DeviceRef};
+pub use device::{Device, DeviceError, DeviceRef, ReadOnlyDevice};
 pub use command_queue::{CommandQueue, CommandQueueError};
 pub use value_types::{ClearColor, Origin, Region, ScissorRect, Size, Viewport};
