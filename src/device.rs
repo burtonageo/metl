@@ -1,7 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSUInteger, NSString};
 use objc::runtime::{BOOL, NO, YES};
-use objc::runtime::{Class, Object};
 use sys::{MTLCreateSystemDefaultDevice, MTLCopyAllDevices, MTLDevice};
 use std::borrow::Cow;
 use std::error::Error;
@@ -29,6 +28,7 @@ impl Device {
         }
     }
 
+    #[allow(unused_mut, unused_variables)]
     pub fn enumerate_all_system_devices() -> Vec<Result<Self, DeviceError>> {
         let all_devices = unsafe { MTLCopyAllDevices() };
         let mut devices_vec = vec![];
