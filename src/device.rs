@@ -12,7 +12,7 @@ pub trait ReadOnlyDevice {
     fn is_depth24_stencil8_pixel_format_supported(&self) -> bool;
     fn is_headless(&self) -> bool;
     fn is_low_power(&self) -> bool;
-    fn max_threads_per_group(&self) -> bool;
+    fn max_threads_per_group(&self) -> Size;
     fn get_name(&self) -> Cow<str>;
     fn supports_texture_sample_count(&self, sample_count: usize) -> bool;
 }
