@@ -2,7 +2,7 @@ use cocoa::base::{id, nil};
 use cocoa::foundation::{NSUInteger, NSString};
 use objc::runtime::{BOOL, NO, YES};
 use objc::runtime::{Class, Object};
-use sys::{MTLCreateSystemDefaultDevice, MTLDevice};
+use sys::{MTLCreateSystemDefaultDevice, MTLCopyAllDevices, MTLDevice};
 use std::borrow::Cow;
 use std::error::Error;
 use std::fmt::{self, Display, Formatter};
@@ -29,6 +29,15 @@ impl Device {
         }
     }
 
+    pub fn enumerate_all_system_devices() -> Vec<Result<Self, DeviceError>> {
+        let all_devices = unsafe { MTLCopyAllDevices() };
+        let mut devices_vec = vec![];
+
+        
+
+        devices_vec
+    }
+
     pub unsafe fn into_raw(self) -> id {
         self.0
     }
@@ -43,10 +52,11 @@ impl Device {
             fn NSProtocolFromString(namestr: id) -> id;
         }
 
-        let mtl_device_protocol_str = unsafe { NSString::alloc(nil).init_str("MTLDevice") };
-        let mtl_device_protocol = unsafe { NSProtocolFromString(mtl_device_protocol_str) };
-
-        let conforms_to_protocol: BOOL = unsafe { msg_send![device_ptr, conformsToProtocol:mtl_device_protocol] };
+        let conforms_to_protocol: BOOL = unsafe {
+            let mtl_device_protocol_str = NSString::alloc(nil).init_str("MTLDevice");
+            let mtl_device_protocol = NSProtocolFromString(mtl_device_protocol_str);
+            msg_send![device_ptr, conformsToProtocol:mtl_device_protocol]
+        };
 
         if device_ptr == nil {
             Err(DeviceError::ConstructedFromNil)
