@@ -9,6 +9,7 @@ fn main() {
 
 #[cfg(any(target_os = "macos", target_os = "ios"))]
 fn main() {
+    use mtl::ReadOnlyDevice;
     let device = match mtl::Device::system_default_device() {
         Ok(device) => device,
         Err(e) => {

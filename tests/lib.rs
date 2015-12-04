@@ -1,7 +1,7 @@
 extern crate mtl;
 extern crate cocoa;
 
-use mtl::{CommandQueue, Device, DeviceError};
+use mtl::{CommandQueue, Device, DeviceError, ReadOnlyDevice};
 use cocoa::base::nil;
 use cocoa::foundation::NSString;
 
