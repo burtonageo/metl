@@ -45,7 +45,7 @@ impl CommandQueue {
         unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
     }
 
-    pub fn get_device(&self) -> DeviceRef {
+    pub fn get_device<'a>(&'a self) -> DeviceRef<'a> {
         let device = unsafe { self.0.device() };
         debug_assert!(device != nil);
         unsafe { _make_device_ref(device) }

@@ -6,6 +6,7 @@ use std::borrow::Cow;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
+use std::marker::PhantomData;
 use {Size};
 
 pub trait ReadOnlyDevice {
@@ -109,16 +110,15 @@ pub unsafe fn _device_get_raw(device: &Device) -> id {
     device.0
 }
 
-// TODO(George): Should this have a lifetime associated with it?
-pub struct DeviceRef(id);
+pub struct DeviceRef<'a>(id, PhantomData<&'a id>);
 
-impl DeviceRef {
-    pub fn is_reference_to(&self, device: &Device) -> bool {
+impl<'a> DeviceRef<'a> {
+    pub fn is_reference_to<'d>(&'a self, device: &'d Device) -> bool {
         self.0 == device.0
     }
 }
 
-impl ReadOnlyDevice for DeviceRef {
+impl<'a> ReadOnlyDevice for DeviceRef<'a> {
     fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
         unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
     }
@@ -147,8 +147,8 @@ impl ReadOnlyDevice for DeviceRef {
 /// Internal utility function to create a DeviceRef.
 /// Not exported publicly from this crate.
 #[doc(hidden)]
-pub unsafe fn _make_device_ref(device: id) -> DeviceRef {
-    DeviceRef(device)
+pub unsafe fn _make_device_ref<'a>(device: id) -> DeviceRef<'a> {
+    DeviceRef(device, PhantomData)
 }
 
 #[derive(Clone, Debug)]
