@@ -40,7 +40,7 @@ pub trait MTLDevice {
     ///
     /// # Discussion
     ///
-    /// On multi-GPU systems that support automatic graphics switching, this property will return YES
+    /// On multi-GPU systems that support automatic graphics switching, this property will return `YES`
     /// for the lower-power GPU.
     unsafe fn lowPower(self) -> BOOL;
 
