@@ -19,6 +19,7 @@ fn main() {
     };
 
     println!("Device: {}", device.get_name());
+    println!("Supports 24 bit stencil, 8 bit depth: {}", device.is_depth24_stencil8_pixel_format_supported());
     println!("Is low power: {}", device.is_low_power());
     println!("Is headless: {}", device.is_headless());
 }
