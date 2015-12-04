@@ -105,6 +105,13 @@ pub unsafe fn _device_get_raw(device: &Device) -> id {
 // TODO(George): Should this have a lifetime associated with it?
 pub struct DeviceRef(id);
 
+impl DeviceRef {
+    // TODO(George): Is this correct?
+    pub fn is_reference_to(&self, device: &Device) -> bool {
+        self.0 == device.0
+    }
+}
+
 impl ReadOnlyDevice for DeviceRef {
     fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
         unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
