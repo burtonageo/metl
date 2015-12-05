@@ -7,6 +7,7 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::marker::PhantomData;
+use std::sync::Arc;
 use {Size};
 
 pub trait ReadOnlyDevice {
@@ -110,11 +111,11 @@ pub unsafe fn _device_get_raw(device: &Device) -> id {
     device.0
 }
 
-pub struct DeviceRef<'a>(id, PhantomData<&'a id>);
+pub struct DeviceRef<'a>(Arc<id>, PhantomData<&'a id>);
 
 impl<'a> DeviceRef<'a> {
     pub fn is_reference_to<'d>(&'a self, device: &'d Device) -> bool {
-        self.0 == device.0
+        *self.0 == device.0
     }
 }
 
@@ -148,7 +149,7 @@ impl<'a> ReadOnlyDevice for DeviceRef<'a> {
 /// Not exported publicly from this crate.
 #[doc(hidden)]
 pub unsafe fn _make_device_ref<'a>(device: id) -> DeviceRef<'a> {
-    DeviceRef(device, PhantomData)
+    DeviceRef(Arc::new(device), PhantomData)
 }
 
 #[derive(Clone, Debug)]
