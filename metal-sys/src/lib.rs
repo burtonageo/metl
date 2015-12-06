@@ -15,7 +15,7 @@ mod functions;
 mod protocols;
 mod types;
 
-pub use constants::{MTLCompareFunction, MTLFeatureSet, MTLPipelineOption, MTLPixelFormat};
+pub use constants::{MTLCompareFunction, MTLFeatureSet, MTLPipelineOption, MTLPixelFormat, MTLCommandBufferStatus};
 
 pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLOriginMake,
                     MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
