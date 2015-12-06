@@ -1,16 +1,22 @@
-use cocoa::base::{id, nil};
+#![allow(unused_variables)]
+
+use cocoa::base::{id, nil, YES};
 use cocoa::foundation::NSString;
 use command_queue::_get_raw_command_queue;
 use device::_make_device_ref;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
+use std::time::Duration;
 use sys::{MTLCommandBuffer, MTLCommandQueue, MTLCommandBufferStatus};
 use {CommandQueue, DeviceRef};
 
 pub type CommandBufferStatus = MTLCommandBufferStatus;
 
 pub struct CommandBuffer(id);
+
+pub struct Drawable;
+pub struct CommandQueueRef;
 
 impl CommandBuffer {
     pub fn new(command_queue: &mut CommandQueue) -> Self {
@@ -27,17 +33,58 @@ impl CommandBuffer {
         CommandBuffer(cmd_buf_unretained)
     }
 
-    pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
-        unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label.as_ref())) }
+    pub fn enqueue(&mut self) {
+        unsafe { self.0.enqueue() }
     }
-    
-    pub fn get_label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
+
+    pub fn commit(&mut self) {
+        unsafe { self.0.commit() }
     }
-    
+
+    pub fn present_drawable(&mut self, drawable: Drawable) {
+        unimplemented!();
+        //unsafe { self.0.presentDrawable() }
+    }
+
+    pub fn present_drawable_at_time(&mut self, drawable: Drawable, time: Duration) {
+        unimplemented!();
+    }
+
+    pub fn wait_until_scheduled(&mut self) {
+        unsafe { self.0.waitUntilScheduled() }
+    }
+
+    pub fn wait_until_completed(&mut self) {
+        unsafe { self.0.waitUntilCompleted() }
+    }
+
+    pub fn get_status(&self) -> CommandBufferStatus {
+        unsafe { self.0.status() }
+    }
+
+    pub fn get_error(&self) -> id {
+        unsafe { self.0.error() }
+    }
+
+    pub fn has_retained_references(&self) -> bool {
+        unsafe { self.0.retainedReferences() == YES }
+    }
+
     pub fn get_device<'a>(&'a self) -> DeviceRef<'a> {
         let device = unsafe { MTLCommandBuffer::device(self.0) };
         debug_assert!(device != nil);
         unsafe { _make_device_ref(device) }
+    }
+
+    pub fn get_command_queue(&self) -> CommandQueueRef {
+        unimplemented!();
+    }
+
+    pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
+        unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label.as_ref())) }
+    }
+
+    pub fn get_label(&self) -> Cow<str> {
+        unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
     }
 }
