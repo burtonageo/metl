@@ -148,7 +148,7 @@ pub enum MTLCommandBufferStatus {
     ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusNotEnqueued = 0,
-    
+
     /// The command buffer is enqueued.
     ///
     /// Available in iOS 8.0 and later.
@@ -164,14 +164,14 @@ pub enum MTLCommandBufferStatus {
     ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusScheduled = 3,
-    
+
     /// The command buffer completed execution successfully.
-    /// 
+    ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusCompleted = 4,
 
     /// Execution of the command buffer was aborted due to an error during execution. Check the errorproperty for more information.
-    /// 
+    ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusError = 5
 }

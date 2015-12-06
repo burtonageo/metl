@@ -45,7 +45,7 @@ impl MTLCommandBuffer for id {
 	unsafe fn parallelRenderCommandEncoderWithDescriptor(self, renderPassDescriptor: id) -> id {
 		msg_send![self, parallelRenderCommandEncoderWithDescriptor:renderPassDescriptor]
 	}
-	
+
 	unsafe fn enqueue(self) {
 		msg_send![self, enqueue]
 	}
@@ -77,7 +77,7 @@ impl MTLCommandBuffer for id {
 	unsafe fn waitUntilCompleted(self) {
 		msg_send![self, waitUntilCompleted]
 	}
-	
+
 	unsafe fn status(self) -> MTLCommandBufferStatus {
 		msg_send![self, status]
 	}
@@ -85,11 +85,11 @@ impl MTLCommandBuffer for id {
 	unsafe fn error(self) -> id {
 		msg_send![self, error]
 	}
-	
+
 	unsafe fn retainedReferences(self) -> BOOL {
 		msg_send![self, retainedReferences]
 	}
-	
+
 	unsafe fn device(self) -> id {
 		msg_send![self, device]
 	}
