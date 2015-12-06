@@ -20,3 +20,7 @@ impl Drawable {
 		unsafe { self.0.presentAtTime(time) }
 	}
 }
+
+pub unsafe fn _drawable_get_id(drawable: &Drawable) -> id {
+	drawable.0
+}

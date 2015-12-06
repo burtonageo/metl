@@ -1,13 +1,13 @@
-#![allow(unused_variables)]
-
 use cocoa::base::{id, nil, YES};
 use cocoa::foundation::NSString;
 use command_queue::_get_raw_command_queue;
 use device::_make_device_ref;
+use drawable::_drawable_get_id;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
-use std::time::Duration;
+#[cfg(feature = "time2")]
+use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandQueue, MTLCommandBufferStatus};
 use {CommandQueue, DeviceRef, Drawable};
 
@@ -39,12 +39,16 @@ impl CommandBuffer {
     }
 
     pub fn present_drawable(&mut self, drawable: Drawable) {
-        unimplemented!();
-        //unsafe { self.0.presentDrawable() }
+        unsafe { self.0.presentDrawable(_drawable_get_id(&drawable)) }
     }
 
-    pub fn present_drawable_at_time(&mut self, drawable: Drawable, time: Duration) {
-        unimplemented!();
+    #[cfg(feature = "time2")]
+    pub fn present_drawable_at_time(&mut self, drawable: &mut Drawable, time: Instant) {
+        unsafe { self.0.presentDrawable(_drawable_get_id(&drawable), time.elapsed().as_seconds()) }
+    }
+
+    pub fn present_drawable_at_time_secs(&mut self, drawable: &mut Drawable, time: f64) {
+        unsafe { self.0.presentDrawable_atTime(_drawable_get_id(&drawable), time) }
     }
 
     pub fn wait_until_scheduled(&mut self) {
