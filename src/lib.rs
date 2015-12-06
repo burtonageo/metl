@@ -6,6 +6,7 @@ extern crate objc;
 mod command_buffer;
 mod command_queue;
 mod device;
+mod drawable;
 mod value_types;
 
 pub mod sys {
@@ -15,4 +16,5 @@ pub mod sys {
 pub use command_buffer::CommandBuffer;
 pub use command_queue::{CommandQueue, CommandQueueError};
 pub use device::{Device, DeviceError, DeviceRef, ReadOnlyDevice};
+pub use drawable::Drawable;
 pub use value_types::{ClearColor, Origin, Region, ScissorRect, Size, Viewport};

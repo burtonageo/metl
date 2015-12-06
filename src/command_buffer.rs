@@ -9,13 +9,10 @@ use std::convert::AsRef;
 use std::ffi::CStr;
 use std::time::Duration;
 use sys::{MTLCommandBuffer, MTLCommandQueue, MTLCommandBufferStatus};
-use {CommandQueue, DeviceRef};
-
-pub type CommandBufferStatus = MTLCommandBufferStatus;
+use {CommandQueue, DeviceRef, Drawable};
 
 pub struct CommandBuffer(id);
 
-pub struct Drawable;
 pub struct CommandQueueRef;
 
 impl CommandBuffer {
@@ -59,7 +56,7 @@ impl CommandBuffer {
     }
 
     pub fn get_status(&self) -> CommandBufferStatus {
-        unsafe { self.0.status() }
+        unsafe { self.0.status().into() }
     }
 
     pub fn get_error(&self) -> id {
@@ -88,3 +85,52 @@ impl CommandBuffer {
         unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
     }
 }
+
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+pub enum CommandBufferStatus {
+    CommandBufferStatusNotEnqueued,
+    CommandBufferStatusEnqueued,
+    CommandBufferStatusCommitted,
+    CommandBufferStatusScheduled,
+    CommandBufferStatusCompleted,
+    CommandBufferStatusError
+}
+
+impl From<MTLCommandBufferStatus> for CommandBufferStatus {
+    fn from(mtl_status: MTLCommandBufferStatus) -> Self {
+        match mtl_status {
+            MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued =>
+                CommandBufferStatus::CommandBufferStatusNotEnqueued,
+            MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued =>
+                CommandBufferStatus::CommandBufferStatusEnqueued,
+            MTLCommandBufferStatus::MTLCommandBufferStatusCommitted =>
+                CommandBufferStatus::CommandBufferStatusCommitted,
+            MTLCommandBufferStatus::MTLCommandBufferStatusScheduled =>
+                CommandBufferStatus::CommandBufferStatusScheduled,
+            MTLCommandBufferStatus::MTLCommandBufferStatusCompleted =>
+                CommandBufferStatus::CommandBufferStatusCompleted,
+            MTLCommandBufferStatus::MTLCommandBufferStatusError =>
+                CommandBufferStatus::CommandBufferStatusError,
+        }
+    }
+}
+
+impl Into<MTLCommandBufferStatus> for CommandBufferStatus {
+    fn into(self) -> MTLCommandBufferStatus {
+        match self {
+            CommandBufferStatus::CommandBufferStatusNotEnqueued =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued,
+            CommandBufferStatus::CommandBufferStatusEnqueued =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued,
+            CommandBufferStatus::CommandBufferStatusCommitted =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusCommitted,
+            CommandBufferStatus::CommandBufferStatusScheduled =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusScheduled,
+            CommandBufferStatus::CommandBufferStatusCompleted =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusCompleted,
+            CommandBufferStatus::CommandBufferStatusError =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusError
+        }
+    }
+}
+
