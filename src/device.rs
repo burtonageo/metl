@@ -1,6 +1,7 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSUInteger, NSString};
-use objc::runtime::{BOOL, NO, YES};
+use internal::conforms_to_protocol;
+use objc::runtime::{YES};
 use sys::{MTLCreateSystemDefaultDevice, MTLCopyAllDevices, MTLDevice};
 use std::borrow::Cow;
 use std::error::Error;
@@ -57,20 +58,9 @@ impl Device {
     /// conforms to the `MTLDevice` protocol, then a `Device` will be created,
     /// otherwise returns a `DeviceError`.
     pub fn from_raw(device_ptr: id) -> Result<Self, DeviceError> {
-        #[link(name = "Foundation", kind = "framework")]
-        extern {
-            fn NSProtocolFromString(namestr: id) -> id;
-        }
-
-        let conforms_to_protocol: BOOL = unsafe {
-            let mtl_device_protocol_str = NSString::alloc(nil).init_str("MTLDevice");
-            let mtl_device_protocol = NSProtocolFromString(mtl_device_protocol_str);
-            msg_send![device_ptr, conformsToProtocol:mtl_device_protocol]
-        };
-
         if device_ptr == nil {
             Err(DeviceError::ConstructedFromNil)
-        } else if conforms_to_protocol == NO {
+        } else if unsafe { conforms_to_protocol(device_ptr, "MTLDevice") }  {
             Err(DeviceError::ConstructedFromWrongPointerType)
         } else {
             Ok(Device(device_ptr))

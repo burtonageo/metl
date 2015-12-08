@@ -7,6 +7,7 @@ mod command_buffer;
 mod command_queue;
 mod device;
 mod drawable;
+mod internal;
 mod value_types;
 
 pub mod sys {
