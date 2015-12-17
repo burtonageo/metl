@@ -233,8 +233,8 @@ pub struct Viewport {
 impl Viewport {
     pub fn new(ox: f64, oy: f64, w: f64, h: f64, znear: f64, zfar: f64) -> Self {
         Viewport {
-            x_origin: ox,
-            y_origin: oy,
+            origin_x: ox,
+            origin_y: oy,
             width: w,
             height: h,
             znear: znear,
@@ -257,8 +257,8 @@ impl From<MTLViewport> for Viewport {
 impl Into<MTLViewport> for Viewport {
     fn into(self) -> MTLViewport {
         MTLViewport {
-            originX: self.x_origin,
-            originY: self.y_origin,
+            originX: self.origin_x,
+            originY: self.origin_y,
             width: self.width,
             height: self.height,
             znear: self.znear,
