@@ -2,8 +2,9 @@
 
 use cocoa::foundation::NSUInteger;
 use std::convert::{From, Into};
-use sys::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments, MTLDrawIndexedPrimitivesIndirectArguments,
-          MTLDrawPrimitivesIndirectArguments, MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};
+use sys::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
+          MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
+          MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};
 use sys::{MTLClearColorMake, MTLOriginMake, MTLSizeMake};
 
 #[derive(Clone, Copy, Default, Debug, PartialEq)]
@@ -16,12 +17,7 @@ pub struct ClearColor {
 
 impl ClearColor {
     pub fn new(red: f64, green: f64, blue: f64, alpha: f64) -> Self {
-        ClearColor {
-            red: red,
-            green: green,
-            blue: blue,
-            alpha: alpha
-        }
+        ClearColor { red: red, green: green, blue: blue, alpha: alpha }
     }
 }
 
@@ -39,7 +35,10 @@ impl From<(f64, f64, f64, f64)> for ClearColor {
 
 impl From<MTLClearColor> for ClearColor {
     fn from(mtl_color: MTLClearColor) -> Self {
-        ClearColor::new(mtl_color.red, mtl_color.green, mtl_color.blue, mtl_color.alpha)
+        ClearColor::new(mtl_color.red,
+                        mtl_color.green,
+                        mtl_color.blue,
+                        mtl_color.alpha)
     }
 }
 
@@ -58,11 +57,7 @@ pub struct Origin {
 
 impl Origin {
     pub fn new(x: usize, y: usize, z: usize) -> Self {
-        Origin {
-            x: x,
-            y: y,
-            z: z
-        }
+        Origin { x: x, y: y, z: z }
     }
 }
 
@@ -80,13 +75,17 @@ impl From<(usize, usize, usize)> for Origin {
 
 impl From<MTLOrigin> for Origin {
     fn from(mtl_size: MTLOrigin) -> Self {
-        Origin::new(mtl_size.x as usize, mtl_size.y as usize, mtl_size.z as usize)
+        Origin::new(mtl_size.x as usize,
+                    mtl_size.y as usize,
+                    mtl_size.z as usize)
     }
 }
 
 impl Into<MTLOrigin> for Origin {
     fn into(self) -> MTLOrigin {
-        MTLOriginMake(self.x as NSUInteger, self.y as NSUInteger, self.z as NSUInteger)
+        MTLOriginMake(self.x as NSUInteger,
+                      self.y as NSUInteger,
+                      self.z as NSUInteger)
     }
 }
 
@@ -98,27 +97,24 @@ pub struct Region {
 
 impl Region {
     pub fn from_parts(size: Size, origin: Origin) -> Self {
-        Region {
-            size: size,
-            origin: origin
-        }
+        Region { size: size, origin: origin }
     }
 
     pub fn new_1d(x: usize, width: usize) -> Self {
-        let origin = Origin {x: x, y: 0, z: 0};
-        let size = Size {width: width, height: 1, depth: 1};
+        let origin = Origin { x: x, y: 0, z: 0 };
+        let size = Size { width: width, height: 1, depth: 1 };
         Region::from_parts(size, origin)
     }
 
     pub fn new_2d(x: usize, y: usize, width: usize, height: usize) -> Self {
-        let origin = Origin {x: x, y: y, z: 0};
-        let size = Size {width: width, height: height, depth: 1};
+        let origin = Origin { x: x, y: y, z: 0 };
+        let size = Size { width: width, height: height, depth: 1 };
         Region::from_parts(size, origin)
     }
 
     pub fn new_3d(x: usize, y: usize, z: usize, width: usize, height: usize, depth: usize) -> Self {
-        let origin = Origin {x: x, y: y, z: z};
-        let size = Size {width: width, height: height, depth: depth};
+        let origin = Origin { x: x, y: y, z: z };
+        let size = Size { width: width, height: height, depth: depth };
         Region::from_parts(size, origin)
     }
 }
@@ -131,10 +127,7 @@ impl From<MTLRegion> for Region {
 
 impl Into<MTLRegion> for Region {
     fn into(self) -> MTLRegion {
-        MTLRegion {
-            size: self.size.into(),
-            origin: self.origin.into()
-        }
+        MTLRegion { size: self.size.into(), origin: self.origin.into() }
     }
 }
 
@@ -177,11 +170,7 @@ pub struct Size {
 
 impl Size {
     pub fn new(width: usize, height: usize, depth: usize) -> Self {
-        Size {
-            width: width,
-            height: height,
-            depth: depth
-        }
+        Size { width: width, height: height, depth: depth }
     }
 }
 
@@ -199,13 +188,17 @@ impl From<(usize, usize, usize)> for Size {
 
 impl From<MTLSize> for Size {
     fn from(mtl_size: MTLSize) -> Self {
-        Size::new(mtl_size.width as usize, mtl_size.height as usize, mtl_size.depth as usize)
+        Size::new(mtl_size.width as usize,
+                  mtl_size.height as usize,
+                  mtl_size.depth as usize)
     }
 }
 
 impl Into<MTLSize> for Size {
     fn into(self) -> MTLSize {
-        MTLSizeMake(self.width as NSUInteger, self.height as NSUInteger, self.depth as NSUInteger)
+        MTLSizeMake(self.width as NSUInteger,
+                    self.height as NSUInteger,
+                    self.depth as NSUInteger)
     }
 }
 
@@ -213,19 +206,19 @@ impl Into<MTLSize> for Size {
 pub struct Viewport {
     /// The x coordinate of the upper-left corner of the viewport.
     pub origin_x: f64,
-    
+
     /// The y coordinate of the upper-left corner of the viewport.
     pub origin_y: f64,
-    
+
     /// The width of the viewport, in pixels.
     pub width: f64,
-    
+
     /// The height of the viewport, in pixels.
     pub height: f64,
-    
+
     /// The z coordinate of the near clipping plane of the viewport.
     pub znear: f64,
-    
+
     /// The z coordinate of the far clipping plane of the viewport.
     pub zfar: f64
 }

@@ -1,4 +1,4 @@
-use cocoa::base::{id, nil, YES};
+use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
 use command_queue::_get_raw_command_queue;
 use device::_make_device_ref;
@@ -8,7 +8,7 @@ use std::convert::AsRef;
 use std::ffi::CStr;
 #[cfg(feature = "time2")]
 use std::time::Instant;
-use sys::{MTLCommandBuffer, MTLCommandQueue, MTLCommandBufferStatus};
+use sys::{MTLCommandBuffer, MTLCommandBufferStatus, MTLCommandQueue};
 use {CommandQueue, DeviceRef, Drawable};
 
 pub struct CommandBuffer(id);
@@ -133,8 +133,7 @@ impl Into<MTLCommandBufferStatus> for CommandBufferStatus {
             CommandBufferStatus::CommandBufferStatusCompleted =>
                 MTLCommandBufferStatus::MTLCommandBufferStatusCompleted,
             CommandBufferStatus::CommandBufferStatusError =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusError
+                MTLCommandBufferStatus::MTLCommandBufferStatusError,
         }
     }
 }
-

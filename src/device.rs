@@ -1,15 +1,15 @@
 use cocoa::base::{id, nil};
-use cocoa::foundation::{NSUInteger, NSString};
+use cocoa::foundation::{NSString, NSUInteger};
 use internal::conforms_to_protocol;
-use objc::runtime::{YES};
-use sys::{MTLCreateSystemDefaultDevice, MTLCopyAllDevices, MTLDevice};
+use objc::runtime::YES;
+use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::marker::PhantomData;
 use std::sync::Arc;
-use {Size};
+use Size;
 
 pub trait ReadOnlyDevice {
     fn is_depth24_stencil8_pixel_format_supported(&self) -> bool;
@@ -25,11 +25,7 @@ pub struct Device(id);
 impl Device {
     pub fn system_default_device() -> Result<Self, DeviceError> {
         let device = unsafe { MTLCreateSystemDefaultDevice() };
-        if device != nil {
-            Ok(Device(device))
-        } else {
-            Err(DeviceError::ConstructionFailed)
-        }
+        if device != nil { Ok(Device(device)) } else { Err(DeviceError::ConstructionFailed) }
     }
 
     #[allow(unused_mut, unused_variables)]
@@ -60,7 +56,7 @@ impl Device {
     pub fn from_raw(device_ptr: id) -> Result<Self, DeviceError> {
         if device_ptr == nil {
             Err(DeviceError::ConstructedFromNil)
-        } else if unsafe { conforms_to_protocol(device_ptr, "MTLDevice") }  {
+        } else if unsafe { conforms_to_protocol(device_ptr, "MTLDevice") } {
             Err(DeviceError::ConstructedFromWrongPointerType)
         } else {
             Ok(Device(device_ptr))
@@ -155,8 +151,9 @@ impl Display for DeviceError {
         let descr = match *self {
             DeviceError::ConstructionFailed => "DeviceError::ConstructionFailed",
             DeviceError::ConstructedFromNil => "DeviceError::ConstructedFromNil",
-            DeviceError::ConstructedFromWrongPointerType => "DeviceError::ConstructedFromWrongPointerType",
-            DeviceError::OtherRuntimeError => "DeviceError::OtherRuntimeError"
+            DeviceError::ConstructedFromWrongPointerType =>
+                "DeviceError::ConstructedFromWrongPointerType",
+            DeviceError::OtherRuntimeError => "DeviceError::OtherRuntimeError",
         };
         write!(f, "{}", descr)
     }
@@ -165,12 +162,12 @@ impl Display for DeviceError {
 impl Error for DeviceError {
     fn description(&self) -> &str {
         match *self {
-            DeviceError::ConstructionFailed =>
-                "Could not create a default device. Please ensure that you are using at least OSX 10.11 or iOS 8.0",
+            DeviceError::ConstructionFailed => "Could not create a default device. Please ensure \
+                                                that you are using at least OSX 10.11 or iOS 8.0",
             DeviceError::ConstructedFromNil => "Attempted to create a device from a nil pointer",
             DeviceError::ConstructedFromWrongPointerType =>
                 "Attempted to create a device from a pointer which does not implement MTLDevice",
-            DeviceError::OtherRuntimeError => "An error occured in the Objective-C runtime"
+            DeviceError::OtherRuntimeError => "An error occured in the Objective-C runtime",
         }
     }
 }

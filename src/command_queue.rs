@@ -21,10 +21,11 @@ impl CommandQueue {
         }
     }
 
-    pub fn with_max_command_buffer_count(device: &mut Device,
-                                         max_command_buffer_count: usize) -> Result<Self, CommandQueueError> {
+    pub fn with_max_command_buffer_count(device: &mut Device, max_command_buffer_count: usize)
+                                         -> Result<Self, CommandQueueError> {
         let command_queue = unsafe {
-            _device_get_raw(device).newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
+            _device_get_raw(device)
+                .newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
         };
         if command_queue != nil {
             Ok(CommandQueue(command_queue))
@@ -34,7 +35,9 @@ impl CommandQueue {
     }
 
     pub fn insert_debug_capture_boundary(&mut self) {
-        unsafe { self.0.insertDebugCaptureBoundary(); }
+        unsafe {
+            self.0.insertDebugCaptureBoundary();
+        }
     }
 
     pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
@@ -74,7 +77,7 @@ pub enum CommandQueueError {
 impl Display for CommandQueueError {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let descr = match *self {
-            CommandQueueError::CouldNotCreate => "DeviceError::CouldNotCreate"
+            CommandQueueError::CouldNotCreate => "DeviceError::CouldNotCreate",
         };
         write!(f, "{}", descr)
     }
@@ -83,7 +86,7 @@ impl Display for CommandQueueError {
 impl Error for CommandQueueError {
     fn description(&self) -> &str {
         match *self {
-            CommandQueueError::CouldNotCreate => "Could not create command queue."
+            CommandQueueError::CouldNotCreate => "Could not create command queue.",
         }
     }
 }
