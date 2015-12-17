@@ -20,13 +20,15 @@ pub use constants::{MTLCompareFunction, MTLFeatureSet, MTLPipelineOption, MTLPix
 pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLOriginMake,
                     MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
-pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLDevice, MTLDrawable};
+pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLDevice, MTLDrawable, MTLLibrary};
 
 pub use protocols::{MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipleineStateCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
                     MTLNewComputePipelineStateCompletionHandler,
-                    MTLNewComputePipelineStateWithReflectionCompletionHandler};
+                    MTLNewComputePipelineStateWithReflectionCompletionHandler,
+                    MTLLibraryError, MTLLibraryErrorDomain, MTLRenderPipelineError,
+                    MTLRenderPipelineErrorDomain, MTLLanguageVersion};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments, MTLDrawIndexedPrimitivesIndirectArguments,
                 MTLDrawPrimitivesIndirectArguments, MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};

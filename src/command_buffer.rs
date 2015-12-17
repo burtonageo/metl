@@ -1,21 +1,18 @@
-#![allow(unused_variables)]
-
 use cocoa::base::{id, nil, YES};
 use cocoa::foundation::NSString;
 use command_queue::_get_raw_command_queue;
 use device::_make_device_ref;
+use drawable::_drawable_get_id;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
-use std::time::Duration;
+#[cfg(feature = "time2")]
+use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandQueue, MTLCommandBufferStatus};
-use {CommandQueue, DeviceRef};
-
-pub type CommandBufferStatus = MTLCommandBufferStatus;
+use {CommandQueue, DeviceRef, Drawable};
 
 pub struct CommandBuffer(id);
 
-pub struct Drawable;
 pub struct CommandQueueRef;
 
 impl CommandBuffer {
@@ -42,12 +39,16 @@ impl CommandBuffer {
     }
 
     pub fn present_drawable(&mut self, drawable: Drawable) {
-        unimplemented!();
-        //unsafe { self.0.presentDrawable() }
+        unsafe { self.0.presentDrawable(_drawable_get_id(&drawable)) }
     }
 
-    pub fn present_drawable_at_time(&mut self, drawable: Drawable, time: Duration) {
-        unimplemented!();
+    #[cfg(feature = "time2")]
+    pub fn present_drawable_at_time(&mut self, drawable: &mut Drawable, time: Instant) {
+        unsafe { self.0.presentDrawable(_drawable_get_id(&drawable), time.elapsed().as_seconds()) }
+    }
+
+    pub fn present_drawable_at_time_secs(&mut self, drawable: &mut Drawable, time: f64) {
+        unsafe { self.0.presentDrawable_atTime(_drawable_get_id(&drawable), time) }
     }
 
     pub fn wait_until_scheduled(&mut self) {
@@ -59,7 +60,7 @@ impl CommandBuffer {
     }
 
     pub fn get_status(&self) -> CommandBufferStatus {
-        unsafe { self.0.status() }
+        unsafe { self.0.status().into() }
     }
 
     pub fn get_error(&self) -> id {
@@ -88,3 +89,52 @@ impl CommandBuffer {
         unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
     }
 }
+
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+pub enum CommandBufferStatus {
+    CommandBufferStatusNotEnqueued,
+    CommandBufferStatusEnqueued,
+    CommandBufferStatusCommitted,
+    CommandBufferStatusScheduled,
+    CommandBufferStatusCompleted,
+    CommandBufferStatusError
+}
+
+impl From<MTLCommandBufferStatus> for CommandBufferStatus {
+    fn from(mtl_status: MTLCommandBufferStatus) -> Self {
+        match mtl_status {
+            MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued =>
+                CommandBufferStatus::CommandBufferStatusNotEnqueued,
+            MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued =>
+                CommandBufferStatus::CommandBufferStatusEnqueued,
+            MTLCommandBufferStatus::MTLCommandBufferStatusCommitted =>
+                CommandBufferStatus::CommandBufferStatusCommitted,
+            MTLCommandBufferStatus::MTLCommandBufferStatusScheduled =>
+                CommandBufferStatus::CommandBufferStatusScheduled,
+            MTLCommandBufferStatus::MTLCommandBufferStatusCompleted =>
+                CommandBufferStatus::CommandBufferStatusCompleted,
+            MTLCommandBufferStatus::MTLCommandBufferStatusError =>
+                CommandBufferStatus::CommandBufferStatusError,
+        }
+    }
+}
+
+impl Into<MTLCommandBufferStatus> for CommandBufferStatus {
+    fn into(self) -> MTLCommandBufferStatus {
+        match self {
+            CommandBufferStatus::CommandBufferStatusNotEnqueued =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued,
+            CommandBufferStatus::CommandBufferStatusEnqueued =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued,
+            CommandBufferStatus::CommandBufferStatusCommitted =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusCommitted,
+            CommandBufferStatus::CommandBufferStatusScheduled =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusScheduled,
+            CommandBufferStatus::CommandBufferStatusCompleted =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusCompleted,
+            CommandBufferStatus::CommandBufferStatusError =>
+                MTLCommandBufferStatus::MTLCommandBufferStatusError
+        }
+    }
+}
+
