@@ -212,10 +212,10 @@ impl Into<MTLSize> for Size {
 #[derive(Clone, Copy, Default, Debug, PartialEq)]
 pub struct Viewport {
     /// The x coordinate of the upper-left corner of the viewport.
-    pub x_origin: f64,
+    pub origin_x: f64,
     
     /// The y coordinate of the upper-left corner of the viewport.
-    pub y_origin: f64,
+    pub origin_y: f64,
     
     /// The width of the viewport, in pixels.
     pub width: f64,
