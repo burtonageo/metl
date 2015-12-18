@@ -1,34 +1,19 @@
 use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
-use command_queue::_get_raw_command_queue;
 use drawable::_drawable_get_id;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
 #[cfg(feature = "time2")]
 use std::time::Instant;
-use sys::{MTLCommandBuffer, MTLCommandBufferStatus, MTLCommandQueue};
-use {CommandQueue, Drawable};
+use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
+use Drawable;
 
 pub struct CommandBuffer(id);
 
 pub struct CommandQueueRef;
 
 impl CommandBuffer {
-    pub fn new(command_queue: &mut CommandQueue) -> Self {
-        let cmd_queue = unsafe { _get_raw_command_queue(command_queue) };
-        let cmd_buf = unsafe { cmd_queue.commandBuffer() };
-        debug_assert!(cmd_buf != nil);
-        CommandBuffer(cmd_buf)
-    }
-
-    pub fn with_unretained_references(command_queue: &mut CommandQueue) -> Self {
-        let cmd_queue = unsafe { _get_raw_command_queue(command_queue) };
-        let cmd_buf_unretained = unsafe { cmd_queue.commandBufferWithUnretainedReferences() };
-        debug_assert!(cmd_buf_unretained != nil);
-        CommandBuffer(cmd_buf_unretained)
-    }
-
     pub fn enqueue(&mut self) {
         unsafe { self.0.enqueue() }
     }
@@ -81,6 +66,13 @@ impl CommandBuffer {
     pub fn get_label(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
     }
+}
+
+/// Internal utility function to create a CommandQueue without exposing internals.
+/// Not exported publicly from this crate.
+#[doc(hidden)]
+pub fn _make_command_buffer(command_buffer: id) -> CommandBuffer {
+    CommandBuffer(command_buffer)
 }
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]

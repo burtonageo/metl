@@ -1,37 +1,27 @@
 use cocoa::base::{id, nil};
-use cocoa::foundation::{NSString, NSUInteger};
-use device::_device_get_raw;
+use cocoa::foundation::NSString;
+use command_buffer::_make_command_buffer;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
-use sys::{MTLCommandQueue, MTLDevice};
-use Device;
+use sys::MTLCommandQueue;
+use CommandBuffer;
 
 pub struct CommandQueue(id);
 
 impl CommandQueue {
-    pub fn new(device: &mut Device) -> Result<Self, CommandQueueError> {
-        let command_queue = unsafe { _device_get_raw(device).newCommandQueue() };
-        if command_queue != nil {
-            Ok(CommandQueue(command_queue))
-        } else {
-            Err(CommandQueueError::CouldNotCreate)
-        }
+    pub fn command_buffer(&mut self) -> CommandBuffer {
+        let cmd_buf = unsafe { self.0.commandBuffer() };
+        debug_assert!(cmd_buf != nil);
+        _make_command_buffer(cmd_buf)
     }
 
-    pub fn with_max_command_buffer_count(device: &mut Device, max_command_buffer_count: usize)
-                                         -> Result<Self, CommandQueueError> {
-        let command_queue = unsafe {
-            _device_get_raw(device)
-                .newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
-        };
-        if command_queue != nil {
-            Ok(CommandQueue(command_queue))
-        } else {
-            Err(CommandQueueError::CouldNotCreate)
-        }
+    pub fn command_buffer_with_unretained_references(&mut self) -> CommandBuffer {
+        let cmd_buf = unsafe { self.0.commandBufferWithUnretainedReferences() };
+        debug_assert!(cmd_buf != nil);
+        _make_command_buffer(cmd_buf)
     }
 
     pub fn insert_debug_capture_boundary(&mut self) {
@@ -52,7 +42,7 @@ impl CommandQueue {
 /// Internal utility function to create a CommandQueue without exposing internals.
 /// Not exported publicly from this crate.
 #[doc(hidden)]
-pub unsafe fn _make_command_queue(command_queue: id) -> CommandQueue {
+pub fn _make_command_queue(command_queue: id) -> CommandQueue {
     CommandQueue(command_queue)
 }
 

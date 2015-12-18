@@ -1,5 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
+use command_queue::_make_command_queue;
 use internal::conforms_to_protocol;
 use objc::runtime::YES;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
@@ -7,7 +8,7 @@ use std::borrow::Cow;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
-use Size;
+use {CommandQueue, CommandQueueError, Size};
 
 pub struct Device(id);
 
@@ -49,6 +50,27 @@ impl Device {
             Err(DeviceError::ConstructedFromWrongPointerType)
         } else {
             Ok(Device(device_ptr))
+        }
+    }
+
+    pub fn new_command_queue(&mut self) -> Result<CommandQueue, CommandQueueError> {
+        let command_queue = unsafe { self.0.newCommandQueue() };
+        if command_queue != nil {
+            Ok(_make_command_queue(command_queue))
+        } else {
+            Err(CommandQueueError::CouldNotCreate)
+        }
+    }
+
+    pub fn new_command_queue_with_max_buffer_count(&mut self, max_command_buffer_count: usize)
+                                                   -> Result<CommandQueue, CommandQueueError> {
+        let command_queue = unsafe {
+            self.0.newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
+        };
+        if command_queue != nil {
+            Ok(_make_command_queue(command_queue))
+        } else {
+            Err(CommandQueueError::CouldNotCreate)
         }
     }
 
