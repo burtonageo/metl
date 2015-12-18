@@ -1,7 +1,6 @@
 use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
 use command_queue::_get_raw_command_queue;
-use device::_make_device_ref;
 use drawable::_drawable_get_id;
 use std::borrow::Cow;
 use std::convert::AsRef;
@@ -9,7 +8,7 @@ use std::ffi::CStr;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus, MTLCommandQueue};
-use {CommandQueue, DeviceRef, Drawable};
+use {CommandQueue, Drawable};
 
 pub struct CommandBuffer(id);
 
@@ -69,12 +68,6 @@ impl CommandBuffer {
 
     pub fn has_retained_references(&self) -> bool {
         unsafe { self.0.retainedReferences() == YES }
-    }
-
-    pub fn get_device<'a>(&'a self) -> DeviceRef<'a> {
-        let device = unsafe { MTLCommandBuffer::device(self.0) };
-        debug_assert!(device != nil);
-        unsafe { _make_device_ref(device) }
     }
 
     pub fn get_command_queue(&self) -> CommandQueueRef {

@@ -1,13 +1,13 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
-use device::{_device_get_raw, _make_device_ref};
+use device::_device_get_raw;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use sys::{MTLCommandQueue, MTLDevice};
-use {Device, DeviceRef};
+use Device;
 
 pub struct CommandQueue(id);
 
@@ -46,12 +46,6 @@ impl CommandQueue {
 
     pub fn get_label(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
-    }
-
-    pub fn get_device<'a>(&'a self) -> DeviceRef<'a> {
-        let device = unsafe { self.0.device() };
-        debug_assert!(device != nil);
-        unsafe { _make_device_ref(device) }
     }
 }
 

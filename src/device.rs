@@ -7,18 +7,7 @@ use std::borrow::Cow;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
-use std::marker::PhantomData;
-use std::sync::Arc;
 use Size;
-
-pub trait ReadOnlyDevice {
-    fn is_depth24_stencil8_pixel_format_supported(&self) -> bool;
-    fn is_headless(&self) -> bool;
-    fn is_low_power(&self) -> bool;
-    fn max_threads_per_group(&self) -> Size;
-    fn get_name(&self) -> Cow<str>;
-    fn supports_texture_sample_count(&self, sample_count: usize) -> bool;
-}
 
 pub struct Device(id);
 
@@ -62,30 +51,28 @@ impl Device {
             Ok(Device(device_ptr))
         }
     }
-}
 
-impl ReadOnlyDevice for Device {
-    fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
+    pub fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
         unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
     }
 
-    fn is_headless(&self) -> bool {
+    pub fn is_headless(&self) -> bool {
         unsafe { self.0.headless() == YES }
     }
 
-    fn is_low_power(&self) -> bool {
+    pub fn is_low_power(&self) -> bool {
         unsafe { self.0.lowPower() == YES }
     }
 
-    fn max_threads_per_group(&self) -> Size {
+    pub fn max_threads_per_group(&self) -> Size {
         unsafe { self.0.maxThreadsPerGroup().into() }
     }
 
-    fn get_name(&self) -> Cow<str> {
+    pub fn get_name(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
     }
 
-    fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
+    pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
         unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) == YES }
     }
 }
@@ -95,47 +82,6 @@ impl ReadOnlyDevice for Device {
 #[doc(hidden)]
 pub unsafe fn _device_get_raw(device: &Device) -> id {
     device.0
-}
-
-pub struct DeviceRef<'a>(Arc<id>, PhantomData<&'a id>);
-
-impl<'a> DeviceRef<'a> {
-    pub fn is_reference_to<'d>(&'a self, device: &'d Device) -> bool {
-        *self.0 == device.0
-    }
-}
-
-impl<'a> ReadOnlyDevice for DeviceRef<'a> {
-    fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
-        unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
-    }
-
-    fn is_headless(&self) -> bool {
-        unsafe { self.0.headless() == YES }
-    }
-
-    fn is_low_power(&self) -> bool {
-        unsafe { self.0.lowPower() == YES }
-    }
-
-    fn max_threads_per_group(&self) -> Size {
-        unsafe { self.0.maxThreadsPerGroup().into() }
-    }
-
-    fn get_name(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
-    }
-
-    fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
-        unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) == YES }
-    }
-}
-
-/// Internal utility function to create a DeviceRef.
-/// Not exported publicly from this crate.
-#[doc(hidden)]
-pub unsafe fn _make_device_ref<'a>(device: id) -> DeviceRef<'a> {
-    DeviceRef(Arc::new(device), PhantomData)
 }
 
 #[derive(Clone, Debug)]

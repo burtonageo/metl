@@ -1,7 +1,7 @@
 extern crate mtl;
 extern crate cocoa;
 
-use mtl::{CommandQueue, Device, DeviceError, ReadOnlyDevice};
+use mtl::{CommandQueue, Device, DeviceError};
 use cocoa::base::nil;
 use cocoa::foundation::NSString;
 
@@ -36,15 +36,6 @@ fn insert_debug_capture_boundary_on_command_queue() {
     command_queue.insert_debug_capture_boundary();
 
     // if nothing panics/fails here, everything is okay
-}
-
-#[test]
-fn device_ref_points_to_device() {
-    let mut device = Device::system_default_device().unwrap();
-    let command_queue = CommandQueue::new(&mut device).unwrap();
-    let device_ref = command_queue.get_device();
-
-    assert!(device_ref.is_reference_to(&device));
 }
 
 #[test]

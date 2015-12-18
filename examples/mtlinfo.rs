@@ -2,8 +2,6 @@
 
 extern crate mtl;
 
-use mtl::ReadOnlyDevice;
-
 #[cfg(not(any(target_os = "macos", target_os = "ios")))]
 fn main() {
     println!("Metal is not supported on this platform");
