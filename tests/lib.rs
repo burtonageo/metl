@@ -25,7 +25,8 @@ fn set_get_command_queue_label() {
     let dummy_command_queue_name = "foo";
     command_queue.set_label(dummy_command_queue_name);
 
-    assert_eq!(command_queue.get_label().into_owned(), dummy_command_queue_name.to_string());
+    assert_eq!(command_queue.get_label().into_owned(),
+               dummy_command_queue_name.to_string());
 }
 
 #[test]
