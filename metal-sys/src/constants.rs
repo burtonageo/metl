@@ -48,7 +48,8 @@ pub enum MTLFeatureSet {
     _non_unary_compile_dummy = -1
 }
 
-/// Controls which argument information is made available for reflection by the creation of the pipeline.
+/// Controls which argument information is made available for reflection by the creation of the
+/// pipeline.
 #[repr(C, usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLPipelineOption {
@@ -140,11 +141,13 @@ pub enum MTLPixelFormat {
     MTLPixelFormatDepth32Float_Stencil8 = 260
 }
 
-/// The current stage in the lifetime of the command buffer, as it proceeds from enqueued to committed to scheduled to completed.
+/// The current stage in the lifetime of the command buffer, as it proceeds from enqueued to
+/// committed to scheduled to completed.
 #[repr(C, usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLCommandBufferStatus {
-    /// The command buffer is not enqueued yet. This is the starting value of the status property before the enqueue method is called.
+    /// The command buffer is not enqueued yet. This is the starting value of the status property
+    /// before the enqueue method is called.
     ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusNotEnqueued = 0,
@@ -159,8 +162,9 @@ pub enum MTLCommandBufferStatus {
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusCommitted = 2,
 
-    /// The command buffer is scheduled. A command buffer is considered scheduled when any dependencies between work tasks submitted
-    /// by other command buffers or other APIs in the system are satisfied.
+    /// The command buffer is scheduled. A command buffer is considered scheduled when any
+    /// dependencies between work tasks submitted by other command buffers or other APIs
+    /// in the system are satisfied.
     ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusScheduled = 3,
@@ -170,9 +174,9 @@ pub enum MTLCommandBufferStatus {
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusCompleted = 4,
 
-    /// Execution of the command buffer was aborted due to an error during execution. Check the errorproperty for more information.
+    /// Execution of the command buffer was aborted due to an error during execution. Check
+    /// the errorproperty for more information.
     ///
     /// Available in iOS 8.0 and later.
     MTLCommandBufferStatusError = 5
 }
-

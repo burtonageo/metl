@@ -8,9 +8,11 @@ pub use self::mtl_command_buffer::MTLCommandBuffer;
 pub use self::mtl_command_queue::MTLCommandQueue;
 pub use self::mtl_device::MTLDevice;
 pub use self::mtl_device::{MTLNewComputePipelineStateCompletionHandler,
-                           MTLNewComputePipelineStateWithReflectionCompletionHandler, MTLNewLibraryCompletionHandler,
+                           MTLNewComputePipelineStateWithReflectionCompletionHandler,
+                           MTLNewLibraryCompletionHandler,
                            MTLNewRenderPipelineStateWithReflectionCompletionHandler,
                            MTLNewRenderPipleineStateCompletionHandler};
 pub use self::mtl_drawable::MTLDrawable;
 pub use self::mtl_library::MTLLibrary;
-pub use self::mtl_library::{MTLLibraryError, MTLLibraryErrorDomain, MTLRenderPipelineError, MTLRenderPipelineErrorDomain, MTLLanguageVersion};
+pub use self::mtl_library::{MTLLanguageVersion, MTLLibraryError, MTLLibraryErrorDomain,
+                            MTLRenderPipelineError, MTLRenderPipelineErrorDomain};

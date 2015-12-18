@@ -25,7 +25,9 @@ pub extern "C" fn MTLRegionMake1D(x: NSUInteger, width: NSUInteger) -> MTLRegion
 
 #[no_mangle]
 #[inline(always)]
-pub extern "C" fn MTLRegionMake2D(x: NSUInteger, y: NSUInteger, width: NSUInteger, height: NSUInteger) -> MTLRegion {
+pub extern "C" fn MTLRegionMake2D(x: NSUInteger, y: NSUInteger, width: NSUInteger,
+                                  height: NSUInteger)
+                                  -> MTLRegion {
     MTLRegion {
         origin: MTLOriginMake(x, y, 0),
         size: MTLSizeMake(width, height, 1)
@@ -34,12 +36,9 @@ pub extern "C" fn MTLRegionMake2D(x: NSUInteger, y: NSUInteger, width: NSUIntege
 
 #[no_mangle]
 #[inline(always)]
-pub extern "C" fn MTLRegionMake3D(x: NSUInteger,
-                                  y: NSUInteger,
-                                  z: NSUInteger,
-                                  width: NSUInteger,
-                                  height: NSUInteger,
-                                  depth: NSUInteger) -> MTLRegion {
+pub extern "C" fn MTLRegionMake3D(x: NSUInteger, y: NSUInteger, z: NSUInteger, width: NSUInteger,
+                                  height: NSUInteger, depth: NSUInteger)
+                                  -> MTLRegion {
     MTLRegion {
         origin: MTLOriginMake(x, y, z),
         size: MTLSizeMake(width, height, depth)
@@ -49,11 +48,7 @@ pub extern "C" fn MTLRegionMake3D(x: NSUInteger,
 #[no_mangle]
 #[inline(always)]
 pub extern "C" fn MTLSizeMake(width: NSUInteger, height: NSUInteger, depth: NSUInteger) -> MTLSize {
-    MTLSize {
-        width: width,
-        height: height,
-        depth: depth
-    }
+    MTLSize { width: width, height: height, depth: depth }
 }
 
 /// Returns a value used to clear a color attachment (in effect, when the loadAction property of
@@ -72,10 +67,5 @@ pub extern "C" fn MTLSizeMake(width: NSUInteger, height: NSUInteger, depth: NSUI
 #[no_mangle]
 #[inline(always)]
 pub extern "C" fn MTLClearColorMake(red: f64, green: f64, blue: f64, alpha: f64) -> MTLClearColor {
-    MTLClearColor {
-        red: red,
-        green: green,
-        blue: blue,
-        alpha: alpha
-    }
+    MTLClearColor { red: red, green: green, blue: blue, alpha: alpha }
 }

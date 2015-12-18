@@ -22,7 +22,7 @@ impl MTLCommandQueue for id {
     unsafe fn insertDebugCaptureBoundary(self) {
         msg_send![self, insertDebugCaptureBoundary]
     }
-    
+
     unsafe fn device(self) -> id {
         msg_send![self, device]
     }

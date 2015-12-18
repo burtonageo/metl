@@ -4,36 +4,37 @@ use cocoa::base::id;
 /// shader functions. A `MTLLibrary` object can contain Metal shading language code that is compiled
 /// during the app build process or at runtime from a text string containing Metal shading language
 /// source code. Your app does not define classes that implement this protocol.
-/// 
+///
 /// Use a `MTLDevice` method (not standard allocation and initialization techniques) to create a
 /// `MTLLibrary` object. To create a `MTLLibrary` object from a Metal library binary, call one of
 /// these MTLDevice methods:
-/// 
+///
 /// * `newDefaultLibrary`
-/// 
+///
 /// * `newLibraryWithFile:error:`
-/// 
+///
 /// * `newLibraryWithData:error:`
-/// 
+///
 /// To create a `MTLLibrary` object by compiling source code, call one of these `MTLDevice` methods:
-/// 
+///
 /// * `newLibraryWithSource:options:error:`
-/// 
+///
 /// * `newLibraryWithSource:options:completionHandler:`
-/// 
-/// The `newFunctionWithName:` method is used to fetch functions from the library, which makes that code
-/// available as a shader for either a `MTLRenderPipelineState` object for a render command encoder or
-/// for a `MTLComputePipelineState` for a compute command encoder.
+///
+/// The `newFunctionWithName:` method is used to fetch functions from the library, which makes that
+/// code available as a shader for either a `MTLRenderPipelineState` object for a render command
+/// encoder or for a `MTLComputePipelineState` for a compute command encoder.
 pub trait MTLLibrary {
     /// Returns a function object that represents an entry point in the library.
     ///
     /// # Parameters
-    /// 
+    ///
     /// * `functionName` - The name of an entry point.
     ///
     /// # Return Value
     ///
-    /// A function object for the named entry point, or nil if the named function is not found in the library.
+    /// A function object for the named entry point, or nil if the named function is not found in
+    /// the library.
     unsafe fn newFunctionWithName(self, functionName: id) -> id;
 
     /// A list of all entry points in the library. (read-only)
@@ -90,7 +91,7 @@ pub enum MTLLibraryError {
 
     /// Compilation fails
     MTLLibraryErrorCompileFailure = 3,
-    
+
     /// Compilation succeeds without error, but there are compiler warnings.
     MTLLibraryErrorCompileWarning = 4
 }

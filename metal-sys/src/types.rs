@@ -1,6 +1,8 @@
-//! The Metal framework defines data types that are used in multiple places throughout the framework.
+//! The Metal framework defines data types that are used in multiple places throughout the
+//! framework.
 //!
-//! Taken from https://developer.apple.com/library/ios/documentation/Metal/Reference/MetalDataTypes_Ref/index.html
+//! Taken from https://developer.apple.com/library/ios/documentation/Metal/Reference/
+//!            MetalDataTypes_Ref/index.html
 
 use cocoa::foundation::NSUInteger;
 use libc::uint32_t;
@@ -36,7 +38,8 @@ pub struct MTLOrigin {
     pub z: NSUInteger
 }
 
-/// A rectangular block of pixels in an image or texture, defined by its upper-left corner and its size.
+/// A rectangular block of pixels in an image or texture, defined by its upper-left corner and its
+/// size.
 #[repr(C)]
 #[derive(Clone, Copy, Hash, Eq, PartialEq)]
 pub struct MTLRegion {
@@ -64,7 +67,8 @@ pub struct MTLScissorRect {
     pub height: NSUInteger
 }
 
-/// A set of dimensions to declare the size of an object, such as an image, texture, threadgroup, or grid.
+/// A set of dimensions to declare the size of an object, such as an image, texture, threadgroup,
+/// or grid.
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct MTLSize {

@@ -15,20 +15,22 @@ mod functions;
 mod protocols;
 mod types;
 
-pub use constants::{MTLCompareFunction, MTLFeatureSet, MTLPipelineOption, MTLPixelFormat, MTLCommandBufferStatus};
+pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
+                    MTLPixelFormat};
 
-pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLOriginMake,
-                    MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
+pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice,
+                    MTLOriginMake, MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
 pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLDevice, MTLDrawable, MTLLibrary};
 
-pub use protocols::{MTLNewLibraryCompletionHandler,
-                    MTLNewRenderPipleineStateCompletionHandler,
-                    MTLNewRenderPipelineStateWithReflectionCompletionHandler,
+pub use protocols::{MTLLanguageVersion, MTLLibraryError, MTLLibraryErrorDomain,
                     MTLNewComputePipelineStateCompletionHandler,
                     MTLNewComputePipelineStateWithReflectionCompletionHandler,
-                    MTLLibraryError, MTLLibraryErrorDomain, MTLRenderPipelineError,
-                    MTLRenderPipelineErrorDomain, MTLLanguageVersion};
+                    MTLNewLibraryCompletionHandler,
+                    MTLNewRenderPipelineStateWithReflectionCompletionHandler,
+                    MTLNewRenderPipleineStateCompletionHandler, MTLRenderPipelineError,
+                    MTLRenderPipelineErrorDomain};
 
-pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments, MTLDrawIndexedPrimitivesIndirectArguments,
-                MTLDrawPrimitivesIndirectArguments, MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};
+pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
+                MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
+                MTLOrigin, MTLRegion, MTLScissorRect, MTLSize, MTLViewport};

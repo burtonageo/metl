@@ -24,7 +24,7 @@ pub trait MTLDrawable {
     /// # Discussion
     ///
     /// This method is usually invoked by the command buffer’s scheduled handler.
-    /// 
+    ///
     /// # Availability
     ///
     /// Available in iOS 8.0 and later.
@@ -34,7 +34,7 @@ pub trait MTLDrawable {
 impl MTLDrawable for id {
     unsafe fn present(self) {
         msg_send![self, present]
-    } 
+    }
 
     unsafe fn presentAtTime(self, presentationTime: CFTimeInterval) {
         msg_send![self, presentAtTime:presentationTime]
