@@ -17,12 +17,12 @@ impl Device {
         if device != nil { Ok(Device(device)) } else { Err(DeviceError::ConstructionFailed) }
     }
 
-    #[allow(unused_mut, unused_variables)]
+    #[allow(unused_mut, unused_variables, unreachable_code)]
     pub fn enumerate_all_system_devices() -> Vec<Result<Self, DeviceError>> {
         let all_devices = unsafe { MTLCopyAllDevices() };
         let mut devices_vec = vec![];
 
-
+        unimplemented!();
 
         devices_vec
     }
