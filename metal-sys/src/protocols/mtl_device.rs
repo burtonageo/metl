@@ -329,7 +329,7 @@ impl MTLDevice for id {
     }
 }
 
-pub type MTLNewLibraryCompletionHandler = Block<(id,), id>;
+pub type MTLNewLibraryCompletionHandler = Block<(id, id), ()>;
 pub type MTLNewRenderPipleineStateCompletionHandler = Block<(id, id), ()>;
 pub type MTLNewRenderPipelineStateWithReflectionCompletionHandler = Block<(id, id, id), ()>;
 pub type MTLNewComputePipelineStateCompletionHandler = Block<(id, id), ()>;
