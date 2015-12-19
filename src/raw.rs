@@ -9,6 +9,15 @@ pub trait FromRaw: Sized {
     fn from_raw(raw_pointer: id) -> Result<Self, FromRawError>;
 }
 
+/// A type which can be borrowed as an Objective-C pointer.
+pub trait AsRaw {
+    /// Get an immutable reference to the pointer.
+    fn as_raw(&self) -> &id;
+
+    /// Get a mutable reference to the pointer.
+    fn as_raw_mut(&mut self) -> &mut id;
+}
+
 /// A type which can be converted into an Objective-C pointer.
 pub trait IntoRaw {
     /// Get the underlying pointer to the object. Releases ownership.
@@ -44,7 +53,17 @@ macro_rules! impl_from_into_raw {
                 }
             }
         }
-        
+
+        impl $crate::AsRaw for $wrapper_type {
+            fn as_raw(&self) -> &id {
+                &self.0
+            }
+
+            fn as_raw_mut(&mut self) -> &mut id {
+                &mut self.0
+            }
+        }
+
         impl $crate::IntoRaw for $wrapper_type {
             fn into_raw(self) -> id {
                 self.0

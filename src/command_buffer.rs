@@ -1,13 +1,12 @@
 use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
-use drawable::_drawable_get_id;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
-use Drawable;
+use {AsRaw, Drawable};
 
 pub struct CommandBuffer(id);
 
@@ -20,17 +19,17 @@ impl CommandBuffer {
         unsafe { self.0.commit() }
     }
 
-    pub fn present_drawable(&mut self, drawable: Drawable) {
-        unsafe { self.0.presentDrawable(_drawable_get_id(&drawable)) }
+    pub fn present_drawable(&mut self, drawable: &mut Drawable) {
+        unsafe { self.0.presentDrawable(*drawable.as_raw_mut()) }
     }
 
     #[cfg(feature = "time2")]
     pub fn present_drawable_at_time(&mut self, drawable: &mut Drawable, time: Instant) {
-        unsafe { self.0.presentDrawable(_drawable_get_id(&drawable), time.elapsed().as_seconds()) }
+        unsafe { self.0.presentDrawable(*drawable.as_raw_mut(), time.elapsed().as_seconds()) }
     }
 
     pub fn present_drawable_at_time_secs(&mut self, drawable: &mut Drawable, time: f64) {
-        unsafe { self.0.presentDrawable_atTime(_drawable_get_id(&drawable), time) }
+        unsafe { self.0.presentDrawable_atTime(*drawable.as_raw_mut(), time) }
     }
 
     pub fn wait_until_scheduled(&mut self) {
