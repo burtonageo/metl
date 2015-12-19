@@ -6,7 +6,7 @@ use sys::MTLCompileOptions;
 pub struct CompileOptions {
     pub fast_math_enabled: bool,
     pub language_version: (), // Todo(George): Make this field the right type
-    pub preprocessor_macros: HashMap<String, PreprocessorMacro>
+    pub preprocessor_macros: HashMap<String, PreprocessorMacroValue>
 } 
 
 impl CompileOptions {
@@ -15,7 +15,7 @@ impl CompileOptions {
     }
 }
 
-pub enum PreprocessorMacro {
-    Integral(i64),
+pub enum PreprocessorMacroValue {
+    Numeric(f64),
     String(String)
 }
