@@ -1,13 +1,14 @@
 use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
 use drawable::_drawable_get_id;
+use internal::conforms_to_protocol;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
-use Drawable;
+use {Drawable, FromRaw, FromRawError, IntoRaw};
 
 pub struct CommandBuffer(id);
 
@@ -62,11 +63,22 @@ impl CommandBuffer {
     }
 }
 
-/// Internal utility function to create a CommandQueue without exposing internals.
-/// Not exported publicly from this crate.
-#[doc(hidden)]
-pub fn _make_command_buffer(command_buffer: id) -> CommandBuffer {
-    CommandBuffer(command_buffer)
+impl FromRaw for CommandBuffer {
+    fn from_raw(cmd_buffer_ptr: id) -> Result<Self, FromRawError> {
+        if cmd_buffer_ptr == nil {
+            Err(FromRawError::NilPointer)
+        } else if unsafe { conforms_to_protocol(cmd_buffer_ptr, "MTLCommandBuffer") } {
+            Err(FromRawError::WrongPointerType)
+        } else {
+            Ok(CommandBuffer(cmd_buffer_ptr))
+        }
+    }
+}
+
+impl IntoRaw for CommandBuffer {
+    fn into_raw(self) -> id {
+        self.0
+    }
 }
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]

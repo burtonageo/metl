@@ -1,27 +1,25 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
-use command_buffer::_make_command_buffer;
+use internal::conforms_to_protocol;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use sys::MTLCommandQueue;
-use CommandBuffer;
+use {CommandBuffer, FromRaw, FromRawError, IntoRaw};
 
 pub struct CommandQueue(id);
 
 impl CommandQueue {
     pub fn command_buffer(&mut self) -> CommandBuffer {
         let cmd_buf = unsafe { self.0.commandBuffer() };
-        debug_assert!(cmd_buf != nil);
-        _make_command_buffer(cmd_buf)
+        FromRaw::from_raw(cmd_buf).unwrap()
     }
 
     pub fn command_buffer_with_unretained_references(&mut self) -> CommandBuffer {
         let cmd_buf = unsafe { self.0.commandBufferWithUnretainedReferences() };
-        debug_assert!(cmd_buf != nil);
-        _make_command_buffer(cmd_buf)
+        FromRaw::from_raw(cmd_buf).unwrap()
     }
 
     pub fn insert_debug_capture_boundary(&mut self) {
@@ -39,18 +37,22 @@ impl CommandQueue {
     }
 }
 
-/// Internal utility function to create a CommandQueue without exposing internals.
-/// Not exported publicly from this crate.
-#[doc(hidden)]
-pub fn _make_command_queue(command_queue: id) -> CommandQueue {
-    CommandQueue(command_queue)
+impl FromRaw for CommandQueue {
+    fn from_raw(cmd_queue_ptr: id) -> Result<Self, FromRawError> {
+        if cmd_queue_ptr == nil {
+            Err(FromRawError::NilPointer)
+        } else if unsafe { conforms_to_protocol(cmd_queue_ptr, "MTLCommandQueue") } {
+            Err(FromRawError::WrongPointerType)
+        } else {
+            Ok(CommandQueue(cmd_queue_ptr))
+        }
+    }
 }
 
-/// Internal utility function to get a CommandQueue's id without consuming it.
-/// Not exported publicly from this crate.
-#[doc(hidden)]
-pub unsafe fn _get_raw_command_queue(command_queue: &CommandQueue) -> id {
-    command_queue.0
+impl IntoRaw for CommandQueue {
+    fn into_raw(self) -> id {
+        self.0
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -72,5 +74,11 @@ impl Error for CommandQueueError {
         match *self {
             CommandQueueError::CouldNotCreate => "Could not create command queue.",
         }
+    }
+}
+
+impl From<FromRawError> for CommandQueueError {
+    fn from(_: FromRawError) -> Self {
+        CommandQueueError::CouldNotCreate
     }
 }
