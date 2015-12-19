@@ -8,7 +8,8 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
-use {CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library, LibraryError, Size};
+use {CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
+     LibraryError, Size};
 
 pub struct Device(id);
 

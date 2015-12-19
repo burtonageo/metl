@@ -7,7 +7,7 @@ pub struct CompileOptions {
     pub fast_math_enabled: bool,
     pub language_version: (), // Todo(George): Make this field the right type
     pub preprocessor_macros: HashMap<String, PreprocessorMacroValue>
-} 
+}
 
 impl CompileOptions {
     pub fn into_mtl_compile_options(self) -> id {
