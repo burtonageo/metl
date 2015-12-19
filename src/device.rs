@@ -9,7 +9,7 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
-use {CommandQueue, CommandQueueError, FromRaw, FromRawError, IntoRaw, Library, Size};
+use {CommandQueue, CommandQueueError, FromRaw, FromRawError, IntoRaw, Library, LibraryError, Size};
 
 pub struct Device(id);
 
@@ -43,23 +43,23 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_default_library(&mut self) -> Result<Library, ()> {
+    pub fn new_default_library(&mut self) -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
     #[allow(unused_variables)]
-    pub fn new_library_with_file<P: AsRef<Path>>(&mut self, file_path: P) -> Result<Library, ()> {
+    pub fn new_library_with_file<P: AsRef<Path>>(&mut self, file_path: P) -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
     #[allow(unused_variables)]
     pub fn new_library_with_source_and_options<S: AsRef<String>>(&mut self, source: S, options: ())
-                                                                 -> Result<Library, ()> {
+                                                                 -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
     #[allow(unused_variables)]
-    pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, ()> {
+    pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, LibraryError> {
         unimplemented!();
     }
 

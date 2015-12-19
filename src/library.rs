@@ -4,6 +4,7 @@ use internal::conforms_to_protocol;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
+use std::io::Error as _IoError;
 use sys::MTLLibrary;
 use {FromRaw, FromRawError, Function, IntoRaw};
 
@@ -11,11 +12,11 @@ pub struct Library(id);
 
 impl Library {
     #[allow(unused_variables)]
-    pub fn new_function_with_name<S: AsRef<str>>(&mut self, function_name: S) -> Function {
+    pub fn new_function_with_name<S: AsRef<str>>(&mut self, function_name: S) -> Option<Function> {
         unsafe {
             let func_name_nsstr = NSString::alloc(nil).init_str(function_name.as_ref());
             let function = self.0.newFunctionWithName(func_name_nsstr);
-            FromRaw::from_raw(function).unwrap()
+            FromRaw::from_raw(function).ok()
         }
     }
 
@@ -48,4 +49,9 @@ impl IntoRaw for Library {
     fn into_raw(self) -> id {
         self.0
     }
+}
+
+pub enum LibraryError {
+    FromRaw(FromRawError),
+    IoError(_IoError),
 }
