@@ -23,5 +23,5 @@ pub use device::{Device, DeviceError};
 pub use drawable::Drawable;
 pub use function::Function;
 pub use library::{Library, LibraryError};
-pub use raw::{FromRaw, IntoRaw, FromRawError};
+pub use raw::{FromRaw, FromRawError, IntoRaw};
 pub use value_types::{ClearColor, Origin, Region, ScissorRect, Size, Viewport};

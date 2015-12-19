@@ -48,13 +48,15 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_library_with_file<P: AsRef<Path>>(&mut self, file_path: P) -> Result<Library, LibraryError> {
+    pub fn new_library_with_file<P: AsRef<Path>>(&mut self, file_path: P)
+                                                 -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
     #[allow(unused_variables)]
-    pub fn new_library_with_source_and_options<S: AsRef<String>>(&mut self, source: S, options: ())
-                                                                 -> Result<Library, LibraryError> {
+    pub fn new_library_with_source_and_options<S: AsRef<String>>(
+        &mut self, source: S, options: ())
+        -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
@@ -138,9 +140,11 @@ impl Display for DeviceError {
 impl Error for DeviceError {
     fn description(&self) -> &str {
         match *self {
-            DeviceError::ConstructionFailed => "Could not create a default device. Please ensure \
-                                                that you are using at least OSX 10.11 or iOS 8.0",
-            DeviceError::RawError(_) => "There was an error with the device pointer"
+            DeviceError::ConstructionFailed => {
+                "Could not create a default device. Please ensure that you are using at least OSX \
+                 10.11 or iOS 8.0"
+            }
+            DeviceError::RawError(_) => "There was an error with the device pointer",
         }
     }
 

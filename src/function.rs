@@ -21,4 +21,3 @@ impl IntoRaw for Function {
         self.0
     }
 }
-

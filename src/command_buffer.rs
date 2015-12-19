@@ -94,18 +94,24 @@ pub enum CommandBufferStatus {
 impl From<MTLCommandBufferStatus> for CommandBufferStatus {
     fn from(mtl_status: MTLCommandBufferStatus) -> Self {
         match mtl_status {
-            MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued =>
-                CommandBufferStatus::CommandBufferStatusNotEnqueued,
-            MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued =>
-                CommandBufferStatus::CommandBufferStatusEnqueued,
-            MTLCommandBufferStatus::MTLCommandBufferStatusCommitted =>
-                CommandBufferStatus::CommandBufferStatusCommitted,
-            MTLCommandBufferStatus::MTLCommandBufferStatusScheduled =>
-                CommandBufferStatus::CommandBufferStatusScheduled,
-            MTLCommandBufferStatus::MTLCommandBufferStatusCompleted =>
-                CommandBufferStatus::CommandBufferStatusCompleted,
-            MTLCommandBufferStatus::MTLCommandBufferStatusError =>
-                CommandBufferStatus::CommandBufferStatusError,
+            MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued => {
+                CommandBufferStatus::CommandBufferStatusNotEnqueued
+            }
+            MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued => {
+                CommandBufferStatus::CommandBufferStatusEnqueued
+            }
+            MTLCommandBufferStatus::MTLCommandBufferStatusCommitted => {
+                CommandBufferStatus::CommandBufferStatusCommitted
+            }
+            MTLCommandBufferStatus::MTLCommandBufferStatusScheduled => {
+                CommandBufferStatus::CommandBufferStatusScheduled
+            }
+            MTLCommandBufferStatus::MTLCommandBufferStatusCompleted => {
+                CommandBufferStatus::CommandBufferStatusCompleted
+            }
+            MTLCommandBufferStatus::MTLCommandBufferStatusError => {
+                CommandBufferStatus::CommandBufferStatusError
+            }
         }
     }
 }
@@ -113,18 +119,24 @@ impl From<MTLCommandBufferStatus> for CommandBufferStatus {
 impl Into<MTLCommandBufferStatus> for CommandBufferStatus {
     fn into(self) -> MTLCommandBufferStatus {
         match self {
-            CommandBufferStatus::CommandBufferStatusNotEnqueued =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued,
-            CommandBufferStatus::CommandBufferStatusEnqueued =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued,
-            CommandBufferStatus::CommandBufferStatusCommitted =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusCommitted,
-            CommandBufferStatus::CommandBufferStatusScheduled =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusScheduled,
-            CommandBufferStatus::CommandBufferStatusCompleted =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusCompleted,
-            CommandBufferStatus::CommandBufferStatusError =>
-                MTLCommandBufferStatus::MTLCommandBufferStatusError,
+            CommandBufferStatus::CommandBufferStatusNotEnqueued => {
+                MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued
+            }
+            CommandBufferStatus::CommandBufferStatusEnqueued => {
+                MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued
+            }
+            CommandBufferStatus::CommandBufferStatusCommitted => {
+                MTLCommandBufferStatus::MTLCommandBufferStatusCommitted
+            }
+            CommandBufferStatus::CommandBufferStatusScheduled => {
+                MTLCommandBufferStatus::MTLCommandBufferStatusScheduled
+            }
+            CommandBufferStatus::CommandBufferStatusCompleted => {
+                MTLCommandBufferStatus::MTLCommandBufferStatusCompleted
+            }
+            CommandBufferStatus::CommandBufferStatusError => {
+                MTLCommandBufferStatus::MTLCommandBufferStatusError
+            }
         }
     }
 }

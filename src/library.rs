@@ -27,7 +27,7 @@ impl Library {
     pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
         unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label.as_ref())) }
     }
-    
+
     pub fn get_label(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
     }
@@ -53,5 +53,5 @@ impl IntoRaw for Library {
 
 pub enum LibraryError {
     FromRaw(FromRawError),
-    IoError(_IoError),
+    IoError(_IoError)
 }

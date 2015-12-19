@@ -4,7 +4,7 @@ use objc::runtime::{BOOL, NO};
 
 pub unsafe fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
     #[link(name = "Foundation", kind = "framework")]
-    extern {
+    extern "C" {
         fn NSProtocolFromString(namestr: id) -> id;
     }
 
