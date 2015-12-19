@@ -53,8 +53,7 @@ impl Device {
         unimplemented!();
     }
 
-    #[allow(unused_variables)]
-    pub fn new_library_with_source_and_options<S: AsRef<String>>(
+    pub fn new_library_with_source_and_options<S: AsRef<str>>(
         &mut self, source: S, compile_options: &CompileOptions)
         -> Result<Library, LibraryError> {
         unsafe {
