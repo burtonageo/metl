@@ -3,7 +3,7 @@ use cocoa::foundation::NSUInteger;
 use {MTLClearColor, MTLOrigin, MTLRegion, MTLSize};
 
 #[link(name = "Metal", kind = "framework")]
-extern {
+extern "C" {
     pub fn MTLCopyAllDevices() -> id;
     pub fn MTLCreateSystemDefaultDevice() -> id;
 }

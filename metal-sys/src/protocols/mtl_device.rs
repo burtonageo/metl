@@ -122,9 +122,11 @@ pub trait MTLDevice {
     unsafe fn newBufferWithBytes_Length_Options(self, pointer: *mut c_void, length: NSUInteger,
                                                 options: id)
                                                 -> id;
-    unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(
-            self, pointer: *mut c_void, length: NSUInteger,
-            deallocator: Block<(*mut c_void, NSUInteger), ()>);
+    unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self, pointer: *mut c_void,
+                                                                  length: NSUInteger,
+                                                                  deallocator: Block<(*mut c_void,
+                                                                                      NSUInteger),
+                                                                                     ()>);
 
     unsafe fn newTextureWithDescriptor(self, descriptor: id) -> id;
 
@@ -237,9 +239,11 @@ impl MTLDevice for id {
         msg_send![self, newBufferWithBytes:pointer length:length options:options]
     }
 
-    unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(
-            self, pointer: *mut c_void, length: NSUInteger,
-            deallocator: Block<(*mut c_void, NSUInteger), ()>) {
+    unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self, pointer: *mut c_void,
+                                                                  length: NSUInteger,
+                                                                  deallocator: Block<(*mut c_void,
+                                                                                      NSUInteger),
+                                                                                     ()>) {
         msg_send![self, newBufferWithBytesNoCopy:pointer length:length deallocator:deallocator]
     }
 

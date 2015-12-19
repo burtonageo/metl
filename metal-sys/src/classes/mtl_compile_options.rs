@@ -32,4 +32,3 @@ pub trait MTLCompileOptions {
     unsafe fn preprocessorMacros(self) -> id;
     unsafe fn setPreprocessorMacros(self, id);
 }
-
