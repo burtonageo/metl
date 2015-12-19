@@ -1,5 +1,7 @@
-use cocoa::base::id;
+use cocoa::base::{id, class};
+use objc::runtime::BOOL;
 use MTLLanguageVersion;
+
 
 pub trait MTLCompileOptions {
     /// A Boolean value that indicates whether the compiler can perform optimizations for
@@ -10,8 +12,8 @@ pub trait MTLCompileOptions {
     /// # Discussion
     ///
     /// The default value is YES.
-    unsafe fn fastMathEnabled(self) -> bool;
-    unsafe fn setFastMathEnabled(self, bool);
+    unsafe fn fastMathEnabled(self) -> BOOL;
+    unsafe fn setFastMathEnabled(self, BOOL);
 
     /// The language version used to interpret the library source code.
     ///
@@ -31,4 +33,34 @@ pub trait MTLCompileOptions {
     /// The default value is nil.
     unsafe fn preprocessorMacros(self) -> id;
     unsafe fn setPreprocessorMacros(self, id);
+
+    unsafe fn new(_: Self) -> id {
+        msg_send![class("MTLCompileOptions"), new]
+    }
+}
+
+impl MTLCompileOptions for id {
+    unsafe fn fastMathEnabled(self) -> BOOL {
+        msg_send![self, fastMathEnabled]
+    }
+
+    unsafe fn setFastMathEnabled(self, isFastMathEnabled: BOOL) {
+        msg_send![self, setFastMathEnabled:isFastMathEnabled]
+    }
+
+    unsafe fn languageVersion(self) -> MTLLanguageVersion {
+        msg_send![self, languageVersion]
+    }
+
+    unsafe fn setLanguageVersion(self, languageVersion: MTLLanguageVersion) {
+        msg_send![self, setLanguageVersion:languageVersion]
+    }
+
+    unsafe fn preprocessorMacros(self) -> id {
+        msg_send![self, preprocessorMacros]
+    }
+
+    unsafe fn setPreprocessorMacros(self, preprocessorMacros: id) {
+        msg_send![self, setPreprocessorMacros:preprocessorMacros]
+    }
 }
