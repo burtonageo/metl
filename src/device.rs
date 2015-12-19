@@ -60,6 +60,7 @@ impl Device {
     }
 
     #[allow(unused_variables)]
+    // Todo(George): `data` parameter should be of the correct type
     pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, LibraryError> {
         unimplemented!();
     }
