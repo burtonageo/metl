@@ -18,7 +18,7 @@ fn main() {
         }
     };
 
-    println!("Device:\t\t\t\t\t\t{}", device.get_name());
+    println!("Device:\t\t\t\t\t\t{}", device.name());
     println!("Supports 24 bit stencil and 8 bit depth:\t{}",
              device.is_depth24_stencil8_pixel_format_supported());
     {

@@ -95,7 +95,7 @@ impl Device {
         unsafe { self.0.maxThreadsPerGroup().into() }
     }
 
-    pub fn get_name(&self) -> Cow<str> {
+    pub fn name(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
     }
 
