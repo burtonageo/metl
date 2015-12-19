@@ -55,9 +55,20 @@ impl Device {
 
     #[allow(unused_variables)]
     pub fn new_library_with_source_and_options<S: AsRef<String>>(
-        &mut self, source: S, options: CompileOptions)
+        &mut self, source: S, compile_options: &CompileOptions)
         -> Result<Library, LibraryError> {
-        unimplemented!();
+        unsafe {
+            let source = NSString::alloc(nil).init_str(source.as_ref());
+            let options = compile_options.mtl_compile_options();
+            let error = nil;
+            let library = self.0.newLibraryWithSource_options_error(source, options, error);
+            if error != nil {
+                // Todo(George): Should use the `error` variable to get more info
+                Err(LibraryError::SourceError)
+            } else {
+                Ok(try!(FromRaw::from_raw(library)))
+            }
+        }
     }
 
     #[allow(unused_variables)]

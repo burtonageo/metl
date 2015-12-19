@@ -1,7 +1,7 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use std::borrow::Cow;
-use std::convert::AsRef;
+use std::convert::{AsRef, From};
 use std::ffi::CStr;
 use std::io::Error as _IoError;
 use sys::MTLLibrary;
@@ -35,6 +35,13 @@ impl Library {
 impl_from_into_raw!(Library, "MTLLibrary");
 
 pub enum LibraryError {
+    SourceError,
     FromRaw(FromRawError),
     IoError(_IoError)
+}
+
+impl From<FromRawError> for LibraryError {
+    fn from(error: FromRawError) -> Self {
+        LibraryError::FromRaw(error)
+    }
 }

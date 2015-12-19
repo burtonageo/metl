@@ -13,7 +13,7 @@ pub struct CompileOptions {
 
 impl CompileOptions {
     #[allow(unreachable_code)]
-    pub fn into_mtl_compile_options(self) -> id {
+    pub fn mtl_compile_options(&self) -> id {
         unsafe {
             let ll_compile_opts = MTLCompileOptions::new(nil);
 
