@@ -77,6 +77,7 @@ fn device_from_nullptr() {
 #[test]
 fn test_device_create_library_with_valid_shader_code() {
     let mut device = Device::system_default_device().unwrap();
+    // Shader source taken from http://metalbyexample.com/up-and-running-2/
     let shader = r"
         using namespace metal;
 
