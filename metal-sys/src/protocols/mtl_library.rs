@@ -130,8 +130,5 @@ pub enum MTLLanguageVersion {
     MTLLanguageVersion1_0 = (1 << 16),
 
     /// Version 1.1
-    MTLLanguageVersion1_1 = (1 << 16) + 1,
-
-    #[doc(hidden)]
-    _non_unary_compile_dummy = -1
+    MTLLanguageVersion1_1 = (1 << 16) + 1
 }
