@@ -15,8 +15,16 @@ impl CommandBuffer {
         unsafe { self.0.enqueue() }
     }
 
-    pub fn commit(&mut self) {
-        unsafe { self.0.commit() }
+    pub fn commit(&mut self) -> Result<(), CommandBufferError> {
+        unsafe {
+            self.0.commit();
+            let error = self.0.error();
+            if error != nil {
+                Err(CommandBufferError)
+            } else {
+                Ok(())
+            }
+        }
     }
 
     pub fn present_drawable(&mut self, drawable: &mut Drawable) {
@@ -42,10 +50,6 @@ impl CommandBuffer {
 
     pub fn get_status(&self) -> CommandBufferStatus {
         unsafe { self.0.status().into() }
-    }
-
-    pub fn get_error(&self) -> id {
-        unsafe { self.0.error() }
     }
 
     pub fn has_retained_references(&self) -> bool {
@@ -122,3 +126,5 @@ impl Into<MTLCommandBufferStatus> for CommandBufferStatus {
         }
     }
 }
+
+pub struct CommandBufferError;
