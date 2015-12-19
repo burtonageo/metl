@@ -1,5 +1,6 @@
 enum_trailing_comma = false
 fn_args_density = "Compressed"
+fn_args_paren_newline = false
 fn_brace_style = "PreferSameLine"
 fn_return_indent = "WithArgs"
 reorder_imports = true
