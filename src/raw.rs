@@ -29,6 +29,30 @@ pub enum FromRawError {
     WrongPointerType
 }
 
+macro_rules! impl_from_into_raw {
+    ($wrapper_type:ident, $protocol:expr) => (
+        impl $crate::FromRaw for $wrapper_type {
+            fn from_raw(raw_pointer: id) -> Result<Self, $crate::FromRawError> {
+                use $crate::internal::conforms_to_protocol;
+                use cocoa::base::nil;
+                if raw_pointer == nil {
+                    Err($crate::FromRawError::NilPointer)
+                } else if unsafe { conforms_to_protocol(raw_pointer, $protocol) } {
+                    Err($crate::FromRawError::WrongPointerType)
+                } else {
+                    Ok($wrapper_type(raw_pointer))
+                }
+            }
+        }
+        
+        impl $crate::IntoRaw for $wrapper_type {
+            fn into_raw(self) -> id {
+                self.0
+            }
+        }
+    )
+}
+
 impl Display for FromRawError {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let descr = match *self {

@@ -1,14 +1,13 @@
 use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
 use drawable::_drawable_get_id;
-use internal::conforms_to_protocol;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
-use {Drawable, FromRaw, FromRawError, IntoRaw};
+use Drawable;
 
 pub struct CommandBuffer(id);
 
@@ -63,23 +62,7 @@ impl CommandBuffer {
     }
 }
 
-impl FromRaw for CommandBuffer {
-    fn from_raw(cmd_buffer_ptr: id) -> Result<Self, FromRawError> {
-        if cmd_buffer_ptr == nil {
-            Err(FromRawError::NilPointer)
-        } else if unsafe { conforms_to_protocol(cmd_buffer_ptr, "MTLCommandBuffer") } {
-            Err(FromRawError::WrongPointerType)
-        } else {
-            Ok(CommandBuffer(cmd_buffer_ptr))
-        }
-    }
-}
-
-impl IntoRaw for CommandBuffer {
-    fn into_raw(self) -> id {
-        self.0
-    }
-}
+impl_from_into_raw!(CommandBuffer, "MTLCommandBuffer");
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum CommandBufferStatus {

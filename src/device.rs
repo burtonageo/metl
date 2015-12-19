@@ -1,6 +1,5 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
-use internal::conforms_to_protocol;
 use objc::runtime::YES;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
@@ -9,7 +8,7 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
-use {CommandQueue, CommandQueueError, FromRaw, FromRawError, IntoRaw, Library, LibraryError, Size};
+use {CommandQueue, CommandQueueError, FromRaw, FromRawError, Library, LibraryError, Size};
 
 pub struct Device(id);
 
@@ -90,23 +89,7 @@ impl Device {
     }
 }
 
-impl FromRaw for Device {
-    fn from_raw(device_ptr: id) -> Result<Self, FromRawError> {
-        if device_ptr == nil {
-            Err(FromRawError::NilPointer)
-        } else if unsafe { conforms_to_protocol(device_ptr, "MTLDevice") } {
-            Err(FromRawError::WrongPointerType)
-        } else {
-            Ok(Device(device_ptr))
-        }
-    }
-}
-
-impl IntoRaw for Device {
-    fn into_raw(self) -> id {
-        self.0
-    }
-}
+impl_from_into_raw!(Device, "MTLDevice");
 
 /// Internal utility function to get a Device's id without consuming it.
 /// Not exported publicly from this crate.

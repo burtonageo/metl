@@ -3,6 +3,9 @@ extern crate metal_sys;
 #[macro_use]
 extern crate objc;
 
+#[macro_use]
+mod raw;
+
 mod command_buffer;
 mod command_queue;
 mod device;
@@ -10,7 +13,6 @@ mod drawable;
 mod function;
 mod internal;
 mod library;
-mod raw;
 mod value_types;
 
 pub mod sys {

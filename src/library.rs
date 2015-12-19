@@ -1,12 +1,11 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
-use internal::conforms_to_protocol;
 use std::borrow::Cow;
 use std::convert::AsRef;
 use std::ffi::CStr;
 use std::io::Error as _IoError;
 use sys::MTLLibrary;
-use {FromRaw, FromRawError, Function, IntoRaw};
+use {FromRaw, FromRawError, Function};
 
 pub struct Library(id);
 
@@ -33,23 +32,7 @@ impl Library {
     }
 }
 
-impl FromRaw for Library {
-    fn from_raw(library_ptr: id) -> Result<Self, FromRawError> {
-        if library_ptr == nil {
-            Err(FromRawError::NilPointer)
-        } else if unsafe { conforms_to_protocol(library_ptr, "MTLLibrary") } {
-            Err(FromRawError::WrongPointerType)
-        } else {
-            Ok(Library(library_ptr))
-        }
-    }
-}
-
-impl IntoRaw for Library {
-    fn into_raw(self) -> id {
-        self.0
-    }
-}
+impl_from_into_raw!(Library, "MTLLibrary");
 
 pub enum LibraryError {
     FromRaw(FromRawError),
