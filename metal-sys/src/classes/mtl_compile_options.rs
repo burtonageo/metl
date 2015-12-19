@@ -1,4 +1,4 @@
-use cocoa::base::{id, class};
+use cocoa::base::{class, id};
 use objc::runtime::BOOL;
 use MTLLanguageVersion;
 

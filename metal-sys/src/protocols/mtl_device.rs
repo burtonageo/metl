@@ -108,9 +108,9 @@ pub trait MTLDevice {
     unsafe fn newDefaultLibrary(self) -> id;
     unsafe fn newLibraryWithFile_error(self, filePath: id, error: id) -> id;
     unsafe fn newLibraryWithSource_options_completionHandler(
-        self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler);
-    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id);
-    unsafe fn newLibraryWithData_error(self, data: id, error: id);
+        self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) -> id;
+    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id) -> id;
+    unsafe fn newLibraryWithData_error(self, data: id, error: id) -> id;
 
     unsafe fn newCommandQueue(self) -> id;
 
@@ -205,16 +205,16 @@ impl MTLDevice for id {
     }
 
     unsafe fn newLibraryWithSource_options_completionHandler(
-            self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) {
+            self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) -> id {
         msg_send![self, newLibraryWithSource:source options:options
                            completionHandler:completionHandler]
     }
 
-    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id) {
+    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id) -> id {
         msg_send![self, newLibraryWithSource:source options:options error:error]
     }
 
-    unsafe fn newLibraryWithData_error(self, data: id, error: id) {
+    unsafe fn newLibraryWithData_error(self, data: id, error: id) -> id {
         msg_send![self, newLibraryWithData:data error:error]
     }
 
