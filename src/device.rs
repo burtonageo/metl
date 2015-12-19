@@ -4,11 +4,12 @@ use internal::conforms_to_protocol;
 use objc::runtime::YES;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
-use std::convert::From;
+use std::convert::{AsRef, From};
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
-use {CommandQueue, CommandQueueError, FromRaw, FromRawError, IntoRaw, Size};
+use std::path::Path;
+use {CommandQueue, CommandQueueError, FromRaw, FromRawError, IntoRaw, Library, Size};
 
 pub struct Device(id);
 
@@ -39,6 +40,27 @@ impl Device {
             self.0.newCommandQueueWithMaxCommandBufferCount(max_command_buffer_count as NSUInteger)
         };
         Ok(try!(FromRaw::from_raw(command_queue)))
+    }
+
+    #[allow(unused_variables)]
+    pub fn new_default_library(&mut self) -> Result<Library, ()> {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    pub fn new_library_with_file<P: AsRef<Path>>(&mut self, file_path: P) -> Result<Library, ()> {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    pub fn new_library_with_source_and_options<S: AsRef<String>>(&mut self, source: S, options: ())
+                                                                 -> Result<Library, ()> {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, ()> {
+        unimplemented!();
     }
 
     pub fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
