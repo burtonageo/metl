@@ -11,8 +11,6 @@ use Drawable;
 
 pub struct CommandBuffer(id);
 
-pub struct CommandQueueRef;
-
 impl CommandBuffer {
     pub fn enqueue(&mut self) {
         unsafe { self.0.enqueue() }
@@ -53,10 +51,6 @@ impl CommandBuffer {
 
     pub fn has_retained_references(&self) -> bool {
         unsafe { self.0.retainedReferences() == YES }
-    }
-
-    pub fn get_command_queue(&self) -> CommandQueueRef {
-        unimplemented!();
     }
 
     pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
