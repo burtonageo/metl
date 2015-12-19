@@ -126,6 +126,9 @@ extern {
 #[repr(C, usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLLanguageVersion {
+    /// Version 1.0
+    MTLLanguageVersion1_0 = (1 << 16),
+
     /// Version 1.1
     MTLLanguageVersion1_1 = (1 << 16) + 1,
 

@@ -15,6 +15,8 @@ mod functions;
 mod protocols;
 mod types;
 
+pub use classes::MTLCompileOptions;
+
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
 
