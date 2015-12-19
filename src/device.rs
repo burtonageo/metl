@@ -8,7 +8,7 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
-use {CommandQueue, CommandQueueError, FromRaw, FromRawError, Library, LibraryError, Size};
+use {CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library, LibraryError, Size};
 
 pub struct Device(id);
 
@@ -54,7 +54,7 @@ impl Device {
 
     #[allow(unused_variables)]
     pub fn new_library_with_source_and_options<S: AsRef<String>>(
-        &mut self, source: S, options: ())
+        &mut self, source: S, options: CompileOptions)
         -> Result<Library, LibraryError> {
         unimplemented!();
     }
