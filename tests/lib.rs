@@ -79,13 +79,13 @@ fn test_device_create_library_with_valid_shader_code() {
     let mut device = Device::system_default_device().unwrap();
     let shader = r"
         using namespace metal;
-        
+
         struct ColoredVertex
         {
             float4 position [[position]];
             float4 color;
         };
-        
+
         vertex ColoredVertex vertex_main(constant float4 *position [[buffer(0)]],
                                          constant float4 *color [[buffer(1)]],
                                          uint vid [[vertex_id]])
@@ -95,12 +95,12 @@ fn test_device_create_library_with_valid_shader_code() {
             vert.color = color[vid];
             return vert;
         }
-        
+
         fragment float4 fragment_main(ColoredVertex vert [[stage_in]])
         {
             return vert.color;
         }
     ";
-    let library = device.new_library_with_source_and_options(shader, &Default::default());
+    let library = device.new_library_with_source(shader, &Default::default());
     assert!(library.is_ok());
 }
