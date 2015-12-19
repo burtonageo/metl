@@ -23,10 +23,9 @@ pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, M
 pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice,
                     MTLOriginMake, MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
-pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLDevice, MTLDrawable, MTLLibrary};
-
-pub use protocols::{MTLLanguageVersion, MTLLibraryError, MTLLibraryErrorDomain,
-                    MTLNewComputePipelineStateCompletionHandler,
+pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLDevice, MTLDrawable, MTLFunction,
+                    MTLFunctionType, MTLLanguageVersion, MTLLibrary, MTLLibraryError,
+                    MTLLibraryErrorDomain, MTLNewComputePipelineStateCompletionHandler,
                     MTLNewComputePipelineStateWithReflectionCompletionHandler,
                     MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
