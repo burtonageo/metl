@@ -53,9 +53,9 @@ impl Device {
         unimplemented!();
     }
 
-    pub fn new_library_with_source<S: AsRef<str>>(
-        &mut self, source: S, compile_options: &CompileOptions)
-        -> Result<Library, LibraryError> {
+    pub fn new_library_with_source<S: AsRef<str>>(&mut self, source: S,
+                                                  compile_options: &CompileOptions)
+                                                  -> Result<Library, LibraryError> {
         unsafe {
             let source = NSString::alloc(nil).init_str(source.as_ref());
             let options = compile_options.mtl_compile_options();
