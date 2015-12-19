@@ -205,7 +205,8 @@ impl MTLDevice for id {
     }
 
     unsafe fn newLibraryWithSource_options_completionHandler(
-            self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) -> id {
+        self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler)
+        -> id {
         msg_send![self, newLibraryWithSource:source options:options
                            completionHandler:completionHandler]
     }

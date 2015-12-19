@@ -19,11 +19,7 @@ impl CommandBuffer {
         unsafe {
             self.0.commit();
             let error = self.0.error();
-            if error != nil {
-                Err(CommandBufferError)
-            } else {
-                Ok(())
-            }
+            if error != nil { Err(CommandBufferError) } else { Ok(()) }
         }
     }
 

@@ -55,9 +55,7 @@ fn device_from_wrong_type() {
         Result::Err(FromRawError::WrongPointerType) => {
             // pass
         }
-        _ => {
-            assert!(false)
-        }
+        _ => assert!(false),
     }
 }
 
@@ -68,9 +66,7 @@ fn device_from_nullptr() {
         Result::Err(FromRawError::NilPointer) => {
             // pass
         }
-        _ => {
-            assert!(false)
-        }
+        _ => assert!(false),
     }
 }
 

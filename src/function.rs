@@ -50,4 +50,3 @@ impl Into<MTLFunctionType> for FunctionType {
         }
     }
 }
-
