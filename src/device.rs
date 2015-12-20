@@ -42,7 +42,6 @@ impl Device {
         Ok(try!(FromRaw::from_raw(command_queue)))
     }
 
-    #[allow(unused_variables)]
     pub fn new_default_library(&mut self) -> Result<Library, LibraryError> {
         unsafe {
             let library = self.0.newDefaultLibrary();
