@@ -16,7 +16,7 @@ impl Function {
         unsafe { From::from(self.0.functionType()) }
     }
 
-    // Todo(George): Model this correctly
+    // TODO(George): Model this correctly
     pub fn vertex_attributes(&self) -> ! {
         unimplemented!();
     }

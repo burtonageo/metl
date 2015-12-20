@@ -66,7 +66,7 @@ impl Device {
             let error = nil;
             let library = self.0.newLibraryWithSource_options_error(source, options, error);
             if error != nil {
-                // Todo(George): Should use the `error` variable to get more info
+                // TODO(George): Should use the `error` variable to get more info
                 Err(LibraryError::SourceError)
             } else {
                 Ok(try!(FromRaw::from_raw(library)))
@@ -75,7 +75,7 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    // Todo(George): `data` parameter should be of the correct type
+    // TODO(George): `data` parameter should be of the correct type
     pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, LibraryError> {
         unimplemented!();
     }

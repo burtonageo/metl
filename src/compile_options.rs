@@ -23,7 +23,7 @@ impl CompileOptions {
                 ll_compile_opts.setLanguageVersion(version.into());
             }
 
-            // Todo(George): Set the rest of the compile options correctly
+            // TODO(George): Set the rest of the compile options correctly
 
             unimplemented!();
 
