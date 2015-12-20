@@ -42,6 +42,8 @@ impl Device {
         Ok(try!(FromRaw::from_raw(command_queue)))
     }
 
+    // TODO(George): This will panic in the metal lib if not called from a binary in a bundle. Need
+    // to add proper error checking
     pub fn new_default_library(&mut self) -> Result<Library, LibraryError> {
         unsafe {
             let library = self.0.newDefaultLibrary();
