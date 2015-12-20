@@ -1,3 +1,5 @@
+#![warn(trivial_casts, trivial_numeric_casts, unused_import_braces, unused_qualifications)]
+
 extern crate cocoa;
 extern crate metal_sys;
 #[macro_use]
