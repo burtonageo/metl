@@ -5,7 +5,7 @@ use std::convert::{From, Into};
 use std::default::Default;
 use sys::{MTLCompileOptions, MTLLanguageVersion};
 
-#[derive(Clone, Debug, Default, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct CompileOptions {
     pub fast_math_enabled: bool,
     pub language_version: LanguageVersion,
@@ -19,18 +19,31 @@ impl CompileOptions {
             let ll_compile_opts = MTLCompileOptions::new(nil);
 
             ll_compile_opts.setFastMathEnabled(self.fast_math_enabled as BOOL);
+
             if let LanguageVersion::Specific(version) = self.language_version {
                 ll_compile_opts.setLanguageVersion(version.into());
             }
 
             // TODO(George): Set the rest of the compile options correctly
-
-            unimplemented!();
+            if !self.preprocessor_macros.is_empty() {
+                unimplemented!();
+            }
 
             ll_compile_opts
         }
     }
 }
+
+impl Default for CompileOptions {
+    fn default() -> Self {
+        CompileOptions {
+            fast_math_enabled: true,
+            language_version: Default::default(),
+            preprocessor_macros: Default::default()
+        }
+    }
+}
+
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum LanguageVersion {
@@ -76,6 +89,7 @@ impl Into<MTLLanguageVersion> for SpecificLanguageVersion {
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum PreprocessorMacroValue {
-    Numeric(f64),
+    Floating(f64),
+    Integral(i64),
     String(String)
 }
