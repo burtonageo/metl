@@ -80,7 +80,7 @@ impl MTLLibrary for id {
 
 /// Error conditions that can result from the creation of a `MTLLibrary` or `MTLFunction` object.
 #[repr(C, usize)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum MTLLibraryError {
     /// The action is unsupported. For example, the requested library file has improper formatting,
     /// or the requested library is not accessible.
@@ -104,7 +104,7 @@ extern "C" {
 
 /// Error conditions that can result from the creation of a `MTLRenderPipelineState` object.
 #[repr(C, usize)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum MTLRenderPipelineError {
     /// The action causes an internal error.
     MTLRenderPipelineErrorInternal = 1,
@@ -124,7 +124,7 @@ extern "C" {
 
 
 #[repr(C, usize)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum MTLLanguageVersion {
     /// Version 1.0
     MTLLanguageVersion1_0 = (1 << 16),
