@@ -1,9 +1,10 @@
 extern crate mtl;
 extern crate cocoa;
 
-use mtl::Device;
+use mtl::{CompileOptions, LanguageVersion, SpecificLanguageVersion, Device};
 use mtl::{FromRaw, FromRawError, IntoRaw};
-use cocoa::base::nil;
+use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
+use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
 
 #[test]
@@ -67,6 +68,21 @@ fn device_from_nullptr() {
             // pass
         }
         _ => assert!(false),
+    }
+}
+
+#[test]
+fn test_compile_opts_creation_is_correct() {
+    let mut options = CompileOptions::default();
+
+    options.fast_math_enabled = true;
+    options.language_version = LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0);
+
+    let native_options = options.mtl_compile_options();
+
+    unsafe {
+        assert_eq!(options.fast_math_enabled as BOOL, native_options.fastMathEnabled());
+        assert_eq!(native_options.languageVersion(), MTLLanguageVersion::MTLLanguageVersion1_0);
     }
 }
 
