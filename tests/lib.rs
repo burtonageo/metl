@@ -1,7 +1,8 @@
 extern crate mtl;
 extern crate cocoa;
 
-use mtl::{CompileOptions, LanguageVersion, SpecificLanguageVersion, Device};
+use mtl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion};
+use mtl::LibraryError;
 use mtl::{FromRaw, FromRawError, IntoRaw};
 use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
 use cocoa::base::{BOOL, nil};
@@ -81,8 +82,21 @@ fn test_compile_opts_creation_is_correct() {
     let native_options = options.mtl_compile_options();
 
     unsafe {
-        assert_eq!(options.fast_math_enabled as BOOL, native_options.fastMathEnabled());
-        assert_eq!(native_options.languageVersion(), MTLLanguageVersion::MTLLanguageVersion1_0);
+        assert_eq!(options.fast_math_enabled as BOOL,
+                   native_options.fastMathEnabled());
+        assert_eq!(native_options.languageVersion(),
+                   MTLLanguageVersion::MTLLanguageVersion1_0);
+    }
+}
+
+#[test]
+fn create_invalid_shader() {
+    let mut device = Device::system_default_device().unwrap();
+    let bad_shader = r"abcdefghijklmnopqrstuvwxyz";
+    match device.new_library_with_source(bad_shader, &Default::default()) {
+        Ok(_) => panic!("Incorrect result: expected an error"),
+        Err(LibraryError::SourceError) => assert!(true),
+        _ => panic!("Incorrect result: unexpected error"),
     }
 }
 
