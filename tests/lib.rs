@@ -85,13 +85,14 @@ fn device_from_nullptr() {
 fn test_compile_opts_creation_is_correct() {
     let mut options = CompileOptions::default();
 
-    options.fast_math_enabled = true;
+    let fast_math_enabled = true;
+    options.fast_math_enabled = Some(fast_math_enabled);
     options.language_version = LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0);
 
     let native_options = options.mtl_compile_options();
 
     unsafe {
-        assert_eq!(options.fast_math_enabled as BOOL,
+        assert_eq!(fast_math_enabled as BOOL,
                    native_options.fastMathEnabled());
         assert_eq!(native_options.languageVersion(),
                    MTLLanguageVersion::MTLLanguageVersion1_0);

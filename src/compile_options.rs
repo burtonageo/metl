@@ -10,10 +10,17 @@ use std::convert::{From, Into};
 use std::default::Default;
 use sys::{MTLCompileOptions, MTLLanguageVersion};
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct CompileOptions {
-    pub fast_math_enabled: bool,
+    /// Is fast math enabled. Set this option to `None` to use the system default setting.
+    pub fast_math_enabled: Option<bool>,
+
+    /// The language version used. Either use the latest by default, or set this to a specific
+    /// version.
     pub language_version: LanguageVersion,
+
+    /// A map of preprocessor macro names to values. Each entry of (`MacroName`, `MacroValue`) corresponds
+    /// to `#define MacroName MacroValue`
     pub preprocessor_macros: HashMap<String, PreprocessorMacroValue>
 }
 
@@ -22,7 +29,9 @@ impl CompileOptions {
         unsafe {
             let ll_compile_opts = MTLCompileOptions::new(nil);
 
-            ll_compile_opts.setFastMathEnabled(self.fast_math_enabled as BOOL);
+            if let Some(fast_math_enabled) = self.fast_math_enabled {
+                ll_compile_opts.setFastMathEnabled(fast_math_enabled as BOOL);
+            }
 
             if let LanguageVersion::Specific(version) = self.language_version {
                 ll_compile_opts.setLanguageVersion(version.into());
@@ -64,17 +73,6 @@ impl CompileOptions {
         }
     }
 }
-
-impl Default for CompileOptions {
-    fn default() -> Self {
-        CompileOptions {
-            fast_math_enabled: true,
-            language_version: Default::default(),
-            preprocessor_macros: Default::default()
-        }
-    }
-}
-
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum LanguageVersion {
