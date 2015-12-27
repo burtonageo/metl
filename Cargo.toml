@@ -5,6 +5,7 @@ authors = ["George Burton <burtonageo@gmail.com>"]
 
 [dependencies]
 cocoa = "0.1.4"
+core-foundation = "0.*"
 objc = "0.1.8"
 
 [dependencies.metal-sys]
