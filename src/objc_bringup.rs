@@ -58,5 +58,21 @@ impl NSArray for id {
 }
 
 pub trait NSDictionary {
-    
+    unsafe fn dictionaryWithObjects_forKeys_count(objects: *mut id, keys: *mut id, count: NSUInteger) -> Self
+        where Self: Sized + Any {
+        msg_send![class("NSDictionary"), dictionaryWithObjects:objects forKeys:keys count:count]
+    }
+
+    unsafe fn count(self) -> NSUInteger;
+    unsafe fn objectForKey(self, key:id) -> id;
+}
+
+impl NSDictionary for id {
+    unsafe fn count(self) -> NSUInteger {
+        msg_send![self, count]
+    }
+
+    unsafe fn objectForKey(self, key:id) -> id {
+        msg_send![self, objectForKey:key]
+    }
 }
