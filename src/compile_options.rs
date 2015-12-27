@@ -1,5 +1,10 @@
 use cocoa::base::{id, nil};
+use cocoa::foundation::{NSString, NSUInteger};
+use core_foundation::base::TCFType;
+use core_foundation::number::CFNumber;
+use core_foundation::string::CFString;
 use objc::runtime::BOOL;
+use objc_bringup::NSDictionary;
 use std::collections::HashMap;
 use std::convert::{From, Into};
 use std::default::Default;
@@ -13,7 +18,6 @@ pub struct CompileOptions {
 }
 
 impl CompileOptions {
-    #[allow(unreachable_code)]
     pub fn mtl_compile_options(&self) -> id {
         unsafe {
             let ll_compile_opts = MTLCompileOptions::new(nil);
@@ -24,9 +28,36 @@ impl CompileOptions {
                 ll_compile_opts.setLanguageVersion(version.into());
             }
 
-            // TODO(George): Set the rest of the compile options correctly
             if !self.preprocessor_macros.is_empty() {
-                unimplemented!();
+                let mut keys = self.preprocessor_macros
+                                   .keys()
+                                   .map(|k| NSString::alloc(nil).init_str(k.as_ref()))
+                                   .collect::<Vec<_>>();
+
+                let mut objs =
+                    self.preprocessor_macros
+                        .values()
+                        .map(|v| {
+                            match v {
+                                &PreprocessorMacroValue::Floating(f) => {
+                                    CFNumber::from_f64(f).as_CFTypeRef() as id
+                                }
+                                &PreprocessorMacroValue::Integral(i) => {
+                                    CFNumber::from_i64(i).as_CFTypeRef() as id
+                                }
+                                &PreprocessorMacroValue::String(ref s) => {
+                                    CFString::new(s.as_ref()).as_CFTypeRef() as id
+                                }
+                            }
+                        })
+                        .collect::<Vec<_>>();
+
+                let num_macros = self.preprocessor_macros.len() as NSUInteger;
+
+                let macros = NSDictionary::dictionaryWithObjects_forKeys_count(objs.as_mut_ptr(),
+                                                                               keys.as_mut_ptr(),
+                                                                               num_macros);
+                ll_compile_opts.setPreprocessorMacros(macros);
             }
 
             ll_compile_opts
