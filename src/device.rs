@@ -63,10 +63,12 @@ impl Device {
         unsafe {
             let source = NSString::alloc(nil).init_str(source.as_ref());
             let options = compile_options.mtl_compile_options();
-            let error = nil;
-            let library = self.0.newLibraryWithSource_options_error(source, options, error);
-            if error != nil {
-                // TODO(George): Should use the `error` variable to get more info
+            let mut error = nil;
+            let library = self.0.newLibraryWithSource_options_error(source, options, &mut error);
+            if library == nil {
+                if error != nil {
+                    // TODO(George): Should use the `error` variable to get more info
+                }
                 Err(LibraryError::SourceError)
             } else {
                 Ok(try!(FromRaw::from_raw(library)))

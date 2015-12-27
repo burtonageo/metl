@@ -109,7 +109,10 @@ pub trait MTLDevice {
     unsafe fn newLibraryWithFile_error(self, filePath: id, error: id) -> id;
     unsafe fn newLibraryWithSource_options_completionHandler(
         self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) -> id;
-    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id) -> id;
+
+    #[cfg_attr(rustfmt, rustfmt_skip)] // This definition is too long to fit on one line
+    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: *mut id)
+                                                 -> id;
     unsafe fn newLibraryWithData_error(self, data: id, error: id) -> id;
 
     unsafe fn newCommandQueue(self) -> id;
@@ -211,7 +214,9 @@ impl MTLDevice for id {
                            completionHandler:completionHandler]
     }
 
-    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: id) -> id {
+    #[cfg_attr(rustfmt, rustfmt_skip)] // This definition is too long to fit on one line
+    unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: *mut id)
+                                                 -> id {
         msg_send![self, newLibraryWithSource:source options:options error:error]
     }
 
