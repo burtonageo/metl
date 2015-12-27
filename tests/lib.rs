@@ -15,6 +15,15 @@ fn get_device() {
 }
 
 #[test]
+fn get_all_devices() {
+    let all_devices = Device::enumerate_all_system_devices();
+    assert!(!all_devices.is_empty());
+    for device in all_devices {
+        assert!(device.is_ok());
+    }
+}
+
+#[test]
 fn get_device_name() {
     let device = Device::system_default_device().unwrap();
     assert!(!device.name().into_owned().is_empty());

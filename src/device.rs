@@ -1,6 +1,7 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
 use objc::runtime::YES;
+use objc_bringup::NSArray;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
 use std::convert::{AsRef, From};
@@ -19,12 +20,20 @@ impl Device {
         if device != nil { Ok(Device(device)) } else { Err(DeviceError::ConstructionFailed) }
     }
 
-    #[allow(unused_mut, unused_variables, unreachable_code)]
     pub fn enumerate_all_system_devices() -> Vec<Result<Self, DeviceError>> {
         let all_devices = unsafe { MTLCopyAllDevices() };
         let mut devices_vec = vec![];
 
-        unimplemented!();
+        unsafe {
+            for i in 0..all_devices.count() {
+                let device = all_devices.objectAtIndex(i);
+                if device != nil {
+                    devices_vec.push(Ok(Device(device)));
+                } else {
+                    devices_vec.push(Err(DeviceError::ConstructionFailed));
+                }
+            }
+        }
 
         devices_vec
     }
