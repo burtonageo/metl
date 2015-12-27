@@ -1,4 +1,4 @@
-#![allow(non_snake_case)]
+#![allow(dead_code, non_snake_case)]
 
 /// This file contains various traits/functions for interacting with Cocoa/objc classes which
 /// are not available in the cocoa/objc crates. They should probably be migrated to them soon.
