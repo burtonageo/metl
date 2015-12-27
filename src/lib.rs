@@ -16,6 +16,7 @@ mod drawable;
 mod function;
 mod internal;
 mod library;
+mod objc_bringup;
 mod value_types;
 
 pub mod sys {
