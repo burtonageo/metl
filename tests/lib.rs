@@ -1,7 +1,7 @@
 extern crate mtl;
 extern crate cocoa;
 
-use mtl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion};
+use mtl::{CompileOptions, Device, LanguageVersion, PreprocessorMacroValue, SpecificLanguageVersion};
 use mtl::LibraryError;
 use mtl::{FromRaw, FromRawError, IntoRaw};
 use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
@@ -88,6 +88,9 @@ fn test_compile_opts_creation_is_correct() {
     let fast_math_enabled = true;
     options.fast_math_enabled = Some(fast_math_enabled);
     options.language_version = LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0);
+    options.preprocessor_macros.insert("Foo".into(), PreprocessorMacroValue::Integral(54));
+    options.preprocessor_macros.insert("Bar".into(), PreprocessorMacroValue::Floating(32.0));
+    options.preprocessor_macros.insert("Baz".into(), PreprocessorMacroValue::String("Hi".into()));
 
     let native_options = options.mtl_compile_options();
 
@@ -111,10 +114,10 @@ fn create_invalid_shader() {
 }
 
 #[test]
-fn test_device_create_library_with_valid_shader_code() {
+fn device_create_library_with_valid_shader_code_and_get_fn_names() {
     let mut device = Device::system_default_device().unwrap();
     // Shader source taken from http://metalbyexample.com/up-and-running-2/
-    let shader = r"
+    const SHADER: &'static str = r"
         using namespace metal;
 
         struct ColoredVertex
@@ -138,6 +141,8 @@ fn test_device_create_library_with_valid_shader_code() {
             return vert.color;
         }
     ";
-    let library = device.new_library_with_source(shader, &Default::default());
-    assert!(library.is_ok());
+    let library = device.new_library_with_source(SHADER, &Default::default()).ok().unwrap();
+    let names = library.function_names();
+    assert_eq!(names[0], "vertex_main");
+    assert_eq!(names[1], "fragment_main");
 }

@@ -1,5 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
+use objc_bringup::NSArray;
 use std::borrow::Cow;
 use std::convert::{AsRef, From};
 use std::ffi::CStr;
@@ -20,7 +21,16 @@ impl Library {
     }
 
     pub fn function_names(&self) -> Vec<Cow<str>> {
-        unimplemented!();
+        let names_array = unsafe { self.0.functionNames() };
+        let names_len = unsafe { names_array.count() };
+        let mut names_vec = vec![];
+        for i in 0..names_len {
+            let name = unsafe {
+                CStr::from_ptr(names_array.objectAtIndex(i).UTF8String()).to_string_lossy()
+            };
+            names_vec.push(name);
+        }
+        names_vec
     }
 
     pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
