@@ -11,7 +11,6 @@ use {FromRaw, FromRawError, Function};
 pub struct Library(id);
 
 impl Library {
-    #[allow(unused_variables)]
     pub fn new_function_with_name<S: AsRef<str>>(&mut self, function_name: S) -> Option<Function> {
         unsafe {
             let func_name_nsstr = NSString::alloc(nil).init_str(function_name.as_ref());
