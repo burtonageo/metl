@@ -105,8 +105,8 @@ fn test_compile_opts_creation_is_correct() {
 #[test]
 fn create_invalid_shader() {
     let mut device = Device::system_default_device().unwrap();
-    let bad_shader = r"abcdefghijklmnopqrstuvwxyz";
-    match device.new_library_with_source(bad_shader, &Default::default()) {
+    const BAD_SHADER: &'static str = r"abcdefghijklmnopqrstuvwxyz";
+    match device.new_library_with_source(BAD_SHADER, &Default::default()) {
         Ok(_) => panic!("Incorrect result: expected an error"),
         Err(LibraryError::SourceError) => assert!(true),
         _ => panic!("Incorrect result: unexpected error"),
