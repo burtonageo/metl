@@ -14,6 +14,7 @@ mod command_queue;
 mod compile_options;
 mod device;
 mod drawable;
+mod error;
 mod function;
 mod internal;
 mod library;
@@ -30,7 +31,8 @@ pub use compile_options::{CompileOptions, LanguageVersion, PreprocessorMacroValu
                           SpecificLanguageVersion};
 pub use device::{Device, DeviceError};
 pub use drawable::Drawable;
+pub use error::NSError;
 pub use function::{Function, FunctionType};
-pub use library::{Library, LibraryError};
+pub use library::{Library, LibraryError, LibraryErrorType};
 pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
 pub use value_types::{ClearColor, Origin, Region, ScissorRect, Size, Viewport};

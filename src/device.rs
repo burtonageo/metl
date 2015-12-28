@@ -1,5 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
+use error::NSError;
 use objc::runtime::YES;
 use objc_bringup::NSArray;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
@@ -10,7 +11,7 @@ use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
 use {CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
-     LibraryError, Size};
+     LibraryError, LibraryErrorType, Size};
 
 pub struct Device(id);
 
@@ -75,10 +76,11 @@ impl Device {
             let mut error = nil;
             let library = self.0.newLibraryWithSource_options_error(source, options, &mut error);
             if library == nil {
-                if error != nil {
-                    // TODO(George): Should use the `error` variable to get more info
-                }
-                Err(LibraryError::SourceError)
+                let error = NSError::new(error);
+                Err(LibraryError {
+                    ns_error: error,
+                    error_type: LibraryErrorType::SourceError
+                })
             } else {
                 Ok(try!(FromRaw::from_raw(library)))
             }

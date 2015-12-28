@@ -76,3 +76,44 @@ impl NSDictionary for id {
         msg_send![self, objectForKey:key]
     }
 }
+
+pub trait NSError {
+    unsafe fn code(self) -> NSUInteger;
+    unsafe fn domain(self) -> id;
+    unsafe fn userInfo(self) -> id;
+
+    unsafe fn localizedDescription(self) -> id;
+    unsafe fn localizedRecoveryOptions(self) -> id;
+    unsafe fn localizedRecoverySuggestion(self) -> id;
+    unsafe fn localizedFailureReason(self) -> id;
+}
+
+impl NSError for id {
+    unsafe fn code(self) -> NSUInteger {
+        msg_send![self, code]
+    }
+
+    unsafe fn domain(self) -> id {
+        msg_send![self, domain]
+    }
+
+    unsafe fn userInfo(self) -> id {
+        msg_send![self, userInfo]
+    }
+ 
+    unsafe fn localizedDescription(self) -> id {
+        msg_send![self, localizedDescription]
+    }
+
+    unsafe fn localizedRecoveryOptions(self) -> id {
+        msg_send![self, localizedRecoveryOptions]
+    }
+
+    unsafe fn localizedRecoverySuggestion(self) -> id {
+        msg_send![self, localizedRecoverySuggestion]
+    }
+
+    unsafe fn localizedFailureReason(self) -> id {
+        msg_send![self, localizedFailureReason]
+    }
+}

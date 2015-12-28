@@ -2,7 +2,7 @@ extern crate mtl;
 extern crate cocoa;
 
 use mtl::{CompileOptions, Device, LanguageVersion, PreprocessorMacroValue, SpecificLanguageVersion};
-use mtl::LibraryError;
+use mtl::LibraryErrorType;
 use mtl::{FromRaw, FromRawError, IntoRaw};
 use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
 use cocoa::base::{BOOL, nil};
@@ -82,7 +82,7 @@ fn device_from_nullptr() {
 }
 
 #[test]
-fn test_compile_opts_creation_is_correct() {
+fn compile_opts_creation_is_correct() {
     let mut options = CompileOptions::default();
 
     let fast_math_enabled = true;
@@ -108,8 +108,14 @@ fn create_invalid_shader() {
     const BAD_SHADER: &'static str = r"abcdefghijklmnopqrstuvwxyz";
     match device.new_library_with_source(BAD_SHADER, &Default::default()) {
         Ok(_) => panic!("Incorrect result: expected an error"),
-        Err(LibraryError::SourceError) => assert!(true),
-        _ => panic!("Incorrect result: unexpected error"),
+        Err(error) => {
+            if let LibraryErrorType::SourceError = error.error_type {
+                assert!(true);
+            } else {
+                panic!("Incorrect error type");
+            }
+            
+        }
     }
 }
 
