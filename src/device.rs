@@ -76,9 +76,8 @@ impl Device {
             let mut error = nil;
             let library = self.0.newLibraryWithSource_options_error(source, options, &mut error);
             if library == nil {
-                let error = NSError::new(error);
                 Err(LibraryError {
-                    ns_error: error,
+                    ns_error: NSError::new(error),
                     error_type: LibraryErrorType::SourceError
                 })
             } else {
