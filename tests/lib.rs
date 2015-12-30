@@ -95,8 +95,7 @@ fn compile_opts_creation_is_correct() {
     let native_options = options.mtl_compile_options();
 
     unsafe {
-        assert_eq!(fast_math_enabled as BOOL,
-                   native_options.fastMathEnabled());
+        assert_eq!(fast_math_enabled as BOOL, native_options.fastMathEnabled());
         assert_eq!(native_options.languageVersion(),
                    MTLLanguageVersion::MTLLanguageVersion1_0);
     }
@@ -114,7 +113,6 @@ fn create_invalid_shader() {
             } else {
                 panic!("Incorrect error type");
             }
-            
         }
     }
 }
