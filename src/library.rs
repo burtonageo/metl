@@ -42,7 +42,7 @@ impl Library {
     }
 }
 
-impl_from_into_raw!(Library, "MTLLibrary");
+impl_from_into_raw!(Library, of protocol "MTLLibrary");
 
 pub struct LibraryError {
     pub ns_error: Option<NSError>,

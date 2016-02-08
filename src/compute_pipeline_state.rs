@@ -3,7 +3,7 @@ use sys::MTLComputePipelineState;
 
 pub struct ComputePipelineState(id);
 
-impl_from_into_raw!(ComputePipelineState, "MTLComputePipelineState");
+impl_from_into_raw!(ComputePipelineState, of protocol "MTLComputePipelineState");
 
 impl ComputePipelineState {
     fn max_total_threads_per_thread_group(self) -> usize {

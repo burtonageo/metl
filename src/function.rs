@@ -22,7 +22,7 @@ impl Function {
     }
 }
 
-impl_from_into_raw!(Function, "MTLFunction");
+impl_from_into_raw!(Function, of protocol "MTLFunction");
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum FunctionType {

@@ -117,7 +117,7 @@ impl Device {
     }
 }
 
-impl_from_into_raw!(Device, "MTLDevice");
+impl_from_into_raw!(Device, of protocol "MTLDevice");
 
 /// Internal utility function to get a Device's id without consuming it.
 /// Not exported publicly from this crate.

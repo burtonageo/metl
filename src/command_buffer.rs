@@ -61,7 +61,7 @@ impl CommandBuffer {
     }
 }
 
-impl_from_into_raw!(CommandBuffer, "MTLCommandBuffer");
+impl_from_into_raw!(CommandBuffer, of protocol "MTLCommandBuffer");
 
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum CommandBufferStatus {

@@ -21,4 +21,4 @@ impl Drawable {
     }
 }
 
-impl_from_into_raw!(Drawable, "MTLDrawable");
+impl_from_into_raw!(Drawable, of protocol "MTLDrawable");

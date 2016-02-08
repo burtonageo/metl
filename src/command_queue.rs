@@ -40,7 +40,7 @@ impl CommandQueue {
     }
 }
 
-impl_from_into_raw!(CommandQueue, "MTLCommandQueue");
+impl_from_into_raw!(CommandQueue, of protocol "MTLCommandQueue");
 
 #[derive(Clone, Debug)]
 pub enum CommandQueueError {

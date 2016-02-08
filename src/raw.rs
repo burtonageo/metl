@@ -39,7 +39,7 @@ pub enum FromRawError {
 }
 
 macro_rules! impl_from_into_raw {
-    ($wrapper_type:ident, $protocol:expr) => (
+    ($wrapper_type:ident, of protocol $protocol:expr) => (
         impl $crate::FromRaw for $wrapper_type {
             fn from_raw(raw_pointer: id) -> Result<Self, $crate::FromRawError> {
                 use $crate::internal::conforms_to_protocol;
