@@ -46,7 +46,7 @@ impl CompileOptions {
     }
 
     pub fn with_integer_macro<S: Into<String>>(mut self, mac_name: S, mac_val: i64) -> Self {
-        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::Integral(mac_val));
+        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::Integer(mac_val));
         self
     }
 
@@ -81,7 +81,7 @@ impl CompileOptions {
                                 &PreprocessorMacroValue::Floating(f) => {
                                     CFNumber::from_f64(f).as_CFTypeRef() as id
                                 }
-                                &PreprocessorMacroValue::Integral(i) => {
+                                &PreprocessorMacroValue::Integer(i) => {
                                     CFNumber::from_i64(i).as_CFTypeRef() as id
                                 }
                                 &PreprocessorMacroValue::String(ref s) => {
@@ -149,6 +149,6 @@ impl Into<MTLLanguageVersion> for SpecificLanguageVersion {
 #[derive(Clone, Debug, PartialEq)]
 pub enum PreprocessorMacroValue {
     Floating(f64),
-    Integral(i64),
+    Integer(i64),
     String(String)
 }
