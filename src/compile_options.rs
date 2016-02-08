@@ -25,6 +25,36 @@ pub struct CompileOptions {
 }
 
 impl CompileOptions {
+    pub fn fast_math_enabled(self, fast_math: bool) -> Self {
+        let opts = CompileOptions { fast_math_enabled: Some(fast_math), .. self };
+        opts
+    }
+
+    pub fn language_version(self, language_version: LanguageVersion) -> Self {
+        let opts = CompileOptions { language_version: language_version, .. self };
+        opts
+    }
+
+    pub fn with_macro<S: Into<String>>(mut self, mac_name: S, mac_val: PreprocessorMacroValue) -> Self {
+        self.preprocessor_macros.insert(mac_name.into(), mac_val);
+        self
+    }
+
+    pub fn with_floating_macro<S: Into<String>>(mut self, mac_name: S, mac_val: f64) -> Self {
+        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::Floating(mac_val));
+        self
+    }
+
+    pub fn with_integer_macro<S: Into<String>>(mut self, mac_name: S, mac_val: i64) -> Self {
+        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::Integral(mac_val));
+        self
+    }
+
+    pub fn with_string_macro<S0: Into<String>, S1: Into<String>>(mut self, mac_name: S0, mac_val: S1) -> Self {
+        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::String(mac_val.into()));
+        self
+    }
+
     pub fn mtl_compile_options(&self) -> id {
         unsafe {
             let ll_compile_opts = MTLCompileOptions::new(nil);

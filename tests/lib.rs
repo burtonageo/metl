@@ -1,7 +1,7 @@
 extern crate mtl;
 extern crate cocoa;
 
-use mtl::{CompileOptions, Device, LanguageVersion, PreprocessorMacroValue, SpecificLanguageVersion};
+use mtl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion};
 use mtl::LibraryErrorType;
 use mtl::{FromRaw, FromRawError, IntoRaw};
 use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
@@ -83,20 +83,18 @@ fn device_from_nullptr() {
 
 #[test]
 fn compile_opts_creation_is_correct() {
-    let mut options = CompileOptions::default();
-
     let fast_math_enabled = true;
-    options.fast_math_enabled = Some(fast_math_enabled);
-    options.language_version = LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0);
-    options.preprocessor_macros.insert("Foo".into(), PreprocessorMacroValue::Integral(54));
-    options.preprocessor_macros.insert("Bar".into(), PreprocessorMacroValue::Floating(32.0));
-    options.preprocessor_macros.insert("Baz".into(), PreprocessorMacroValue::String("Hi".into()));
-
-    let native_options = options.mtl_compile_options();
+    let options = CompileOptions::default()
+                      .fast_math_enabled(fast_math_enabled)
+                      .language_version(LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0))
+                      .with_integer_macro("Foo", 54)
+                      .with_floating_macro("Bar", 32.0)
+                      .with_string_macro("Baz", "Hi")
+                      .mtl_compile_options();
 
     unsafe {
-        assert_eq!(fast_math_enabled as BOOL, native_options.fastMathEnabled());
-        assert_eq!(native_options.languageVersion(),
+        assert_eq!(fast_math_enabled as BOOL, options.fastMathEnabled());
+        assert_eq!(options.languageVersion(),
                    MTLLanguageVersion::MTLLanguageVersion1_0);
     }
 }
