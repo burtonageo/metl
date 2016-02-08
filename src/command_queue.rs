@@ -5,10 +5,14 @@ use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
+use std::marker::{Send, Sync};
 use sys::MTLCommandQueue;
 use {CommandBuffer, FromRaw, FromRawError};
 
 pub struct CommandQueue(id);
+
+unsafe impl Send for CommandQueue {}
+unsafe impl Sync for CommandQueue {}
 
 impl CommandQueue {
     pub fn command_buffer(&mut self) -> CommandBuffer {
