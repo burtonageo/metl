@@ -1,6 +1,6 @@
 pub trait MTLTexture { }
 
-#[repr(C, usize)]
+#[repr(usize)]
 pub enum MTLTextureType {
     MTLTextureType1D = 0,
     MTLTextureType1DArray = 1,

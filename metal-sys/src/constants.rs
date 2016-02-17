@@ -6,7 +6,7 @@
 ///     Introduction.html#//apple_ref/doc/uid/TP40014221
 /// ).
 #[cfg(target_os = "ios")]
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLFeatureSet {
     /// The baseline feature set supported by the first generation of iOS GPUs that support Metal.
@@ -38,7 +38,7 @@ pub enum MTLFeatureSet {
 ///     Introduction.html#//apple_ref/doc/uid/TP40014221
 /// ).
 #[cfg(target_os = "macos")]
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLFeatureSet {
     /// The feature set supported by all OS X GPUs that support Metal.
@@ -50,7 +50,7 @@ pub enum MTLFeatureSet {
 
 /// Controls which argument information is made available for reflection by the creation of the
 /// pipeline.
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLPipelineOption {
     MTLPipelineOptionNone = 0,
@@ -58,7 +58,7 @@ pub enum MTLPipelineOption {
     MTLPipelineOptionBufferTypeInfo = 1 << 1
 }
 
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLCompareFunction {
     MTLCompareFunctionNever = 0,
@@ -71,7 +71,7 @@ pub enum MTLCompareFunction {
     MTLCompareFunctionAlways = 7
 }
 
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLPixelFormat {
     MTLPixelFormatInvalid = 0,
@@ -143,7 +143,7 @@ pub enum MTLPixelFormat {
 
 /// The current stage in the lifetime of the command buffer, as it proceeds from enqueued to
 /// committed to scheduled to completed.
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLCommandBufferStatus {
     /// The command buffer is not enqueued yet. This is the starting value of the status property

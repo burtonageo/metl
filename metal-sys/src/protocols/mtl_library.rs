@@ -79,7 +79,7 @@ impl MTLLibrary for id {
 }
 
 /// Error conditions that can result from the creation of a `MTLLibrary` or `MTLFunction` object.
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum MTLLibraryError {
     /// The action is unsupported. For example, the requested library file has improper formatting,
@@ -103,7 +103,7 @@ extern "C" {
 }
 
 /// Error conditions that can result from the creation of a `MTLRenderPipelineState` object.
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum MTLRenderPipelineError {
     /// The action causes an internal error.
@@ -123,7 +123,7 @@ extern "C" {
 }
 
 
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum MTLLanguageVersion {
     /// Version 1.0

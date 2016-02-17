@@ -25,7 +25,7 @@ impl MTLFunction for id {
     }
 }
 
-#[repr(C, usize)]
+#[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum MTLFunctionType {
     MTLFunctionTypeVertex = 1,
