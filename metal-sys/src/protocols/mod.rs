@@ -5,6 +5,7 @@ mod mtl_device;
 mod mtl_drawable;
 mod mtl_function;
 mod mtl_library;
+mod mtl_texture;
 
 pub use self::mtl_command_buffer::MTLCommandBuffer;
 pub use self::mtl_command_queue::MTLCommandQueue;
@@ -20,3 +21,4 @@ pub use self::mtl_function::{MTLFunction, MTLFunctionType};
 pub use self::mtl_library::MTLLibrary;
 pub use self::mtl_library::{MTLLanguageVersion, MTLLibraryError, MTLLibraryErrorDomain,
                             MTLRenderPipelineError, MTLRenderPipelineErrorDomain};
+pub use self::mtl_texture::{MTLTexture, MTLTextureType};

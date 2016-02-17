@@ -15,7 +15,8 @@ mod functions;
 mod protocols;
 mod types;
 
-pub use classes::MTLCompileOptions;
+pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLCompileOptions, MTLDataType,
+                  MTLStructType};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
@@ -31,7 +32,7 @@ pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState, 
                     MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
                     MTLNewRenderPipleineStateCompletionHandler, MTLRenderPipelineError,
-                    MTLRenderPipelineErrorDomain};
+                    MTLRenderPipelineErrorDomain, MTLTexture, MTLTextureType};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,

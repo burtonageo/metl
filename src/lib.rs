@@ -9,6 +9,7 @@ extern crate objc;
 #[macro_use]
 mod raw;
 
+mod argument;
 mod command_buffer;
 mod command_queue;
 mod compile_options;
@@ -25,6 +26,7 @@ pub mod sys {
     pub use metal_sys::*;
 }
 
+pub use argument::{Argument, ArgumentAccess, ArgumentType, DataType};
 pub use command_buffer::CommandBuffer;
 pub use command_queue::{CommandQueue, CommandQueueError};
 pub use compile_options::{CompileOptions, LanguageVersion, PreprocessorMacroValue,
