@@ -29,10 +29,10 @@ pub trait MTLStructType {
 
 impl MTLStructType for id {
     unsafe fn members(self) -> id {
-        unsafe { msg_send![self, members] }
+        msg_send![self, members] }
     }
 
     unsafe fn memberByName(self, name: id) -> id {
-        unsafe { msg_send![self, memberByName:name] }
+        msg_send![self, memberByName:name]
     }
 }
