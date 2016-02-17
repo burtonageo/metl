@@ -26,32 +26,15 @@ pub struct CompileOptions {
 
 impl CompileOptions {
     pub fn fast_math_enabled(self, fast_math: bool) -> Self {
-        let opts = CompileOptions { fast_math_enabled: Some(fast_math), .. self };
-        opts
+        CompileOptions { fast_math_enabled: Some(fast_math), .. self }
     }
 
     pub fn language_version(self, language_version: LanguageVersion) -> Self {
-        let opts = CompileOptions { language_version: language_version, .. self };
-        opts
+        CompileOptions { language_version: language_version, .. self }
     }
 
-    pub fn with_macro<S: Into<String>>(mut self, mac_name: S, mac_val: PreprocessorMacroValue) -> Self {
-        self.preprocessor_macros.insert(mac_name.into(), mac_val);
-        self
-    }
-
-    pub fn with_floating_macro<S: Into<String>>(mut self, mac_name: S, mac_val: f64) -> Self {
-        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::Floating(mac_val));
-        self
-    }
-
-    pub fn with_integer_macro<S: Into<String>>(mut self, mac_name: S, mac_val: i64) -> Self {
-        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::Integer(mac_val));
-        self
-    }
-
-    pub fn with_string_macro<S0: Into<String>, S1: Into<String>>(mut self, mac_name: S0, mac_val: S1) -> Self {
-        self.preprocessor_macros.insert(mac_name.into(), PreprocessorMacroValue::String(mac_val.into()));
+    pub fn with_macro<S: Into<String>, M: Into<PreprocessorMacroValue>>(mut self, mac_name: S, mac_val: M) -> Self {
+        self.preprocessor_macros.insert(mac_name.into(), mac_val.into());
         self
     }
 
@@ -151,4 +134,46 @@ pub enum PreprocessorMacroValue {
     Floating(f64),
     Integer(i64),
     String(String)
+}
+
+impl From<i64> for PreprocessorMacroValue {
+    fn from(val: i64) -> Self {
+        PreprocessorMacroValue::Integer(val)
+    }
+}
+
+impl From<i32> for PreprocessorMacroValue {
+    fn from(val: i32) -> Self {
+        PreprocessorMacroValue::Integer(val as i64)
+    }
+}
+
+impl From<isize> for PreprocessorMacroValue {
+    fn from(val: isize) -> Self {
+        PreprocessorMacroValue::Integer(val as i64)
+    }
+}
+
+impl From<f64> for PreprocessorMacroValue {
+    fn from(val: f64) -> Self {
+        PreprocessorMacroValue::Floating(val)
+    }
+}
+
+impl From<f32> for PreprocessorMacroValue {
+    fn from(val: f32) -> Self {
+        PreprocessorMacroValue::Floating(val as f64)
+    }
+}
+
+impl From<String> for PreprocessorMacroValue {
+    fn from(val: String) -> Self {
+        PreprocessorMacroValue::String(val)
+    }
+}
+
+impl<'a> From<&'a str> for PreprocessorMacroValue {
+    fn from(val: &'a str) -> Self {
+        PreprocessorMacroValue::String(val.into())
+    }
 }

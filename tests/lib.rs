@@ -87,9 +87,9 @@ fn compile_opts_creation_is_correct() {
     let options = CompileOptions::default()
                       .fast_math_enabled(fast_math_enabled)
                       .language_version(LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0))
-                      .with_integer_macro("Foo", 54)
-                      .with_floating_macro("Bar", 32.0)
-                      .with_string_macro("Baz", "Hi")
+                      .with_macro("Foo", 54)
+                      .with_macro("Bar", 32.0)
+                      .with_macro("Baz", "Hi")
                       .mtl_compile_options();
 
     unsafe {
