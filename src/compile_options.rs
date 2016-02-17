@@ -26,14 +26,16 @@ pub struct CompileOptions {
 
 impl CompileOptions {
     pub fn fast_math_enabled(self, fast_math: bool) -> Self {
-        CompileOptions { fast_math_enabled: Some(fast_math), .. self }
+        CompileOptions { fast_math_enabled: Some(fast_math), ..self }
     }
 
     pub fn language_version(self, language_version: LanguageVersion) -> Self {
-        CompileOptions { language_version: language_version, .. self }
+        CompileOptions { language_version: language_version, ..self }
     }
 
-    pub fn with_macro<S: Into<String>, M: Into<PreprocessorMacroValue>>(mut self, mac_name: S, mac_val: M) -> Self {
+    pub fn with_macro<S: Into<String>, M: Into<PreprocessorMacroValue>>(mut self, mac_name: S,
+                                                                        mac_val: M)
+                                                                        -> Self {
         self.preprocessor_macros.insert(mac_name.into(), mac_val.into());
         self
     }
@@ -56,23 +58,22 @@ impl CompileOptions {
                                    .map(|k| NSString::alloc(nil).init_str(k.as_ref()))
                                    .collect::<Vec<_>>();
 
-                let mut objs =
-                    self.preprocessor_macros
-                        .values()
-                        .map(|v| {
-                            match v {
-                                &PreprocessorMacroValue::Floating(f) => {
-                                    CFNumber::from_f64(f).as_CFTypeRef() as id
-                                }
-                                &PreprocessorMacroValue::Integer(i) => {
-                                    CFNumber::from_i64(i).as_CFTypeRef() as id
-                                }
-                                &PreprocessorMacroValue::String(ref s) => {
-                                    CFString::new(s.as_ref()).as_CFTypeRef() as id
-                                }
-                            }
-                        })
-                        .collect::<Vec<_>>();
+                let mut objs = self.preprocessor_macros
+                                   .values()
+                                   .map(|v| {
+                                       match v {
+                                           &PreprocessorMacroValue::Floating(f) => {
+                                               CFNumber::from_f64(f).as_CFTypeRef() as id
+                                           }
+                                           &PreprocessorMacroValue::Integer(i) => {
+                                               CFNumber::from_i64(i).as_CFTypeRef() as id
+                                           }
+                                           &PreprocessorMacroValue::String(ref s) => {
+                                               CFString::new(s.as_ref()).as_CFTypeRef() as id
+                                           }
+                                       }
+                                   })
+                                   .collect::<Vec<_>>();
 
                 let num_macros = self.preprocessor_macros.len() as NSUInteger;
 

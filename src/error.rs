@@ -8,11 +8,7 @@ pub struct NSError(id);
 
 impl NSError {
     pub fn new(raw: id) -> Option<Self> {
-        if raw == nil {
-            None
-        } else {
-            Some(NSError(raw))
-        }
+        if raw == nil { None } else { Some(NSError(raw)) }
     }
 
     pub fn code(&self) -> usize {
