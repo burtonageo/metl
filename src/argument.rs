@@ -29,12 +29,20 @@ impl Argument {
         unsafe { self.0.getType().into() }
     }
 
-    pub fn buffer_alignment(&self) -> usize {
-        unsafe { self.0.bufferAlignment() as usize }
+    pub fn buffer_alignment(&self) -> Option<usize> {
+        if self.get_type() == ArgumentType::Buffer {
+            unsafe { Some(self.0.bufferAlignment() as usize) }
+        } else {
+            None
+        }
     }
 
-    pub fn buffer_data_size(&self) -> usize {
-        unsafe { self.0.bufferDataSize() as usize }
+    pub fn buffer_data_size(&self) -> Option<usize> {
+        if self.get_type() == ArgumentType::Buffer {
+            unsafe { Some(self.0.bufferDataSize() as usize) }
+        } else {
+            None
+        }
     }
 
     pub fn buffer_struct_type(&self) -> ! {
@@ -45,18 +53,25 @@ impl Argument {
         unimplemented!()
     }
 
-    pub fn threadgroup_memory_alignment(&self) -> usize {
-        // TODO(George): Error checking
-        unsafe { self.0.threadgroupMemoryAlignment() as usize }
+    pub fn threadgroup_memory_alignment(&self) -> Option<usize> {
+        if self.get_type() == ArgumentType::ThreadgroupMemory {
+            unsafe { Some(self.0.threadgroupMemoryAlignment() as usize) }
+        } else {
+            None
+        }
     }
 
-    pub fn threadgroup_memory_data_size(&self) -> usize {
-        // TODO(George): Error checking
-        unsafe { self.0.threadgroupMemoryDataSize() as usize }
+    pub fn threadgroup_memory_data_size(&self) -> Option<usize> {
+        if self.get_type() == ArgumentType::ThreadgroupMemory {
+            unsafe { Some(self.0.threadgroupMemoryDataSize() as usize) }
+        } else {
+            None
+        }
     }
 }
 
 #[repr(usize)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum ArgumentAccess {
     ReadOnly,
     ReadWrite,
@@ -76,6 +91,7 @@ impl Into<MTLArgumentAccess> for ArgumentAccess {
 }
 
 #[repr(usize)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum ArgumentType {
     Buffer,
     ThreadgroupMemory,
@@ -96,6 +112,7 @@ impl Into<MTLArgumentType> for ArgumentType {
 }
 
 #[repr(usize)]
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum DataType {
     None,
     Struct,
