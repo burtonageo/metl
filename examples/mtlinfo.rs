@@ -2,6 +2,7 @@
 
 extern crate mtl;
 
+
 #[cfg(not(any(target_os = "macos", target_os = "ios")))]
 fn main() {
     println!("Metal is not supported on this platform");
@@ -11,8 +12,13 @@ fn main() {
 fn main() {
     let devices = mtl::Device::enumerate_all_system_devices();
 
-    println!("Number of system devices: {}", devices.len());
-    println!("===========================\n");
+    let num_devices_message = format!("Number of system devices: {}", devices.len());
+    let separator = std::iter::repeat('=').take(num_devices_message.len())
+                                          .collect::<String>();
+
+    println!("{}", num_devices_message);
+    println!("{}", separator);
+    println!("");
 
     for (index, device) in devices.into_iter().enumerate() {
         println!("Device {} info:", index);
