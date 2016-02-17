@@ -53,6 +53,10 @@ impl Argument {
         unimplemented!()
     }
 
+    pub fn texture_type(&self) -> ! {
+        unimplemented!()
+    }
+
     pub fn threadgroup_memory_alignment(&self) -> Option<usize> {
         if self.get_type() == ArgumentType::ThreadgroupMemory {
             unsafe { Some(self.0.threadgroupMemoryAlignment() as usize) }
