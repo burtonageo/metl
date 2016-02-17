@@ -19,8 +19,8 @@ pub struct CompileOptions {
     /// version.
     pub language_version: LanguageVersion,
 
-    /// A map of preprocessor macro names to values. Each entry of (`MacroName`, `MacroValue`) corresponds
-    /// to `#define MacroName MacroValue`
+    /// A map of preprocessor macro names to values. Each entry of (`MacroName`, `MacroValue`)
+    /// corresponds to `#define MacroName MacroValue`
     pub preprocessor_macros: HashMap<String, PreprocessorMacroValue>
 }
 
