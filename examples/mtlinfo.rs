@@ -13,8 +13,9 @@ fn main() {
     let devices = mtl::Device::enumerate_all_system_devices();
 
     let num_devices_message = format!("Number of system devices: {}", devices.len());
-    let separator = std::iter::repeat('=').take(num_devices_message.len())
-                                          .collect::<String>();
+    let separator = std::iter::repeat('=')
+                        .take(num_devices_message.len())
+                        .collect::<String>();
 
     println!("{}", num_devices_message);
     println!("{}", separator);
