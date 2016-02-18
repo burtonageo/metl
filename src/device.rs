@@ -119,13 +119,6 @@ impl Device {
 
 impl_from_into_raw!(Device, of protocol "MTLDevice");
 
-/// Internal utility function to get a Device's id without consuming it.
-/// Not exported publicly from this crate.
-#[doc(hidden)]
-pub unsafe fn _device_get_raw(device: &Device) -> id {
-    device.0
-}
-
 #[derive(Clone, Debug)]
 pub enum DeviceError {
     ConstructionFailed,
