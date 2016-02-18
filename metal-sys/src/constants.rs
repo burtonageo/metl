@@ -45,7 +45,7 @@ pub enum MTLFeatureSet {
     MTLFeatureSet_OSX_GPUFamily1_v1 = 10000,
 
     #[doc(hidden)]
-    _non_unary_compile_dummy = -1
+    _non_unary_compile_dummy = 0
 }
 
 /// Controls which argument information is made available for reflection by the creation of the
