@@ -70,6 +70,38 @@ macro_rules! impl_from_into_raw {
             }
         }
     )
+
+    ($wrapper_type:ident, of class $class:expr) => (
+        impl $crate::FromRaw for $wrapper_type {
+            fn from_raw(raw_pointer: id) -> Result<Self, $crate::FromRawError> {
+                use $crate::internal::is_kind_of_class;
+                use cocoa::base::nil;
+                if raw_pointer == nil {
+                    Err($crate::FromRawError::NilPointer)
+                } else if unsafe { is_kind_of_class(raw_pointer, $class) } {
+                    Err($crate::FromRawError::WrongPointerType)
+                } else {
+                    Ok($wrapper_type(raw_pointer))
+                }
+            }
+        }
+        
+        impl $crate::AsRaw for $wrapper_type {
+            fn as_raw(&self) -> &id {
+                &self.0
+            }
+        
+            fn as_raw_mut(&mut self) -> &mut id {
+                &mut self.0
+            }
+        }
+        
+        impl $crate::IntoRaw for $wrapper_type {
+            fn into_raw(self) -> id {
+                self.0
+            }
+        }
+    )
 }
 
 impl Display for FromRawError {

@@ -74,6 +74,8 @@ impl Argument {
     }
 }
 
+impl_from_into_raw!(Argument, of class "MTLArgument");
+
 #[repr(usize)]
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub enum ArgumentAccess {
