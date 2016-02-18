@@ -63,63 +63,15 @@ impl CommandBuffer {
 
 impl_from_into_raw!(CommandBuffer, of protocol "MTLCommandBuffer");
 
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub enum CommandBufferStatus {
-    CommandBufferStatusNotEnqueued,
-    CommandBufferStatusEnqueued,
-    CommandBufferStatusCommitted,
-    CommandBufferStatusScheduled,
-    CommandBufferStatusCompleted,
-    CommandBufferStatusError
-}
-
-impl From<MTLCommandBufferStatus> for CommandBufferStatus {
-    fn from(mtl_status: MTLCommandBufferStatus) -> Self {
-        match mtl_status {
-            MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued => {
-                CommandBufferStatus::CommandBufferStatusNotEnqueued
-            }
-            MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued => {
-                CommandBufferStatus::CommandBufferStatusEnqueued
-            }
-            MTLCommandBufferStatus::MTLCommandBufferStatusCommitted => {
-                CommandBufferStatus::CommandBufferStatusCommitted
-            }
-            MTLCommandBufferStatus::MTLCommandBufferStatusScheduled => {
-                CommandBufferStatus::CommandBufferStatusScheduled
-            }
-            MTLCommandBufferStatus::MTLCommandBufferStatusCompleted => {
-                CommandBufferStatus::CommandBufferStatusCompleted
-            }
-            MTLCommandBufferStatus::MTLCommandBufferStatusError => {
-                CommandBufferStatus::CommandBufferStatusError
-            }
-        }
-    }
-}
-
-impl Into<MTLCommandBufferStatus> for CommandBufferStatus {
-    fn into(self) -> MTLCommandBufferStatus {
-        match self {
-            CommandBufferStatus::CommandBufferStatusNotEnqueued => {
-                MTLCommandBufferStatus::MTLCommandBufferStatusNotEnqueued
-            }
-            CommandBufferStatus::CommandBufferStatusEnqueued => {
-                MTLCommandBufferStatus::MTLCommandBufferStatusEnqueued
-            }
-            CommandBufferStatus::CommandBufferStatusCommitted => {
-                MTLCommandBufferStatus::MTLCommandBufferStatusCommitted
-            }
-            CommandBufferStatus::CommandBufferStatusScheduled => {
-                MTLCommandBufferStatus::MTLCommandBufferStatusScheduled
-            }
-            CommandBufferStatus::CommandBufferStatusCompleted => {
-                MTLCommandBufferStatus::MTLCommandBufferStatusCompleted
-            }
-            CommandBufferStatus::CommandBufferStatusError => {
-                MTLCommandBufferStatus::MTLCommandBufferStatusError
-            }
-        }
+convertible_enum! {
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    enum CommandBufferStatus : MTLCommandBufferStatus {
+        CommandBufferStatusNotEnqueued => MTLCommandBufferStatusNotEnqueued,
+        CommandBufferStatusEnqueued => MTLCommandBufferStatusEnqueued,
+        CommandBufferStatusCommitted => MTLCommandBufferStatusCommitted,
+        CommandBufferStatusScheduled => MTLCommandBufferStatusScheduled,
+        CommandBufferStatusCompleted => MTLCommandBufferStatusCompleted,
+        CommandBufferStatusError => MTLCommandBufferStatusError
     }
 }
 

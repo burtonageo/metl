@@ -9,6 +9,9 @@ extern crate objc;
 #[macro_use]
 mod raw;
 
+#[macro_use]
+mod internal;
+
 mod argument;
 mod command_buffer;
 mod command_queue;
@@ -17,7 +20,6 @@ mod device;
 mod drawable;
 mod error;
 mod function;
-mod internal;
 mod library;
 mod objc_bringup;
 mod value_types;

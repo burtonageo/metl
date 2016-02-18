@@ -24,29 +24,11 @@ impl Function {
 
 impl_from_into_raw!(Function, of protocol "MTLFunction");
 
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub enum FunctionType {
-    Vertex,
-    Fragment,
-    Kernel
-}
-
-impl From<MTLFunctionType> for FunctionType {
-    fn from(function_type: MTLFunctionType) -> Self {
-        match function_type {
-            MTLFunctionType::MTLFunctionTypeVertex => FunctionType::Vertex,
-            MTLFunctionType::MTLFunctionTypeFragment => FunctionType::Fragment,
-            MTLFunctionType::MTLFunctionTypeKernel => FunctionType::Kernel,
-        }
-    }
-}
-
-impl Into<MTLFunctionType> for FunctionType {
-    fn into(self) -> MTLFunctionType {
-        match self {
-            FunctionType::Vertex => MTLFunctionType::MTLFunctionTypeVertex,
-            FunctionType::Fragment => MTLFunctionType::MTLFunctionTypeFragment,
-            FunctionType::Kernel => MTLFunctionType::MTLFunctionTypeKernel,
-        }
+convertible_enum! {
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    enum FunctionType: MTLFunctionType {
+        Vertex => MTLFunctionTypeVertex,
+        Fragment => MTLFunctionTypeFragment,
+        Kernel => MTLFunctionTypeKernel
     }
 }

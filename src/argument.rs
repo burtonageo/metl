@@ -4,7 +4,6 @@ use metal_sys::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLDataType};
 use objc::runtime::YES;
 use std::borrow::Cow;
 use std::ffi::CStr;
-use std::mem;
 
 pub struct Argument(id);
 
@@ -76,130 +75,98 @@ impl Argument {
 
 impl_from_into_raw!(Argument, of class "MTLArgument");
 
-#[repr(usize)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub enum ArgumentAccess {
-    ReadOnly,
-    ReadWrite,
-    WriteOnly
-}
-
-impl From<MTLArgumentAccess> for ArgumentAccess {
-    fn from(argument_access: MTLArgumentAccess) -> Self {
-        unsafe { mem::transmute(argument_access) }
+convertible_enum!{
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    enum ArgumentAccess : MTLArgumentAccess {
+        ReadOnly => MTLArgumentAccessReadOnly,
+        ReadWrite => MTLArgumentAccessReadWrite,
+        WriteOnly => MTLArgumentAccessWriteOnly
     }
 }
 
-impl Into<MTLArgumentAccess> for ArgumentAccess {
-    fn into(self) -> MTLArgumentAccess {
-        unsafe { mem::transmute(self) }
+convertible_enum! {
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    enum ArgumentType : MTLArgumentType {
+        Buffer => MTLArgumentTypeBuffer,
+        ThreadgroupMemory => MTLArgumentTypeThreadgroupMemory,
+        Texture => MTLArgumentTypeTexture,
+        Sampler => MTLArgumentTypeSampler
     }
 }
 
-#[repr(usize)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub enum ArgumentType {
-    Buffer,
-    ThreadgroupMemory,
-    Texture,
-    Sampler
-}
 
-impl From<MTLArgumentType> for ArgumentType {
-    fn from(argument_type: MTLArgumentType) -> Self {
-        unsafe { mem::transmute(argument_type) }
-    }
-}
-
-impl Into<MTLArgumentType> for ArgumentType {
-    fn into(self) -> MTLArgumentType {
-        unsafe { mem::transmute(self) }
-    }
-}
-
-#[repr(usize)]
-#[derive(Clone, Copy, Eq, Hash, PartialEq)]
-pub enum DataType {
-    None,
-    Struct,
-    Array,
-
-    Float,
-    Float2,
-    Float3,
-    Float4,
-
-    Float2x2,
-    Float2x3,
-    Float2x4,
-
-    Float3x2,
-    Float3x3,
-    Float3x4,
-    Float4x2,
-    Float4x3,
-    Float4x4,
-
-    Half,
-    Half2,
-    Half3,
-    Half4,
-
-    Half2x2,
-    Half2x3,
-    Half2x4,
-
-    Half3x2,
-    Half3x3,
-    Half3x4,
-
-    Half4x2,
-    Half4x3,
-    Half4x4,
-
-    Int,
-    Int2,
-    Int3,
-    Int4,
-    UInt,
-    UInt2,
-    UInt3,
-    UInt4,
-
-    Short,
-    Short2,
-    Short3,
-    Short4,
-
-    UShort,
-    UShort2,
-    UShort3,
-    UShort4,
-
-    Char,
-    Char2,
-    Char3,
-    Char4,
-
-    UChar,
-    UChar2,
-    UChar3,
-    UChar4,
-
-    Bool,
-    Bool2,
-    Bool3,
-    Bool4
-}
-
-impl From<MTLDataType> for DataType {
-    fn from(data_type: MTLDataType) -> Self {
-        unsafe { mem::transmute(data_type) }
-    }
-}
-
-impl Into<MTLDataType> for DataType {
-    fn into(self) -> MTLDataType {
-        unsafe { mem::transmute(self) }
+convertible_enum! {
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    enum DataType : MTLDataType {
+        None => MTLDataTypeNone,
+        Struct => MTLDataTypeStruct,
+        Array => MTLDataTypeArray,
+    
+        Float => MTLDataTypeFloat,
+        Float2 => MTLDataTypeFloat2,
+        Float3 => MTLDataTypeFloat3,
+        Float4 => MTLDataTypeFloat4,
+    
+        Float2x2 => MTLDataTypeFloat2x2,
+        Float2x3 => MTLDataTypeFloat2x3,
+        Float2x4 => MTLDataTypeFloat2x4,
+    
+        Float3x2 => MTLDataTypeFloat3x2,
+        Float3x3 => MTLDataTypeFloat3x3,
+        Float3x4 => MTLDataTypeFloat3x4,
+        Float4x2 => MTLDataTypeFloat4x2,
+        Float4x3 => MTLDataTypeFloat4x3,
+        Float4x4 => MTLDataTypeFloat4x4,
+    
+        Half => MTLDataTypeHalf,
+        Half2 => MTLDataTypeHalf2,
+        Half3 => MTLDataTypeHalf3,
+        Half4 => MTLDataTypeHalf4,
+    
+        Half2x2 => MTLDataTypeHalf2x2,
+        Half2x3 => MTLDataTypeHalf2x3,
+        Half2x4 => MTLDataTypeHalf2x4,
+    
+        Half3x2 => MTLDataTypeHalf3x2,
+        Half3x3 => MTLDataTypeHalf3x3,
+        Half3x4 => MTLDataTypeHalf3x4,
+    
+        Half4x2 => MTLDataTypeHalf4x2,
+        Half4x3 => MTLDataTypeHalf4x3,
+        Half4x4 => MTLDataTypeHalf4x4,
+    
+        Int => MTLDataTypeInt,
+        Int2 => MTLDataTypeInt2,
+        Int3 => MTLDataTypeInt3,
+        Int4 => MTLDataTypeInt4,
+        UInt => MTLDataTypeUInt,
+        UInt2 => MTLDataTypeUInt2,
+        UInt3 => MTLDataTypeUInt3,
+        UInt4 => MTLDataTypeUInt4,
+    
+        Short => MTLDataTypeShort,
+        Short2 => MTLDataTypeShort2,
+        Short3 => MTLDataTypeShort3,
+        Short4 => MTLDataTypeShort4,
+    
+        UShort => MTLDataTypeUShort,
+        UShort2 => MTLDataTypeUShort2,
+        UShort3 => MTLDataTypeUShort3,
+        UShort4 => MTLDataTypeUShort4,
+    
+        Char => MTLDataTypeChar,
+        Char2 => MTLDataTypeChar2,
+        Char3 => MTLDataTypeChar3,
+        Char4 => MTLDataTypeChar4,
+    
+        UChar => MTLDataTypeUChar,
+        UChar2 => MTLDataTypeUChar2,
+        UChar3 => MTLDataTypeUChar3,
+        UChar4 => MTLDataTypeUChar4,
+    
+        Bool => MTLDataTypeBool,
+        Bool2 => MTLDataTypeBool2,
+        Bool3 => MTLDataTypeBool3,
+        Bool4 => MTLDataTypeBool4
     }
 }
