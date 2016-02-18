@@ -59,7 +59,7 @@ impl CommandBuffer {
         unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label.as_ref())) }
     }
 
-    pub fn get_label(&self) -> Cow<str> {
+    pub fn label(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
     }
 }
