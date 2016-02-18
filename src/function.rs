@@ -1,7 +1,7 @@
 use cocoa::base::id;
 use cocoa::foundation::NSString;
 use std::borrow::Cow;
-use std::convert::{From, Into};
+use std::convert::From;
 use std::ffi::CStr;
 use sys::{MTLFunction, MTLFunctionType};
 
