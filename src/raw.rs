@@ -69,7 +69,7 @@ macro_rules! impl_from_into_raw {
                 self.0
             }
         }
-    )
+    );
 
     ($wrapper_type:ident, of class $class:expr) => (
         impl $crate::FromRaw for $wrapper_type {
