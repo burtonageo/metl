@@ -20,8 +20,8 @@ impl StructType {
 	}
 
 	pub fn member_by_name(&self, name: &str) -> Option<StructMember> {
-		let member_name_nsstr = NSString::alloc(nil).init_str(name);
-		FromRaw::from_raw(self.0.memberByName(member_name_nsstr)).ok()
+		let member_name_nsstr = unsafe { NSString::alloc(nil).init_str(name) };
+		FromRaw::from_raw(unsafe { self.0.memberByName(member_name_nsstr) }).ok()
 	}
 }
 

@@ -22,6 +22,7 @@ mod error;
 mod function;
 mod library;
 mod objc_bringup;
+mod struct_member;
 mod struct_type;
 mod value_types;
 
@@ -40,5 +41,6 @@ pub use error::NSError;
 pub use function::{Function, FunctionType};
 pub use library::{Library, LibraryError, LibraryErrorType};
 pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
+pub use struct_member::StructMember;
 pub use struct_type::StructType;
 pub use value_types::{ClearColor, Origin, Region, ScissorRect, Size, Viewport};
