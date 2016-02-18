@@ -10,6 +10,9 @@ use {AsRaw, Drawable};
 
 pub struct CommandBuffer(id);
 
+unsafe impl Send for CommandBuffer {}
+unsafe impl Sync for CommandBuffer {}
+
 impl CommandBuffer {
     pub fn enqueue(&mut self) {
         unsafe { self.0.enqueue() }
