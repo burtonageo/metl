@@ -1,6 +1,6 @@
 use cocoa::base::{class, id, nil};
 use cocoa::foundation::NSString;
-use objc::runtime::{BOOL, NO};
+use objc::runtime::{BOOL, NO, YES};
 
 pub unsafe fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
     #[link(name = "Foundation", kind = "framework")]
@@ -15,6 +15,32 @@ pub unsafe fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
 }
 
 pub unsafe fn is_kind_of_class(object: id, class_name: &str) -> bool {
+    let class = class(class_name);
     let is_kind_of_class: BOOL = msg_send![object, isKindOfClass:class];
-    is_kind_of_class == NO
+    is_kind_of_class == YES
+}
+
+#[test]
+fn test_conforms_to_protocol() {
+    unsafe {
+        let nsstr = NSString::alloc(nil).init_str("Hello, world");
+        assert!(conforms_to_protocol(nsstr, "NSObjectProtocol"));
+    }
+}
+
+#[test]
+fn test_is_kind_of_class() {
+    unsafe {
+        let nsstr = NSString::alloc(nil).init_str("Hello, world");
+        assert!(is_kind_of_class(nsstr, "NSString"));
+    }
+}
+
+#[test]
+fn test_is_not_kind_of_class() {
+    use ::sys::MTLCompileOptions;
+    unsafe {
+        let compile_opts = MTLCompileOptions::new(nil);
+        assert!(!is_kind_of_class(compile_opts, "NSString"));
+    }
 }
