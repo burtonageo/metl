@@ -37,7 +37,7 @@ fn set_get_command_queue_label() {
     let dummy_command_queue_name = "foo";
     command_queue.set_label(dummy_command_queue_name);
 
-    assert_eq!(command_queue.get_label().into_owned(),
+    assert_eq!(command_queue.label().into_owned(),
                dummy_command_queue_name.to_string());
 }
 
@@ -103,7 +103,7 @@ fn compile_opts_creation_is_correct() {
 fn create_invalid_shader() {
     let mut device = Device::system_default_device().unwrap();
     const BAD_SHADER: &'static str = r"abcdefghijklmnopqrstuvwxyz";
-    match device.new_library_with_source(BAD_SHADER, &Default::default()) {
+    match device.new_library_with_source(&BAD_SHADER, &Default::default()) {
         Ok(_) => panic!("Incorrect result: expected an error"),
         Err(error) => {
             if let LibraryErrorType::SourceError = error.error_type {
@@ -143,7 +143,7 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
             return vert.color;
         }
     ";
-    let library = device.new_library_with_source(SHADER, &Default::default()).ok().unwrap();
+    let library = device.new_library_with_source(&SHADER, &Default::default()).ok().unwrap();
     let names = library.function_names();
     assert_eq!(names[0], "vertex_main");
     assert_eq!(names[1], "fragment_main");
