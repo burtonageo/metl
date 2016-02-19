@@ -15,8 +15,9 @@ mod functions;
 mod protocols;
 mod types;
 
-pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLCompileOptions, MTLDataType,
-                  MTLStructMember, MTLStructType, MTLVertexAttribute};
+pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
+                  MTLCompileOptions, MTLDataType, MTLStructMember, MTLStructType,
+                  MTLVertexAttribute};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};

@@ -16,7 +16,7 @@ use MTLDataType;
 pub trait MTLArrayType {
     /// The number of elements in the array. (read-only)
     unsafe fn arrayLength(self) -> NSUInteger;
-    
+
     /// The data type of the array’s elements. (read-only)
     ///
     /// #Discussion
@@ -48,19 +48,19 @@ impl MTLArrayType for id {
     unsafe fn arrayLength(self) -> NSUInteger {
         msg_send![self, arrayLength]
     }
-    
+
     unsafe fn elementType(self) -> MTLDataType {
         msg_send![self, elementType]
     }
-    
+
     unsafe fn stride(self) -> NSUInteger {
         msg_send![self, stride]
     }
-    
+
     unsafe fn elementArrayType(self) -> id {
         msg_send![self, elementArrayType]
     }
-    
+
     unsafe fn elementStructType(self) -> id {
         msg_send![self, elementStructType]
     }
