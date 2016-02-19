@@ -10,6 +10,7 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
+use sys::MTLFeatureSet;
 use {CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
      LibraryError, LibraryErrorType, Size};
 
@@ -37,6 +38,34 @@ impl Device {
         }
 
         devices_vec
+    }
+
+    pub fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
+        unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
+    }
+    
+    pub fn is_headless(&self) -> bool {
+        unsafe { self.0.headless() == YES }
+    }
+    
+    pub fn is_low_power(&self) -> bool {
+        unsafe { self.0.lowPower() == YES }
+    }
+    
+    pub fn max_threads_per_group(&self) -> Size {
+        unsafe { self.0.maxThreadsPerGroup().into() }
+    }
+    
+    pub fn name(&self) -> Cow<str> {
+        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
+    }
+    
+    pub fn supports_feature_set(&self, feature_set: FeatureSet) -> bool {
+        unsafe { self.0.supportsFeatureSet(feature_set.into()) == YES }
+    }
+    
+    pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
+        unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) == YES }
     }
 
     pub fn new_command_queue(&mut self) -> Result<CommandQueue, CommandQueueError> {
@@ -91,33 +120,32 @@ impl Device {
     pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, LibraryError> {
         unimplemented!();
     }
-
-    pub fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
-        unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
-    }
-
-    pub fn is_headless(&self) -> bool {
-        unsafe { self.0.headless() == YES }
-    }
-
-    pub fn is_low_power(&self) -> bool {
-        unsafe { self.0.lowPower() == YES }
-    }
-
-    pub fn max_threads_per_group(&self) -> Size {
-        unsafe { self.0.maxThreadsPerGroup().into() }
-    }
-
-    pub fn name(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
-    }
-
-    pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
-        unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) == YES }
-    }
 }
 
 impl_from_into_raw!(Device, of protocol "MTLDevice");
+
+#[cfg(target_os = "ios")]
+convertible_enum! {
+    #[allow(non_camel_case_types)]
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    pub enum FeatureSet: MTLFeatureSet {
+        iOSGpuFamily1_v1 => MTLFeatureSet_iOS_GPUFamily1_v1,
+        iOSGpuFamily2_v1 => MTLFeatureSet_iOS_GPUFamily2_v1,
+        iOSGpuFamily1_v2 => MTLFeatureSet_iOS_GPUFamily1_v2,
+        iOSGpuFamily2_v2 => MTLFeatureSet_iOS_GPUFamily2_v2,
+        iOSGpuFamily3_v1 => MTLFeatureSet_iOS_GPUFamily3_v1
+    }
+}
+
+#[cfg(target_os = "macos")]
+convertible_enum! {
+    #[allow(non_camel_case_types)]
+    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    enum FeatureSet: MTLFeatureSet {
+        OsxGpuFamily1_v1 => MTLFeatureSet_OSX_GPUFamily1_v1,
+        _non_unary_compile_dummy => _non_unary_compile_dummy
+    }
+}
 
 #[derive(Clone, Debug)]
 pub enum DeviceError {

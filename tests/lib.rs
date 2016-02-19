@@ -3,7 +3,7 @@ extern crate cocoa;
 
 use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
-use mtl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion};
+use mtl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion, FeatureSet};
 use mtl::LibraryErrorType;
 use mtl::{FromRaw, FromRawError, IntoRaw};
 use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
@@ -27,6 +27,14 @@ fn get_all_devices() {
 fn get_device_name() {
     let device = Device::system_default_device().unwrap();
     assert!(!device.name().into_owned().is_empty());
+}
+
+#[cfg(target_os = "macos")]
+#[test]
+fn device_supports_base_features() {
+    let base_osx_feature_set = FeatureSet::OsxGpuFamily1_v1;
+    let device = Device::system_default_device().unwrap();
+    assert!(device.supports_feature_set(base_osx_feature_set));
 }
 
 #[test]

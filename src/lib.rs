@@ -37,7 +37,7 @@ pub use command_buffer::CommandBuffer;
 pub use command_queue::{CommandQueue, CommandQueueError};
 pub use compile_options::{CompileOptions, LanguageVersion, PreprocessorMacroValue,
                           SpecificLanguageVersion};
-pub use device::{Device, DeviceError};
+pub use device::{Device, DeviceError, FeatureSet};
 pub use drawable::Drawable;
 pub use error::NSError;
 pub use function::{Function, FunctionType};
