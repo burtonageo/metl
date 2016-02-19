@@ -1,6 +1,5 @@
 use cocoa::base::id;
 use cocoa::foundation::NSUInteger;
-use objc::runtime::BOOL;
 use MTLTextureType;
 
 /// A `MTLArgument` object describes a single argument to a Metal function. Your
