@@ -15,12 +15,12 @@ unsafe impl Send for CommandQueue {}
 unsafe impl Sync for CommandQueue {}
 
 impl CommandQueue {
-    pub fn command_buffer(&mut self) -> CommandBuffer {
+    pub fn new_command_buffer(&mut self) -> CommandBuffer {
         let cmd_buf = unsafe { self.0.commandBuffer() };
         FromRaw::from_raw(cmd_buf).unwrap()
     }
 
-    pub fn command_buffer_with_unretained_references(&mut self) -> CommandBuffer {
+    pub fn new_command_buffer_with_unretained_references(&mut self) -> CommandBuffer {
         let cmd_buf = unsafe { self.0.commandBufferWithUnretainedReferences() };
         FromRaw::from_raw(cmd_buf).unwrap()
     }
