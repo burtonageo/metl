@@ -1,12 +1,12 @@
 extern crate mtl;
 extern crate cocoa;
 
+use cocoa::base::{BOOL, nil};
+use cocoa::foundation::NSString;
 use mtl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion};
 use mtl::LibraryErrorType;
 use mtl::{FromRaw, FromRawError, IntoRaw};
 use mtl::sys::{MTLCompileOptions, MTLLanguageVersion};
-use cocoa::base::{BOOL, nil};
-use cocoa::foundation::NSString;
 
 #[test]
 fn get_device() {
