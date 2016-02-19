@@ -62,12 +62,11 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_library_with_file<P: AsRef<Path>>(&mut self, file_path: P)
-                                                 -> Result<Library, LibraryError> {
+    pub fn new_library_with_file(&mut self, file_path: &AsRef<Path>) -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
-    pub fn new_library_with_source<S: AsRef<str>>(&mut self, source: S,
+    pub fn new_library_with_source(&mut self, source: &AsRef<str>,
                                                   compile_options: &CompileOptions)
                                                   -> Result<Library, LibraryError> {
         unsafe {
