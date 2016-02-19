@@ -1,6 +1,5 @@
 use cocoa::base::id;
 use cocoa::foundation::NSUInteger;
-use objc::runtime::BOOL;
 use MTLDataType;
 
 /// A `MTLArrayType` object provides details about a `MTLStructMember` object
