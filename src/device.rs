@@ -62,13 +62,14 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_library_with_file(&mut self, file_path: &AsRef<Path>) -> Result<Library, LibraryError> {
+    #[cfg_attr(rustfmt, rustfmt_skip)]
+    pub fn new_library_with_file(&mut self, file_path: &AsRef<Path>)
+                                 -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
-    pub fn new_library_with_source(&mut self, source: &AsRef<str>,
-                                                  compile_options: &CompileOptions)
-                                                  -> Result<Library, LibraryError> {
+    pub fn new_library_with_source(&mut self, source: &AsRef<str>, compile_options: &CompileOptions)
+                                   -> Result<Library, LibraryError> {
         unsafe {
             let source = NSString::alloc(nil).init_str(source.as_ref());
             let options = compile_options.mtl_compile_options();

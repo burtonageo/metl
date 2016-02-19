@@ -85,17 +85,17 @@ macro_rules! impl_from_into_raw {
                 }
             }
         }
-        
+
         impl $crate::AsRaw for $wrapper_type {
             fn as_raw(&self) -> &id {
                 &self.0
             }
-        
+
             fn as_raw_mut(&mut self) -> &mut id {
                 &mut self.0
             }
         }
-        
+
         impl $crate::IntoRaw for $wrapper_type {
             fn into_raw(self) -> id {
                 self.0

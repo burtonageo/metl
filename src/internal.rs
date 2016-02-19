@@ -10,7 +10,7 @@ macro_rules! convertible_enum {
         pub enum $enum_nm {
             $($(#[$arm_attrs])* $arm),*
         }
-        
+
         impl $crate::std::convert::Into<$convert> for $enum_nm {
             fn into(self) -> $convert {
                 match self {
@@ -65,7 +65,7 @@ fn test_is_kind_of_class() {
 
 #[test]
 fn test_is_not_kind_of_class() {
-    use ::sys::MTLCompileOptions;
+    use sys::MTLCompileOptions;
     unsafe {
         let compile_opts = MTLCompileOptions::new(nil);
         assert!(!is_kind_of_class(compile_opts, "NSString"));
