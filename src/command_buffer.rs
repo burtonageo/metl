@@ -55,7 +55,7 @@ impl CommandBuffer {
         unsafe { self.0.retainedReferences() == YES }
     }
 
-    pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
+    pub fn set_label(&mut self, label: &AsRef<str>) {
         unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label.as_ref())) }
     }
 

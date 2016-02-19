@@ -34,11 +34,11 @@ fn set_get_command_queue_label() {
     let mut device = Device::system_default_device().unwrap();
     let mut command_queue = device.new_command_queue().unwrap();
 
-    let dummy_command_queue_name = "foo";
-    command_queue.set_label(dummy_command_queue_name);
+    const DUMMY_COMMAND_QUEUE_NAME: &'static str = "foo";
+    command_queue.set_label(&DUMMY_COMMAND_QUEUE_NAME);
 
-    assert_eq!(command_queue.label().into_owned(),
-               dummy_command_queue_name.to_string());
+    assert_eq!(command_queue.label(),
+               DUMMY_COMMAND_QUEUE_NAME);
 }
 
 #[test]

@@ -12,7 +12,7 @@ use {FromRaw, FromRawError, Function};
 pub struct Library(id);
 
 impl Library {
-    pub fn new_function_with_name<S: AsRef<str>>(&mut self, function_name: S) -> Option<Function> {
+    pub fn new_function_with_name(&mut self, function_name: &AsRef<str>) -> Option<Function> {
         unsafe {
             let func_name_nsstr = NSString::alloc(nil).init_str(function_name.as_ref());
             let function = self.0.newFunctionWithName(func_name_nsstr);
@@ -33,7 +33,7 @@ impl Library {
         names_vec
     }
 
-    pub fn set_label<S: AsRef<str>>(&mut self, label: S) {
+    pub fn set_label(&mut self, label: &AsRef<str>) {
         unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label.as_ref())) }
     }
 
