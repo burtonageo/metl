@@ -34,7 +34,7 @@ pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState, 
                     MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
                     MTLNewRenderPipleineStateCompletionHandler, MTLRenderPipelineError,
-                    MTLRenderPipelineErrorDomain, MTLTexture, MTLTextureType};
+                    MTLRenderPipelineErrorDomain, MTLTexture, MTLTextureType, MTLTextureUsage};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
