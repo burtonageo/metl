@@ -4,7 +4,7 @@ use metal_sys::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLDataType};
 use objc::runtime::YES;
 use std::borrow::Cow;
 use std::ffi::CStr;
-use {FromRaw, StructType};
+use {FromRaw, StructType, TextureType};
 
 pub struct Argument(id);
 
@@ -70,8 +70,12 @@ impl Argument {
         }
     }
 
-    pub fn texture_type(&self) -> ! {
-        unimplemented!()
+    pub fn texture_type(&self) -> Option<TextureType> {
+        if self.get_type() == ArgumentType::Texture {
+            unsafe { Some(self.0.textureType().into()) }
+        } else {
+            None
+        }
     }
 
     pub fn threadgroup_memory_alignment(&self) -> Option<usize> {
