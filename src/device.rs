@@ -43,27 +43,27 @@ impl Device {
     pub fn is_depth24_stencil8_pixel_format_supported(&self) -> bool {
         unsafe { self.0.depth24Stencil8PixelFormatSupported() == YES }
     }
-    
+
     pub fn is_headless(&self) -> bool {
         unsafe { self.0.headless() == YES }
     }
-    
+
     pub fn is_low_power(&self) -> bool {
         unsafe { self.0.lowPower() == YES }
     }
-    
+
     pub fn max_threads_per_group(&self) -> Size {
         unsafe { self.0.maxThreadsPerGroup().into() }
     }
-    
+
     pub fn name(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
     }
-    
+
     pub fn supports_feature_set(&self, feature_set: FeatureSet) -> bool {
         unsafe { self.0.supportsFeatureSet(feature_set.into()) == YES }
     }
-    
+
     pub fn supports_texture_sample_count(&self, sample_count: usize) -> bool {
         unsafe { self.0.supportsTextureSampleCount(sample_count as NSUInteger) == YES }
     }
