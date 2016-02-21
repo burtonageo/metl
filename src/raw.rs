@@ -46,7 +46,7 @@ macro_rules! impl_from_into_raw {
                 use cocoa::base::nil;
                 if raw_pointer == nil {
                     Err($crate::FromRawError::NilPointer)
-                } else if unsafe { conforms_to_protocol(raw_pointer, $protocol) } {
+                } else if conforms_to_protocol(raw_pointer, $protocol) {
                     Err($crate::FromRawError::WrongPointerType)
                 } else {
                     Ok($wrapper_type(raw_pointer))
@@ -78,7 +78,7 @@ macro_rules! impl_from_into_raw {
                 use cocoa::base::nil;
                 if raw_pointer == nil {
                     Err($crate::FromRawError::NilPointer)
-                } else if unsafe { is_kind_of_class(raw_pointer, $class) } {
+                } else if is_kind_of_class(raw_pointer, $class) {
                     Err($crate::FromRawError::WrongPointerType)
                 } else {
                     Ok($wrapper_type(raw_pointer))
