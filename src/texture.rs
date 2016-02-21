@@ -5,6 +5,8 @@ use objc::runtime::YES;
 use std::ops::Range;
 use sys::{MTLTexture, MTLTextureType, MTLTextureUsage};
 use {FromRaw, FromRawError, PixelFormat, Region, Resource, Size};
+#[cfg(target_os = "ios")]
+use Buffer;
 
 pub struct Texture(id);
 
@@ -145,9 +147,8 @@ impl Texture {}
 
 #[cfg(target_os = "ios")]
 impl Texture {
-    pub fn buffer(&self) -> Option<()> {
-        // TODO(George): Model this correctly
-        unimplemented!();
+    pub fn buffer(&self) -> Option<Buffer> {
+        unsafe { FromRaw::from_raw(MTLTexture::buffer(self.0)).ok() }
     }
 
     pub fn buffer_offset(&self) -> usize {
