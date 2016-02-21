@@ -43,7 +43,7 @@ pub trait MTLTexture {
 
     unsafe fn replaceRegion_mipmapLevel_withBytes_bytesPerRow(self, region: MTLRegion,
                                                               level: NSUInteger,
-                                                              pixelBytes: *mut c_void,
+                                                              pixelBytes: *const c_void,
                                                               bytesPerRow: NSUInteger);
 
     unsafe fn getBytes_bytesPerRow_bytesPerImage_fromRegion_mipmapLevel_slice(
@@ -56,15 +56,13 @@ pub trait MTLTexture {
                                                           region: MTLRegion,
                                                           mipmapLevel: NSUInteger);
 
-    unsafe fn newTextureViewWithPixelFormat(format: MTLPixelFormat) -> id {
+    unsafe fn newTextureViewWithPixelFormat(_: Self, format: MTLPixelFormat) -> id {
         msg_send![class("MTLTexture"), newTextureViewWithPixelFormat:format]
     }
 
-    unsafe fn newTextureViewWithPixelFormat_textureType_levels_slices(format: MTLPixelFormat,
-                                                                      textureType: MTLTextureType,
-                                                                      levels: CFRange,
-                                                                      slices: NSUInteger)
-                                                                      -> id {
+    unsafe fn newTextureViewWithPixelFormat_textureType_levels_slices(
+        _: Self, format: MTLPixelFormat, textureType: MTLTextureType,
+        levels: CFRange, slices: NSUInteger) -> id {
         msg_send![class("MTLTexture"), newTextureViewWithPixelFormat:format
                                                          textureType:textureType
                                                               levels:levels
@@ -164,7 +162,7 @@ impl MTLTexture for id {
     }
     unsafe fn replaceRegion_mipmapLevel_withBytes_bytesPerRow(self, region: MTLRegion,
                                                               level: NSUInteger,
-                                                              pixelBytes: *mut c_void,
+                                                              pixelBytes: *const c_void,
                                                               bytesPerRow: NSUInteger) {
         msg_send![self, replaceRegion:region
                           mipmapLevel:level
