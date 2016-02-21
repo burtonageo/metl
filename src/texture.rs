@@ -70,9 +70,11 @@ impl Texture {
                      mipmap_level: usize) {
         bytes_storage.resize(self.width() * self.height() * self.depth(), 0u8);
         unsafe {
-            self.0.getBytes_bytesPerRow_fromRegion_mipmapLevel(
-                bytes_storage.as_mut_ptr() as *mut _, bytes_per_row as NSUInteger,
-                region.into(), mipmap_level as NSUInteger);
+            self.0
+                .getBytes_bytesPerRow_fromRegion_mipmapLevel(bytes_storage.as_mut_ptr() as *mut _,
+                                                             bytes_per_row as NSUInteger,
+                                                             region.into(),
+                                                             mipmap_level as NSUInteger);
         }
         bytes_storage.shrink_to_fit();
     }
