@@ -28,7 +28,7 @@ fn main() {
             Err(e) => {
                 use std::error::Error;
                 println!("{}", e.description());
-                break;
+                continue
             }
         };
 
