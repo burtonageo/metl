@@ -2,7 +2,7 @@ use sys::{MTLCompareFunction, MTLPipelineOption, MTLPixelFormat};
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum PipelineOption: MTLPipelineOption {
+    pub enum PipelineOption: MTLPipelineOption {
         None => MTLPipelineOptionNone,
         ArgumentInfo => MTLPipelineOptionArgumentInfo,
         BufferTypeInfo => MTLPipelineOptionBufferTypeInfo
@@ -11,7 +11,7 @@ convertible_enum! {
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum CompareFunction: MTLCompareFunction {
+    pub enum CompareFunction: MTLCompareFunction {
         Never => MTLCompareFunctionNever,
         Less => MTLCompareFunctionLess,
         Equal => MTLCompareFunctionEqual,
@@ -26,7 +26,7 @@ convertible_enum! {
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum PixelFormat: MTLPixelFormat {
+    pub enum PixelFormat: MTLPixelFormat {
         Invalid => MTLPixelFormatInvalid,
         A8Unorm => MTLPixelFormatA8Unorm,
         R8Unorm => MTLPixelFormatR8Unorm,

@@ -141,7 +141,7 @@ convertible_enum! {
 convertible_enum! {
     #[allow(non_camel_case_types)]
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum FeatureSet: MTLFeatureSet {
+    pub enum FeatureSet: MTLFeatureSet {
         OsxGpuFamily1_v1 => MTLFeatureSet_OSX_GPUFamily1_v1,
         _non_unary_compile_dummy => _non_unary_compile_dummy
     }

@@ -68,7 +68,7 @@ impl_from_into_raw!(CommandBuffer, of protocol "MTLCommandBuffer");
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum CommandBufferStatus : MTLCommandBufferStatus {
+    pub enum CommandBufferStatus : MTLCommandBufferStatus {
         CommandBufferStatusNotEnqueued => MTLCommandBufferStatusNotEnqueued,
         CommandBufferStatusEnqueued => MTLCommandBufferStatusEnqueued,
         CommandBufferStatusCommitted => MTLCommandBufferStatusCommitted,

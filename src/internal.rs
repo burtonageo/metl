@@ -3,7 +3,7 @@ use cocoa::foundation::NSString;
 use objc::runtime::{BOOL, NO, YES};
 
 macro_rules! convertible_enum {
-    ($(#[$top_lvl_attrs:meta])* enum $enum_nm:ident : $convert:ident {
+    ($(#[$top_lvl_attrs:meta])* pub enum $enum_nm:ident : $convert:ident {
         $($(#[$arm_attrs:meta])* $arm:ident => $other:ident),*
     }) => (
         $(#[$top_lvl_attrs])*
@@ -11,22 +11,43 @@ macro_rules! convertible_enum {
             $($(#[$arm_attrs])* $arm),*
         }
 
-        impl $crate::std::convert::Into<$convert> for $enum_nm {
+        convertible_enum!(@_impl conversion from $enum_nm to $convert {
+            $($arm => $other),*
+        });
+    );
+
+    ($(#[$top_lvl_attrs:meta])* enum $enum_nm:ident : $convert:ident {
+        $($(#[$arm_attrs:meta])* $arm:ident => $other:ident),*
+    }) => (
+        $(#[$top_lvl_attrs])*
+        enum $enum_nm {
+            $($(#[$arm_attrs])* $arm),*
+        }
+    
+        convertible_enum!(@_impl conversion from $enum_nm to $convert {
+            $($arm => $other),*
+        });
+    );
+
+    (@_impl conversion from $enum_nm:ident to $convert:ident {
+        $($arm:ident => $other:ident),*
+    }) => (
+        impl ::std::convert::Into<$convert> for $enum_nm {
             fn into(self) -> $convert {
                 match self {
                     $($enum_nm::$arm => $convert::$other),*
                 }
             }
         }
-
-        impl $crate::std::convert::From<$convert> for $enum_nm {
+        
+        impl ::std::convert::From<$convert> for $enum_nm {
             fn from(other: $convert) -> Self {
                 match other {
                     $($convert::$other => $enum_nm::$arm),*
                 }
             }
         }
-    )
+    );
 }
 
 pub fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {

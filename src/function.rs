@@ -26,7 +26,7 @@ impl_from_into_raw!(Function, of protocol "MTLFunction");
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum FunctionType: MTLFunctionType {
+    pub enum FunctionType: MTLFunctionType {
         Vertex => MTLFunctionTypeVertex,
         Fragment => MTLFunctionTypeFragment,
         Kernel => MTLFunctionTypeKernel

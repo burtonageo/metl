@@ -99,7 +99,7 @@ impl_from_into_raw!(Argument, of class "MTLArgument");
 
 convertible_enum!{
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum ArgumentAccess : MTLArgumentAccess {
+    pub enum ArgumentAccess : MTLArgumentAccess {
         ReadOnly => MTLArgumentAccessReadOnly,
         ReadWrite => MTLArgumentAccessReadWrite,
         WriteOnly => MTLArgumentAccessWriteOnly
@@ -108,7 +108,7 @@ convertible_enum!{
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum ArgumentType : MTLArgumentType {
+    pub enum ArgumentType : MTLArgumentType {
         Buffer => MTLArgumentTypeBuffer,
         ThreadgroupMemory => MTLArgumentTypeThreadgroupMemory,
         Texture => MTLArgumentTypeTexture,
@@ -119,7 +119,7 @@ convertible_enum! {
 
 convertible_enum! {
     #[derive(Clone, Copy, Eq, Hash, PartialEq)]
-    enum DataType : MTLDataType {
+    pub enum DataType : MTLDataType {
         None => MTLDataTypeNone,
         Struct => MTLDataTypeStruct,
         Array => MTLDataTypeArray,

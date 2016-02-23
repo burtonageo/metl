@@ -105,7 +105,7 @@ convertible_enum! {
     // An underscore is a good separator for numbers
     #[allow(non_camel_case_types)]
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-    enum SpecificLanguageVersion: MTLLanguageVersion {
+    pub enum SpecificLanguageVersion: MTLLanguageVersion {
         // each arm should have a doc comment above it, but it's broken due to
         // issue #24189
 

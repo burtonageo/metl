@@ -164,7 +164,7 @@ impl_from_into_raw!(Texture, of protocol "MTLTexture");
 
 convertible_enum! {
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-    enum TextureType: MTLTextureType {
+    pub enum TextureType: MTLTextureType {
         Type1D => MTLTextureType1D,
         Type1DArray => MTLTextureType1DArray,
         Type2D => MTLTextureType2D,
@@ -177,7 +177,7 @@ convertible_enum! {
 
 convertible_enum! {
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-    enum TextureUsage: MTLTextureUsage {
+    pub enum TextureUsage: MTLTextureUsage {
         Unknown => MTLTextureUsageUnknown,
         ShaderRead => MTLTextureUsageShaderRead,
         ShaderWrite => MTLTextureUsageShaderWrite,
