@@ -47,7 +47,7 @@ impl CommandBuffer {
         unsafe { self.0.waitUntilCompleted() }
     }
 
-    pub fn get_status(&self) -> CommandBufferStatus {
+    pub fn status(&self) -> CommandBufferStatus {
         unsafe { self.0.status().into() }
     }
 
