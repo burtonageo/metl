@@ -20,6 +20,8 @@ impl NSError {
     }
 
     pub fn localized_description(&self) -> &str {
-        unsafe { CStr::from_ptr(self.0.localizedDescription().UTF8String()).to_str().unwrap_or(&"") }
+        unsafe {
+            CStr::from_ptr(self.0.localizedDescription().UTF8String()).to_str().unwrap_or(&"")
+        }
     }
 }
