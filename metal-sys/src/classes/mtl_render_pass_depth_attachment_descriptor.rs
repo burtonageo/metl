@@ -21,7 +21,7 @@ pub trait MTLRenderPassDepthAttachmentDescriptor {
     /// The default value is `MTLMultisampleDepthResolveFilterSample0`.
     unsafe fn depthResolveFilter(self) -> MTLMultisampleDepthResolveFilter;
     unsafe fn setDepthResolveFilter(self, resolveFilter: MTLMultisampleDepthResolveFilter);
-    
+
     unsafe fn copy(self) -> Self;
 }
 
@@ -52,5 +52,5 @@ impl MTLRenderPassDepthAttachmentDescriptor for id {
 pub enum MTLMultisampleDepthResolveFilter {
     MTLMultisampleDepthResolveFilterSample0 = 0,
     MTLMultisampleDepthResolveFilterMin = 1,
-    MTLMultisampleDepthResolveFilterMax = 2,
+    MTLMultisampleDepthResolveFilterMax = 2
 }
