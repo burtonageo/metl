@@ -5,36 +5,6 @@ use libc::c_void;
 use objc::runtime::BOOL;
 use {MTLPixelFormat, MTLRegion};
 
-#[cfg(target_os = "macos")]
-macro_rules! texture_platform_methods_impl {
-    () => {
-        unsafe fn ioSurface(self) -> id {
-            msg_send![self, ioSurface]
-        }
-        unsafe fn ioSurfacePlane(self) -> NSUInteger {
-            msg_send![self, ioSurfacePlane]
-        }
-    }
-}
-
-#[cfg(target_os = "ios")]
-macro_rules! texture_platform_methods_impl {
-    () => {
-        unsafe fn buffer(self) -> id {
-            msg_send![self, buffer]
-        }
-
-        unsafe fn bufferOffset(self) -> NSUInteger {
-            msg_send![self, bufferOffset]
-        }
-
-        unsafe fn bufferBytesPerRow(self) -> id {
-            msg_send![self, bufferBytesPerRow]
-        }
-    }
-}
-
-#[cfg(target_os = "macos")]
 pub trait MTLTexture {
     unsafe fn replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage(
         self, region: MTLRegion, level: NSUInteger, slice: NSUInteger,
@@ -60,62 +30,8 @@ pub trait MTLTexture {
         msg_send![class("MTLTexture"), newTextureViewWithPixelFormat:format]
     }
 
-    unsafe fn newTextureViewWithPixelFormat_textureType_levels_slices(
-        _: Self, format: MTLPixelFormat, textureType: MTLTextureType,
-        levels: CFRange, slices: NSUInteger) -> id {
-        msg_send![class("MTLTexture"), newTextureViewWithPixelFormat:format
-                                                         textureType:textureType
-                                                              levels:levels
-                                                              slices:slices]
-    }
-
-    unsafe fn textureType(self) -> MTLTextureType;
-    unsafe fn pixelFormat(self) -> MTLPixelFormat;
-    unsafe fn width(self) -> NSUInteger;
-    unsafe fn height(self) -> NSUInteger;
-    unsafe fn depth(self) -> NSUInteger;
-    unsafe fn mipmapLevelCount(self) -> NSUInteger;
-    unsafe fn arrayLength(self) -> NSUInteger;
-    unsafe fn sampleCount(self) -> NSUInteger;
-    unsafe fn frameBufferOnly(self) -> BOOL;
-    unsafe fn rootResource(self) -> id;
-    unsafe fn usage(self) -> MTLTextureUsage;
-
-    unsafe fn ioSurface(self) -> id;
-    unsafe fn ioSurfacePlane(self) -> NSUInteger;
-
-    unsafe fn parentTexture(self) -> id;
-    unsafe fn parentRelativeLevel(self) -> NSUInteger;
-    unsafe fn parentRelativeSlice(self) -> NSUInteger;
-}
-
-#[cfg(target_os = "ios")]
-pub trait MTLTexture {
-    unsafe fn replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage(
-        self, region: MTLRegion, level: NSUInteger, slice: NSUInteger,
-        pixelBytes: *const c_void, bytesPerRow: NSUInteger,
-        bytesPerImage: NSUInteger);
-
-    unsafe fn replaceRegion_mipmapLevel_withBytes_bytesPerRow(self, region: MTLRegion,
-                                                              level: NSUInteger,
-                                                              pixelBytes: *mut c_void,
-                                                              bytesPerRow: NSUInteger);
-
-    unsafe fn getBytes_bytesPerRow_bytesPerImage_fromRegion_mipmapLevel_slice(
-        self, pixel_bytes: *mut c_void, bytesPerRow: NSUInteger,
-        bytesPerImage: NSUInteger, region: MTLRegion, mipmapLevel: NSUInteger,
-        slice: NSUInteger);
-
-    unsafe fn getBytes_bytesPerRow_fromRegion_mipmapLevel(self, pixel_bytes: *mut c_void,
-                                                          bytesPerRow: NSUInteger,
-                                                          region: MTLRegion,
-                                                          mipmapLevel: NSUInteger);
-
-    unsafe fn newTextureViewWithPixelFormat(format: MTLPixelFormat) -> id {
-        msg_send![class("MTLTexture"), newTextureViewWithPixelFormat:format]
-    }
-
-    unsafe fn newTextureViewWithPixelFormat_textureType_levels_slices(format: MTLPixelFormat,
+    unsafe fn newTextureViewWithPixelFormat_textureType_levels_slices(_: Self,
+                                                                      format: MTLPixelFormat,
                                                                       textureType: MTLTextureType,
                                                                       levels: CFRange,
                                                                       slices: NSUInteger)
@@ -138,15 +54,22 @@ pub trait MTLTexture {
     unsafe fn rootResource(self) -> id;
     unsafe fn usage(self) -> MTLTextureUsage;
 
+    #[cfg(target_os = "ios")]
     unsafe fn buffer(self) -> id;
+    #[cfg(target_os = "ios")]
     unsafe fn bufferOffset(self) -> NSUInteger;
+    #[cfg(target_os = "ios")]
     unsafe fn bufferBytesPerRow(self) -> NSUInteger;
+
+    #[cfg(target_os = "macos")]
+    unsafe fn ioSurface(self) -> id;
+    #[cfg(target_os = "macos")]
+    unsafe fn ioSurfacePlane(self) -> NSUInteger;
 
     unsafe fn parentTexture(self) -> id;
     unsafe fn parentRelativeLevel(self) -> NSUInteger;
     unsafe fn parentRelativeSlice(self) -> NSUInteger;
 }
-
 
 impl MTLTexture for id {
     unsafe fn replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage(
@@ -235,6 +158,31 @@ impl MTLTexture for id {
         msg_send![self, usage]
     }
 
+    #[cfg(target_os = "ios")]
+    unsafe fn buffer(self) -> id {
+        msg_send![self, buffer]
+    }
+
+    #[cfg(target_os = "ios")]
+    unsafe fn bufferOffset(self) -> NSUInteger {
+        msg_send![self, bufferOffset]
+    }
+
+    #[cfg(target_os = "ios")]
+    unsafe fn bufferBytesPerRow(self) -> id {
+        msg_send![self, bufferBytesPerRow]
+    }
+
+    #[cfg(target_os = "macos")]
+    unsafe fn ioSurface(self) -> id {
+        msg_send![self, ioSurface]
+    }
+
+    #[cfg(target_os = "macos")]
+    unsafe fn ioSurfacePlane(self) -> NSUInteger {
+        msg_send![self, ioSurfacePlane]
+    }
+
     unsafe fn parentTexture(self) -> id {
         msg_send![self, parentTexture]
     }
@@ -246,8 +194,6 @@ impl MTLTexture for id {
     unsafe fn parentRelativeSlice(self) -> NSUInteger {
         msg_send![self, parentRelativeSlice]
     }
-
-    texture_platform_methods_impl!{}
 }
 
 #[repr(usize)]
