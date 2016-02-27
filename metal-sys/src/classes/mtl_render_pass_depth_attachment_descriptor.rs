@@ -22,7 +22,7 @@ pub trait MTLRenderPassDepthAttachmentDescriptor {
     unsafe fn depthResolveFilter(self) -> MTLMultisampleDepthResolveFilter;
     unsafe fn setDepthResolveFilter(self, resolveFilter: MTLMultisampleDepthResolveFilter);
     
-    unsafe fn copy(self) -> self;
+    unsafe fn copy(self) -> Self;
 }
 
 impl MTLRenderPassDepthAttachmentDescriptor for id {
@@ -42,7 +42,7 @@ impl MTLRenderPassDepthAttachmentDescriptor for id {
         msg_send![self, setDepthResolveFilter:resolveFilter]
     }
 
-    unsafe fn copy(self) -> self {
+    unsafe fn copy(self) -> Self {
         msg_send![self, copy]
     }
 }
