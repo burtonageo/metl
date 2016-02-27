@@ -18,7 +18,7 @@ mod types;
 
 pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
                   MTLCompileOptions, MTLDataType, MTLStructMember, MTLStructType,
-                  MTLVertexAttribute};
+                  MTLVertexAttribute, MTLRenderPassDescriptor};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};

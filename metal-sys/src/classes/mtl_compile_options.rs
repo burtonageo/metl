@@ -2,7 +2,6 @@ use cocoa::base::{class, id};
 use objc::runtime::BOOL;
 use MTLLanguageVersion;
 
-
 pub trait MTLCompileOptions {
     /// A Boolean value that indicates whether the compiler can perform optimizations for
     /// floating-point arithmetic that may violate the IEEE 754 standard. A YES value also
