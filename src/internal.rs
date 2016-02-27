@@ -23,7 +23,7 @@ macro_rules! convertible_enum {
         enum $enum_nm {
             $($(#[$arm_attrs])* $arm),*
         }
-    
+
         convertible_enum!(@_impl conversion from $enum_nm to $convert {
             $($arm => $other),*
         });
@@ -39,7 +39,7 @@ macro_rules! convertible_enum {
                 }
             }
         }
-        
+
         impl ::std::convert::From<$convert> for $enum_nm {
             fn from(other: $convert) -> Self {
                 match other {
