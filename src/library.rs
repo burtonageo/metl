@@ -5,7 +5,7 @@ use objc_bringup::NSArray;
 use std::borrow::Cow;
 use std::convert::{AsRef, From};
 use std::ffi::CStr;
-use std::io::Error as _IoError;
+use std::io::Error as IoError;
 use sys::MTLLibrary;
 use {FromRaw, FromRawError, Function};
 
@@ -52,7 +52,7 @@ pub struct LibraryError {
 pub enum LibraryErrorType {
     SourceError,
     FromRaw(FromRawError),
-    IoError(_IoError)
+    Io(IoError)
 }
 
 impl From<FromRawError> for LibraryError {
