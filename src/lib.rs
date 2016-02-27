@@ -14,10 +14,12 @@ mod internal;
 
 mod argument;
 mod array_type;
+mod blit_command_encoder;
 mod buffer;
 mod command_buffer;
 mod command_queue;
 mod compile_options;
+mod compute_command_encoder;
 mod constants;
 mod device;
 mod drawable;
@@ -37,11 +39,13 @@ pub mod sys {
 
 pub use argument::{Argument, ArgumentAccess, ArgumentType, DataType};
 pub use array_type::ArrayType;
+pub use blit_command_encoder::BlitCommandEncoder;
 pub use buffer::Buffer;
-pub use command_buffer::CommandBuffer;
+pub use command_buffer::{CommandBuffer, CommandBufferError};
 pub use command_queue::{CommandQueue, CommandQueueError};
 pub use compile_options::{CompileOptions, LanguageVersion, PreprocessorMacroValue,
                           SpecificLanguageVersion};
+pub use compute_command_encoder::ComputeCommandEncoder;
 pub use constants::{CompareFunction, PipelineOption, PixelFormat};
 pub use device::{Device, DeviceError, FeatureSet};
 pub use drawable::Drawable;

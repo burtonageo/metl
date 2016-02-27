@@ -1,9 +1,9 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use objc_bringup::NSError as _NSError;
-use std::borrow::Cow;
 use std::ffi::CStr;
 
+#[derive(Debug)]
 pub struct NSError(id);
 
 impl NSError {
@@ -15,11 +15,11 @@ impl NSError {
         unsafe { self.0.code() as usize }
     }
 
-    pub fn domain(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.domain().UTF8String()).to_string_lossy() }
+    pub fn domain(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.domain().UTF8String()).to_str().unwrap_or(&"") }
     }
 
-    pub fn localized_description(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.localizedDescription().UTF8String()).to_string_lossy() }
+    pub fn localized_description(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.localizedDescription().UTF8String()).to_str().unwrap_or(&"") }
     }
 }
