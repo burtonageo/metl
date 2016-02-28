@@ -65,27 +65,32 @@ impl RenderPassAttachmentDescriptor {
     pub fn resolve_level(&self) -> usize {
         unsafe { self.0.resolveLevel() as usize }
     }
-    
+
     pub fn set_resolve_level(&self, level: usize) {
         unsafe { self.0.setResolveLevel(level as NSUInteger) }
     }
-    
+
     pub fn resolve_slice(&self) -> usize {
         unsafe { self.0.resolveSlice() as usize }
     }
-    
+
     pub fn set_resolve_slice(&self, slice: usize) {
         unsafe { self.0.setResolveSlice(slice as NSUInteger) }
     }
-    
+
     pub fn resolve_depth_plane(&self) -> usize {
         unsafe { self.0.resolveDepthPlane() as usize }
     }
-    
+
     pub fn set_resolve_depth_plane(&mut self, depth_plane: usize) {
         unsafe { self.0.setResolveDepthPlane(depth_plane as NSUInteger) }
     }
-    
+}
+
+impl Clone for RenderPassAttachmentDescriptor {
+    fn clone(&self) -> Self {
+        unsafe { FromRaw::from_raw(self.0.copy()).unwrap() }
+    }
 }
 
 impl_from_into_raw!(RenderPassAttachmentDescriptor, of class "MTLRenderPassAttachmentDescriptor");

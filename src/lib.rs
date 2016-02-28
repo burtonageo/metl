@@ -60,7 +60,8 @@ pub use library::{Library, LibraryError, LibraryErrorType};
 pub use parallel_render_command_encoder::ParallelRenderCommandEncoder;
 pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
 pub use render_command_encoder::RenderCommandEncoder;
-pub use render_pass_attachment_descriptor::{LoadAction, RenderPassAttachmentDescriptor, StoreAction};
+pub use render_pass_attachment_descriptor::{LoadAction, RenderPassAttachmentDescriptor,
+                                            StoreAction};
 pub use render_pass_depth_attachment_descriptor::RenderPathDepthAttachmentDescriptor;
 pub use render_pass_descriptor::RenderPassDescriptor;
 pub use resource::Resource;
