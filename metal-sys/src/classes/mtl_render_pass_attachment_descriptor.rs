@@ -172,6 +172,94 @@ pub trait MTLRenderPassAttachmentDescriptor {
     /// The default value is 0.
     unsafe fn resolveDepthPlane(self) -> NSUInteger;
     unsafe fn setResolveDepthPlane(self, resolveDepthPlane: NSUInteger);
+
+    unsafe fn copy(self) -> Self;
+}
+
+impl MTLRenderPassAttachmentDescriptor for id {
+    unsafe fn texture(self) -> id {
+        msg_send![self, texture]
+    }
+
+    unsafe fn setTexture(self, texture: id) {
+        msg_send![self, setTexture:texture]
+    }
+
+    unsafe fn level(self) -> NSUInteger {
+        msg_send![self, level]
+    }
+
+    unsafe fn setLevel(self, level: NSUInteger) {
+        msg_send![self, setLevel:level]
+    }
+
+    unsafe fn slice(self) -> NSUInteger {
+        msg_send![self, slice]
+    }
+
+    unsafe fn setSlice(self, slice: NSUInteger) {
+        msg_send![self, setSlice:slice]
+    }
+
+    unsafe fn depthPlane(self) -> NSUInteger {
+        msg_send![self, depthPlane]
+    }
+
+    unsafe fn setDepthPlane(self, depthPlane: NSUInteger) {
+        msg_send![self, setDepthPlane:depthPlane]
+    }
+
+    unsafe fn loadAction(self) -> MTLLoadAction {
+        msg_send![self, loadAction]
+    }
+
+    unsafe fn setLoadAction(self, loadAction: MTLLoadAction) {
+        msg_send![self, setLoadAction:loadAction]
+    }
+
+    unsafe fn storeAction(self) -> MTLStoreAction {
+        msg_send![self, storeAction]
+    }
+
+    unsafe fn setStoreAction(self, storeAction: MTLStoreAction) {
+        msg_send![self, setStoreAction:storeAction]
+    }
+
+    unsafe fn resolveTexture(self) -> id {
+        msg_send![self, resolveTexture]
+    }
+
+    unsafe fn setResolveTexture(self, resolveTexture: id) {
+        msg_send![self, setResolveTexture:resolveTexture]
+    }
+
+    unsafe fn resolveLevel(self) -> NSUInteger {
+        msg_send![self, resolveLevel]
+    }
+
+    unsafe fn setResolveLevel(self, resolveLevel: NSUInteger) {
+        msg_send![self, setResolveLevel:resolveLevel]
+    }
+
+    unsafe fn resolveSlice(self) -> NSUInteger {
+        msg_send![self, resolveSlice]
+    }
+
+    unsafe fn setResolveSlice(self, resolveSlice: NSUInteger) {
+        msg_send![self, setResolveSlice:resolveSlice]
+    }
+
+    unsafe fn resolveDepthPlane(self) -> NSUInteger {
+        msg_send![self, resolveDepthPlane]
+    }
+
+    unsafe fn setResolveDepthPlane(self, resolveDepthPlane: NSUInteger) {
+        msg_send![self, setResolveDepthPlane:resolveDepthPlane]
+    }
+
+    unsafe fn copy(self) -> Self {
+        msg_send![self, copy]
+    }
 }
 
 /// The action performed at the start of a rendering pass for a render command encoder.
