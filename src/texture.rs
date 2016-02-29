@@ -53,7 +53,7 @@ impl Texture {
         }
     }
 
-    // TODO(George): Investiage non-allocating APIs, and add predicates in rust code so that
+    // TODO(George): Investigate non-allocating APIs, and add predicates in rust code so that
     // panics can be generated
     pub fn get_bytes_at_slice(&self, bytes_storage: &mut Vec<u8>, bytes_per_row: usize,
                               bytes_per_image: usize, region: Region, mipmap_level: usize,
