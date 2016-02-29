@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
 
 [dependencies]
-cocoa = "0.1.4"
+cocoa = "0.2.4"
 core-foundation = "0.*"
 objc = "0.1.8"
 
