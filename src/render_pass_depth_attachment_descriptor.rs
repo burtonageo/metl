@@ -1,6 +1,8 @@
 use cocoa::base::id;
+use std::mem;
+use std::ops::Deref;
 use sys::{MTLMultisampleDepthResolveFilter, MTLRenderPassDepthAttachmentDescriptor};
-use FromRaw;
+use {FromRaw, RenderPassAttachmentDescriptor};
 
 pub struct RenderPathDepthAttachmentDescriptor(id);
 
@@ -25,6 +27,14 @@ impl RenderPathDepthAttachmentDescriptor {
 impl Clone for RenderPathDepthAttachmentDescriptor {
     fn clone(&self) -> Self {
         unsafe { FromRaw::from_raw(self.0.copy()).unwrap() }
+    }
+}
+
+impl Deref for RenderPathDepthAttachmentDescriptor {
+    type Target = RenderPassAttachmentDescriptor;
+
+    fn deref(&self) -> &Self::Target {
+        unsafe { mem::transmute(self) }
     }
 }
 
