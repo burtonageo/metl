@@ -5,9 +5,10 @@ use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
+use std::mem;
 use std::marker::{Send, Sync};
 use sys::MTLCommandQueue;
-use {CommandBuffer, FromRaw, FromRawError};
+use {CommandBuffer, Device, FromRaw, FromRawError};
 
 pub struct CommandQueue(id);
 
@@ -37,6 +38,12 @@ impl CommandQueue {
 
     pub fn label(&self) -> Cow<str> {
         unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
+    }
+
+    pub fn device(&self) -> &Device {
+        let device = self.0.device();
+        assert!(device != nil);
+        unsafe { mem::transmute(device) }
     }
 }
 

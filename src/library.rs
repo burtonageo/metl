@@ -6,8 +6,9 @@ use std::borrow::Cow;
 use std::convert::{AsRef, From};
 use std::ffi::CStr;
 use std::io::Error as IoError;
+use std::mem;
 use sys::MTLLibrary;
-use {FromRaw, FromRawError, Function};
+use {Device, FromRaw, FromRawError, Function};
 
 pub struct Library(id);
 
@@ -31,6 +32,12 @@ impl Library {
             names_vec.push(name);
         }
         names_vec
+    }
+
+    pub fn device(&self) -> &Device {
+        let device = self.0.device();
+        assert!(device != nil);
+        unsafe { mem::transmute(device) }
     }
 
     pub fn set_label(&mut self, label: &AsRef<str>) {

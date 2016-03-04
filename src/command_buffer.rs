@@ -6,10 +6,11 @@ use std::convert::AsRef;
 use std::error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
+use std::mem;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
-use {AsRaw, BlitCommandEncoder, ComputeCommandEncoder, Drawable, FromRaw, FromRawError,
+use {AsRaw, BlitCommandEncoder, ComputeCommandEncoder, Drawable, Device, FromRaw, FromRawError,
      ParallelRenderCommandEncoder, RenderCommandEncoder, RenderPassDescriptor};
 
 pub struct CommandBuffer(id);
@@ -116,6 +117,18 @@ impl CommandBuffer {
     fn get_error(&self) -> Result<(), CommandBufferError> {
         let error = unsafe { self.0.error() };
         if let Some(e) = NSError::new(error) { Err(CommandBufferError(e)) } else { Ok(()) }
+    }
+
+    pub fn device(&self) -> &Device {
+        let device = self.0.device();
+        assert!(device != nil);
+        unsafe { mem::transmute(device) }
+    }
+
+    pub fn command_queue(&self) -> &CommandQueue {
+        let queue = self.0.commandQueue();
+        assert!(queue != nil);
+        unsafe { mem::transmute(queue) }
     }
 }
 
