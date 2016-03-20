@@ -17,10 +17,10 @@ mod protocols;
 mod types;
 
 pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
-                  MTLCompileOptions, MTLDataType, MTLMultisampleDepthResolveFilter,
-                  MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor,
-                  MTLStructMember, MTLStructType, MTLVertexAttribute, MTLLoadAction,
-                  MTLRenderPassAttachmentDescriptor, MTLStoreAction};
+                  MTLCompileOptions, MTLDataType, MTLLoadAction, MTLMultisampleDepthResolveFilter,
+                  MTLRenderPassAttachmentDescriptor, MTLRenderPassColorAttachmentDescriptor,
+                  MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor, MTLStoreAction,
+                  MTLStructMember, MTLStructType, MTLVertexAttribute};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
