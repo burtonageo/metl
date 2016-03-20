@@ -10,8 +10,8 @@ use std::mem;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
-use {AsRaw, BlitCommandEncoder, CommandQueue, ComputeCommandEncoder, Drawable, Device, FromRaw, FromRawError,
-     ParallelRenderCommandEncoder, RenderCommandEncoder, RenderPassDescriptor};
+use {AsRaw, BlitCommandEncoder, CommandQueue, ComputeCommandEncoder, Device, Drawable, FromRaw,
+     FromRawError, ParallelRenderCommandEncoder, RenderCommandEncoder, RenderPassDescriptor};
 
 pub struct CommandBuffer(id);
 
@@ -38,8 +38,8 @@ impl CommandBuffer {
     }
 
     pub fn new_parallel_render_command_encoder(
-        &mut self, descriptor: &RenderPassDescriptor)
-        -> Result<ParallelRenderCommandEncoder, FromRawError> {
+                                               &mut self, descriptor: &RenderPassDescriptor)
+                                               -> Result<ParallelRenderCommandEncoder, FromRawError> {
         let par_render_command_encoder = unsafe {
             self.0.parallelRenderCommandEncoderWithDescriptor(*descriptor.as_raw())
         };
