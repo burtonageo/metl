@@ -10,7 +10,7 @@ use std::mem;
 #[cfg(feature = "time2")]
 use std::time::Instant;
 use sys::{MTLCommandBuffer, MTLCommandBufferStatus};
-use {AsRaw, BlitCommandEncoder, ComputeCommandEncoder, Drawable, Device, FromRaw, FromRawError,
+use {AsRaw, BlitCommandEncoder, CommandQueue, ComputeCommandEncoder, Drawable, Device, FromRaw, FromRawError,
      ParallelRenderCommandEncoder, RenderCommandEncoder, RenderPassDescriptor};
 
 pub struct CommandBuffer(id);
@@ -120,13 +120,13 @@ impl CommandBuffer {
     }
 
     pub fn device(&self) -> &Device {
-        let device = self.0.device();
+        let device = unsafe { self.0.device() };
         assert!(device != nil);
         unsafe { mem::transmute(device) }
     }
 
     pub fn command_queue(&self) -> &CommandQueue {
-        let queue = self.0.commandQueue();
+        let queue = unsafe { self.0.commandQueue() };
         assert!(queue != nil);
         unsafe { mem::transmute(queue) }
     }

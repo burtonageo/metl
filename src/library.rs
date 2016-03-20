@@ -35,7 +35,7 @@ impl Library {
     }
 
     pub fn device(&self) -> &Device {
-        let device = self.0.device();
+        let device = unsafe { self.0.device() };
         assert!(device != nil);
         unsafe { mem::transmute(device) }
     }
