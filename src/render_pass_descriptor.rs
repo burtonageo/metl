@@ -15,7 +15,7 @@ impl RenderPassDescriptor {
         unsafe { FromRaw::from_raw(self.0.colorAttachments()).unwrap() }
     }
 
-    pub fn set_color_attachments(&self, attachments: RenderPassColorAttachmentDescriptorArray) {
+    pub fn set_color_attachments(&mut self, attachments: RenderPassColorAttachmentDescriptorArray) {
         unsafe { self.0.setColorAttachments(attachments.into_raw()) }
     }
 
@@ -23,7 +23,7 @@ impl RenderPassDescriptor {
         unsafe { FromRaw::from_raw(self.0.depthAttachment()).unwrap() }
     }
 
-    pub fn set_depth_attachment(&self, attachment: RenderPassDepthAttachmentDescriptor) {
+    pub fn set_depth_attachment(&mut self, attachment: RenderPassDepthAttachmentDescriptor) {
         unsafe { self.0.setDepthAttachment(attachment.into_raw()) }
     }
 
@@ -31,17 +31,17 @@ impl RenderPassDescriptor {
         unimplemented!();
     }
 
-    pub fn set_stencil_attachment(&self, attachment: ()) {
+    pub fn set_stencil_attachment(&mut self, attachment: ()) {
         unimplemented!();
     }
 
     #[cfg(target_os = "macos")]
-    pub fn render_target_array_length(self) -> usize {
+    pub fn render_target_array_length(&self) -> usize {
         unsafe { self.0.renderTargetArrayLength() as usize }
     }
 
     #[cfg(target_os = "macos")]
-    pub fn set_render_target_array_length(self, target_array_length: usize) {
+    pub fn set_render_target_array_length(&mut self, target_array_length: usize) {
         unsafe { self.0.setRenderTargetArrayLength(target_array_length as NSUInteger) }
     }
 }

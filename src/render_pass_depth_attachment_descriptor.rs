@@ -7,19 +7,19 @@ use {FromRaw, RenderPassAttachmentDescriptor};
 pub struct RenderPassDepthAttachmentDescriptor(id);
 
 impl RenderPassDepthAttachmentDescriptor {
-    pub fn clear_depth(self) -> f64 {
+    pub fn clear_depth(&self) -> f64 {
         unsafe { self.0.clearDepth() }
     }
 
-    pub fn set_clear_depth(self, clear_depth: f64) {
+    pub fn set_clear_depth(&mut self, clear_depth: f64) {
         unsafe { self.0.setClearDepth(clear_depth) }
     }
 
-    pub fn depth_resolve_filter(self) -> MultisampleDepthResolveFilter {
+    pub fn depth_resolve_filter(&self) -> MultisampleDepthResolveFilter {
         unsafe { self.0.depthResolveFilter().into() }
     }
 
-    pub fn set_depth_resolve_filter(self, resolve_filter: MultisampleDepthResolveFilter) {
+    pub fn set_depth_resolve_filter(&mut self, resolve_filter: MultisampleDepthResolveFilter) {
         unsafe { self.0.setDepthResolveFilter(resolve_filter.into()) }
     }
 }

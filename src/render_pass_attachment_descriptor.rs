@@ -18,7 +18,7 @@ impl RenderPassAttachmentDescriptor {
         unsafe { self.0.level() as usize }
     }
 
-    pub fn set_level(&self, level: usize) {
+    pub fn set_level(&mut self, level: usize) {
         unsafe { self.0.setLevel(level as NSUInteger) }
     }
 
@@ -26,7 +26,7 @@ impl RenderPassAttachmentDescriptor {
         unsafe { self.0.slice() as usize }
     }
 
-    pub fn set_slice(&self, slice: usize) {
+    pub fn set_slice(&mut self, slice: usize) {
         unsafe { self.0.setSlice(slice as NSUInteger) }
     }
 
@@ -42,7 +42,7 @@ impl RenderPassAttachmentDescriptor {
         unsafe { self.0.loadAction().into() }
     }
 
-    pub fn set_load_action(&self, load_action: LoadAction) {
+    pub fn set_load_action(&mut self, load_action: LoadAction) {
         unsafe { self.0.setLoadAction(load_action.into()) }
     }
 
@@ -66,7 +66,7 @@ impl RenderPassAttachmentDescriptor {
         unsafe { self.0.resolveLevel() as usize }
     }
 
-    pub fn set_resolve_level(&self, level: usize) {
+    pub fn set_resolve_level(&mut self, level: usize) {
         unsafe { self.0.setResolveLevel(level as NSUInteger) }
     }
 
@@ -74,7 +74,7 @@ impl RenderPassAttachmentDescriptor {
         unsafe { self.0.resolveSlice() as usize }
     }
 
-    pub fn set_resolve_slice(&self, slice: usize) {
+    pub fn set_resolve_slice(&mut self, slice: usize) {
         unsafe { self.0.setResolveSlice(slice as NSUInteger) }
     }
 
