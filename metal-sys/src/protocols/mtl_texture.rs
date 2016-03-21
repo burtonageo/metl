@@ -5,6 +5,56 @@ use libc::c_void;
 use objc::runtime::BOOL;
 use {MTLPixelFormat, MTLRegion};
 
+/// The `MTLTexture` protocol defines the interface for an object that
+/// represents an allocation of formatted image data. Textures are used
+/// as source data for a vertex shader, a fragment shader, or a compute
+/// kernel. They are also used as an attachment that acts as a rendering
+/// destination.
+///
+/// Do not use standard allocation and initialization techniques to create
+/// a `MTLTexture` object. The following methods create and return a
+/// `MTLTexture` object:
+///
+/// * The `newTextureWithDescriptor:` method of the MTLDevice protocol creates
+///   a texture object with a new storage allocation for the texture image data,
+///   using a `MTLTextureDescriptor` object to describe the texture’s properties.
+///   To further specify an `IOSurface` from which to create the texture, use the
+///   znewTextureWithDescriptor:iosurface:plane:` method instead.
+///
+///
+/// * The `newTextureViewWithPixelFormat:` and
+///   `newTextureViewWithPixelFormat:textureType:levels:slices:` methods of the
+///   `MTLTexture` protocol create and return a new texture object that shares the
+///   same storage allocation as the source texture object. Because they share the
+///   same storage, any changes to the pixels of the new texture are reflected in
+///   the source texture, and vice versa. For the newly created texture, these
+///   methods reinterpret the existing texture image data in the storage allocation
+///   of the source texture as if this data were stored in the new specified pixel
+///   format. The pixel format of the new texture must be compatible with the pixel
+///   format of the source texture.
+///
+/// * In iOS, the `newTextureWithDescriptor:offset:bytesPerRow:` method of the
+///   `MTLBuffer` protocol creates and returns a new texture object that shares the
+///   storage allocation of the source buffer object as its texture image data. Because
+///   they share the same storage, any changes to the pixels of the new texture are
+///   reflected in the source buffer, and vice versa.
+///
+/// * The `textureType` property identifies how the image data is organized. Image data
+///   is arranged in one or more slices, and each slice is a single `MTLTextureType1D`,
+///   `MTLTextureType2D`, `MTLTextureType2DMultisample`, or `MTLTextureType3D` texture
+///   type image and all its mipmaps. `MTLTextureType1D`, `MTLTextureType2D`,
+///   `MTLTextureType2DMultisample`, and `MTLTextureType3D` texture types have a single
+///   slice. A `MTLTextureTypeCube` texture always has six slices, one for each face.
+///   For a texture array object, such as `MTLTextureType1DArray`, `MTLTextureType2DArray`,
+///   or `MTLTextureTypeCubeArray`, every array element is one slice.
+///
+/// After you create a texture, you can call
+/// `replaceRegion:mipmapLevel:slice:withBytes:bytesPerRow:bytesPerImage:` or
+/// `replaceRegion:mipmapLevel:withBytes:bytesPerRow:` to populate the storage allocation
+/// of the texture object with image data from system memory. Call
+/// `getBytes:bytesPerRow:bytesPerImage:fromRegion:mipmapLevel:slice:` or
+/// `getBytes:bytesPerRow:fromRegion:mipmapLevel:` to copy image data from a texture object
+/// and store the copied data into system memory.
 pub trait MTLTexture {
     unsafe fn replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage(
         self, region: MTLRegion, level: NSUInteger, slice: NSUInteger,
