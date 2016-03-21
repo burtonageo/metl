@@ -1,12 +1,12 @@
-extern crate metal;
+extern crate metl;
 extern crate cocoa;
 
 use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
-use metal::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion, FeatureSet};
-use metal::LibraryErrorType;
-use metal::{FromRaw, FromRawError, IntoRaw};
-use metal::sys::{MTLCompileOptions, MTLLanguageVersion};
+use metl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion, FeatureSet};
+use metl::LibraryErrorType;
+use metl::{FromRaw, FromRawError, IntoRaw};
+use metl::sys::{MTLCompileOptions, MTLLanguageVersion};
 
 #[test]
 fn get_device() {

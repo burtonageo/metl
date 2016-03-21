@@ -1,5 +1,5 @@
 [package]
-name = "metal"
+name = "metl"
 version = "0.0.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
 license = "MIT"

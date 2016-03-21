@@ -1,6 +1,6 @@
 //! A simple example which prints out information about available Metal devices
 
-extern crate metal;
+extern crate metl;
 
 
 #[cfg(not(any(target_os = "macos", target_os = "ios")))]
@@ -10,7 +10,7 @@ fn main() {
 
 #[cfg(any(target_os = "macos", target_os = "ios"))]
 fn main() {
-    let devices = metal::Device::enumerate_all_system_devices();
+    let devices = metl::Device::enumerate_all_system_devices();
 
     let num_devices_message = format!("Number of system devices: {}", devices.len());
     let separator = std::iter::repeat('=')
