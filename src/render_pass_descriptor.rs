@@ -1,11 +1,11 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSUInteger;
 use sys::MTLRenderPassDescriptor;
-use {FromRaw, IntoRaw, RenderPassDepthAttachmentDescriptor, RenderPassColorAttachmentDescriptorArray};
+use {FromRaw, IntoRaw, RenderPassColorAttachmentDescriptorArray, RenderPassDepthAttachmentDescriptor,
+     RenderPassStencilAttachmentDescriptor};
 
 pub struct RenderPassDescriptor(id);
 
-#[allow(unused_variables)]
 impl RenderPassDescriptor {
     pub fn new() -> Self {
         unsafe { FromRaw::from_raw(MTLRenderPassDescriptor::renderPassDescriptor(nil)).unwrap() }
@@ -27,12 +27,12 @@ impl RenderPassDescriptor {
         unsafe { self.0.setDepthAttachment(attachment.into_raw()) }
     }
 
-    pub fn stencil_attachment(&self) -> ! {
-        unimplemented!();
+    pub fn stencil_attachment(&self) -> RenderPassStencilAttachmentDescriptor {
+        unsafe { FromRaw::from_raw(self.0.stencilAttachment()).unwrap() }
     }
 
-    pub fn set_stencil_attachment(&mut self, attachment: ()) {
-        unimplemented!();
+    pub fn set_stencil_attachment(&mut self, attachment: RenderPassStencilAttachmentDescriptor) {
+        unsafe { self.0.setStencilAttachment(attachment.into_raw()) }
     }
 
     #[cfg(target_os = "macos")]

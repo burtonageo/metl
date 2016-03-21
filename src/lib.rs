@@ -33,6 +33,7 @@ mod render_pass_attachment_descriptor;
 mod render_pass_color_attachment_descriptor;
 mod render_pass_depth_attachment_descriptor;
 mod render_pass_descriptor;
+mod render_pass_stencil_attachment_descriptor;
 mod resource;
 mod struct_member;
 mod struct_type;
@@ -67,6 +68,7 @@ pub use render_pass_color_attachment_descriptor::{RenderPassColorAttachmentDescr
                                                   RenderPassColorAttachmentDescriptorArray};
 pub use render_pass_depth_attachment_descriptor::RenderPassDepthAttachmentDescriptor;
 pub use render_pass_descriptor::RenderPassDescriptor;
+pub use render_pass_stencil_attachment_descriptor::RenderPassStencilAttachmentDescriptor;
 pub use resource::Resource;
 pub use struct_member::StructMember;
 pub use struct_type::StructType;
