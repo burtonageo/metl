@@ -40,8 +40,8 @@ impl Library {
         unsafe { mem::transmute(device) }
     }
 
-    pub fn set_label(&mut self, label: &AsRef<str>) {
-        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label.as_ref())) }
+    pub fn set_label(&mut self, label: &str) {
+        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
     }
 
     pub fn label(&self) -> Cow<str> {

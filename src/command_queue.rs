@@ -1,7 +1,6 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use std::borrow::Cow;
-use std::convert::AsRef;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
@@ -32,8 +31,8 @@ impl CommandQueue {
         }
     }
 
-    pub fn set_label(&mut self, label: &AsRef<str>) {
-        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label.as_ref())) }
+    pub fn set_label(&mut self, label: &str) {
+        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
     }
 
     pub fn label(&self) -> Cow<str> {

@@ -2,7 +2,6 @@ use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
 use error::NSError;
 use std::borrow::Cow;
-use std::convert::AsRef;
 use std::error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
@@ -106,8 +105,8 @@ impl CommandBuffer {
         unsafe { self.0.retainedReferences() == YES }
     }
 
-    pub fn set_label(&mut self, label: &AsRef<str>) {
-        unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label.as_ref())) }
+    pub fn set_label(&mut self, label: &str) {
+        unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label)) }
     }
 
     pub fn label(&self) -> Cow<str> {
