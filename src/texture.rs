@@ -101,7 +101,7 @@ impl Texture {
         unsafe { self.0.depth() as usize }
     }
 
-    pub fn dimensions(&self) -> Size {
+    pub fn size(&self) -> Size {
         Size::new(self.width(), self.height(), self.depth())
     }
 
