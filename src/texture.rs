@@ -2,7 +2,8 @@ use cocoa::base::{id, nil};
 use cocoa::foundation::{NSInteger, NSUInteger};
 use core_foundation::base::CFRange;
 use objc::runtime::YES;
-use std::ops::Range;
+use std::mem;
+use std::ops::{Deref, Range};
 use sys::{MTLTexture, MTLTextureType, MTLTextureUsage};
 use {FromRaw, FromRawError, PixelFormat, Region, Resource, Size};
 #[cfg(target_os = "ios")]
@@ -157,6 +158,13 @@ impl Texture {
 
     pub fn buffer_bytes_per_row(&self) -> usize {
         unsafe { self.0.bufferBytesPerRow() as usize }
+    }
+}
+
+impl Deref for Texture {
+    type Target = Resource;
+    fn deref(&self) -> &Self::Target {
+        unsafe { mem::transmute(self) }
     }
 }
 
