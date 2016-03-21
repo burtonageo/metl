@@ -63,8 +63,9 @@ pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
 pub use render_command_encoder::RenderCommandEncoder;
 pub use render_pass_attachment_descriptor::{LoadAction, RenderPassAttachmentDescriptor,
                                             StoreAction};
-pub use render_pass_color_attachment_descriptor::RenderPassColorAttachmentDescriptor;
-pub use render_pass_depth_attachment_descriptor::RenderPathDepthAttachmentDescriptor;
+pub use render_pass_color_attachment_descriptor::{RenderPassColorAttachmentDescriptor,
+                                                  RenderPassColorAttachmentDescriptorArray};
+pub use render_pass_depth_attachment_descriptor::RenderPassDepthAttachmentDescriptor;
 pub use render_pass_descriptor::RenderPassDescriptor;
 pub use resource::Resource;
 pub use struct_member::StructMember;

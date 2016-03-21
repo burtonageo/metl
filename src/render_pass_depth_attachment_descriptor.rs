@@ -4,9 +4,9 @@ use std::ops::Deref;
 use sys::{MTLMultisampleDepthResolveFilter, MTLRenderPassDepthAttachmentDescriptor};
 use {FromRaw, RenderPassAttachmentDescriptor};
 
-pub struct RenderPathDepthAttachmentDescriptor(id);
+pub struct RenderPassDepthAttachmentDescriptor(id);
 
-impl RenderPathDepthAttachmentDescriptor {
+impl RenderPassDepthAttachmentDescriptor {
     pub fn clear_depth(self) -> f64 {
         unsafe { self.0.clearDepth() }
     }
@@ -24,13 +24,13 @@ impl RenderPathDepthAttachmentDescriptor {
     }
 }
 
-impl Clone for RenderPathDepthAttachmentDescriptor {
+impl Clone for RenderPassDepthAttachmentDescriptor {
     fn clone(&self) -> Self {
         unsafe { FromRaw::from_raw(self.0.copy()).unwrap() }
     }
 }
 
-impl Deref for RenderPathDepthAttachmentDescriptor {
+impl Deref for RenderPassDepthAttachmentDescriptor {
     type Target = RenderPassAttachmentDescriptor;
 
     fn deref(&self) -> &Self::Target {
@@ -38,7 +38,7 @@ impl Deref for RenderPathDepthAttachmentDescriptor {
     }
 }
 
-impl_from_into_raw!(RenderPathDepthAttachmentDescriptor,
+impl_from_into_raw!(RenderPassDepthAttachmentDescriptor,
                     of class "MTLRenderPathDepthAttachmentDescriptor");
 
 convertible_enum! {

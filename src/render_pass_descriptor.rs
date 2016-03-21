@@ -1,7 +1,7 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSUInteger;
 use sys::MTLRenderPassDescriptor;
-use {FromRaw, IntoRaw, RenderPathDepthAttachmentDescriptor};
+use {FromRaw, IntoRaw, RenderPassDepthAttachmentDescriptor, RenderPassColorAttachmentDescriptorArray};
 
 pub struct RenderPassDescriptor(id);
 
@@ -11,19 +11,19 @@ impl RenderPassDescriptor {
         unsafe { FromRaw::from_raw(MTLRenderPassDescriptor::renderPassDescriptor(nil)).unwrap() }
     }
 
-    pub fn color_attachments(&self) -> ! {
-        unimplemented!();
+    pub fn color_attachments(&self) -> RenderPassColorAttachmentDescriptorArray {
+        unsafe { FromRaw::from_raw(self.0.colorAttachments()).unwrap() }
     }
 
-    pub fn set_color_attachments(&self, attachments: ()) {
-        unimplemented!();
+    pub fn set_color_attachments(&self, attachments: RenderPassColorAttachmentDescriptorArray) {
+        unsafe { self.0.setColorAttachments(attachments.into_raw()) }
     }
 
-    pub fn depth_attachment(&self) -> RenderPathDepthAttachmentDescriptor {
+    pub fn depth_attachment(&self) -> RenderPassDepthAttachmentDescriptor {
         unsafe { FromRaw::from_raw(self.0.depthAttachment()).unwrap() }
     }
 
-    pub fn set_depth_attachment(&self, attachment: RenderPathDepthAttachmentDescriptor) {
+    pub fn set_depth_attachment(&self, attachment: RenderPassDepthAttachmentDescriptor) {
         unsafe { self.0.setDepthAttachment(attachment.into_raw()) }
     }
 
