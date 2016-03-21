@@ -69,7 +69,7 @@ pub use render_pass_color_attachment_descriptor::{RenderPassColorAttachmentDescr
 pub use render_pass_depth_attachment_descriptor::RenderPassDepthAttachmentDescriptor;
 pub use render_pass_descriptor::RenderPassDescriptor;
 pub use render_pass_stencil_attachment_descriptor::RenderPassStencilAttachmentDescriptor;
-pub use resource::Resource;
+pub use resource::{CpuCacheMode, PurgeableState, Resource, StorageMode};
 pub use struct_member::StructMember;
 pub use struct_type::StructType;
 pub use texture::{Texture, TextureType, TextureUsage};
