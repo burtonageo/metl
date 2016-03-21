@@ -2,6 +2,10 @@
 name = "mtl"
 version = "0.0.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
+license = "MIT"
+keywords = ["graphics", "metal", "apple", "mtl"]
+description = "High-level bindings for Apple's Metal Graphics API"
+repository = "https://github.com/burtonageo/mtl-rs"
 
 [dependencies]
 cocoa = "0.2.4"
@@ -9,4 +13,5 @@ core-foundation = "0.*"
 objc = "0.1.8"
 
 [dependencies.metal-sys]
-path = "."
+path = "metal-sys"
+version = "0.0.0"

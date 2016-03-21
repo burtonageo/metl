@@ -1,7 +1,11 @@
 [package]
 name = "metal-sys"
-version = "0.1.0"
+version = "0.0.0"
 authors = ["George Burton <burtonageo@gmail.com>"]
+license = "MIT"
+keywords = ["graphics", "metal", "apple", "mtl"]
+description = "Low-level bindings for Apple's Metal Graphics API"
+repository = "https://github.com/burtonageo/mtl-rs"
 
 [target.x86_64-apple-darwin.dependencies]
 bitflags = "0.5"
