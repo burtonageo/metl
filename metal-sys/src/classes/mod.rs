@@ -6,6 +6,7 @@ mod mtl_render_pass_color_attachment_descriptor_array;
 mod mtl_render_pass_color_attachment_descriptor;
 mod mtl_render_pass_depth_attachment_descriptor;
 mod mtl_render_pass_descriptor;
+mod mtl_render_pass_stencil_attachment_descriptor;
 mod mtl_struct_member;
 mod mtl_struct_type;
 mod mtl_vertex_attribute;
@@ -21,6 +22,7 @@ pub use self::mtl_render_pass_color_attachment_descriptor::MTLRenderPassColorAtt
 pub use self::mtl_render_pass_depth_attachment_descriptor::{MTLMultisampleDepthResolveFilter,
                                                             MTLRenderPassDepthAttachmentDescriptor};
 pub use self::mtl_render_pass_descriptor::MTLRenderPassDescriptor;
+pub use self::mtl_render_pass_stencil_attachment_descriptor::MTLRenderPassStencilAttachmentDescriptor;
 pub use self::mtl_struct_member::MTLStructMember;
 pub use self::mtl_struct_type::MTLStructType;
 pub use self::mtl_vertex_attribute::MTLVertexAttribute;

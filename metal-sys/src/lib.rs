@@ -20,8 +20,9 @@ pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
                   MTLCompileOptions, MTLDataType, MTLLoadAction, MTLMultisampleDepthResolveFilter,
                   MTLRenderPassAttachmentDescriptor, MTLRenderPassColorAttachmentDescriptor,
                   MTLRenderPassColorAttachmentDescriptorArray,
-                  MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor, MTLStoreAction,
-                  MTLStructMember, MTLStructType, MTLVertexAttribute};
+                  MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor,
+                  MTLRenderPassStencilAttachmentDescriptor, MTLStoreAction, MTLStructMember,
+                  MTLStructType, MTLVertexAttribute};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
