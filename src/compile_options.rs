@@ -25,21 +25,26 @@ pub struct CompileOptions {
 }
 
 impl CompileOptions {
+    /// Set whether fast math is enabled.
     pub fn fast_math_enabled(self, fast_math: bool) -> Self {
         CompileOptions { fast_math_enabled: Some(fast_math), ..self }
     }
 
+    /// Set the language version to use. It will set the language version to the
+    /// specific version passed.
     pub fn language_version(self, language_version: LanguageVersion) -> Self {
         CompileOptions { language_version: language_version, ..self }
     }
 
-    pub fn with_macro<S: Into<String>, M: Into<PreprocessorMacroValue>>(mut self, mac_name: S,
-                                                                        mac_val: M)
-                                                                        -> Self {
+    /// Append a macro to the set of macros defined for this set of shader options.
+    pub fn with_macro<S, M>(mut self, mac_name: S, mac_val: M) -> Self
+        where S: Into<String>,
+              M: Into<PreprocessorMacroValue> {
         self.preprocessor_macros.insert(mac_name.into(), mac_val.into());
         self
     }
 
+    /// Create a native `MTLCompileOptions` object.
     pub fn mtl_compile_options(&self) -> id {
         unsafe {
             let ll_compile_opts = MTLCompileOptions::new(nil);
