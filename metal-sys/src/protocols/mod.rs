@@ -18,7 +18,7 @@ pub use self::mtl_device::{MTLNewComputePipelineStateCompletionHandler,
                            MTLNewRenderPipleineStateCompletionHandler};
 pub use self::mtl_drawable::MTLDrawable;
 pub use self::mtl_function::{MTLFunction, MTLFunctionType};
-pub use self::mtl_library::MTLLibrary;
-pub use self::mtl_library::{MTLLanguageVersion, MTLLibraryError, MTLLibraryErrorDomain,
-                            MTLRenderPipelineError, MTLRenderPipelineErrorDomain};
+pub use self::mtl_library::{MTLLanguageVersion, MTLLibrary, MTLLibraryError,
+                            MTLLibraryErrorDomain, MTLRenderPipelineError,
+                            MTLRenderPipelineErrorDomain};
 pub use self::mtl_texture::{MTLTexture, MTLTextureType, MTLTextureUsage};
