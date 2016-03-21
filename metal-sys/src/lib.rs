@@ -19,6 +19,7 @@ mod types;
 pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
                   MTLCompileOptions, MTLDataType, MTLLoadAction, MTLMultisampleDepthResolveFilter,
                   MTLRenderPassAttachmentDescriptor, MTLRenderPassColorAttachmentDescriptor,
+                  MTLRenderPassColorAttachmentDescriptorArray,
                   MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor, MTLStoreAction,
                   MTLStructMember, MTLStructType, MTLVertexAttribute};
 

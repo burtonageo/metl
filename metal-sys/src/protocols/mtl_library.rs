@@ -97,7 +97,7 @@ pub enum MTLLibraryError {
 }
 
 #[link(name = "Metal", kind = "framework")]
-extern {
+extern "C" {
     /// Constant to identify the `MTLLibrary` error domain.
     pub static MTLLibraryErrorDomain: id;
 }
@@ -117,7 +117,7 @@ pub enum MTLRenderPipelineError {
 }
 
 #[link(name = "Metal", kind = "framework")]
-extern {
+extern "C" {
     /// Constant to identify the `MTLRenderPipelineState` error domain.
     pub static MTLRenderPipelineErrorDomain: id;
 }
