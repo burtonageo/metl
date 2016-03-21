@@ -24,7 +24,7 @@ pub use self::mtl_library::{MTLLanguageVersion, MTLLibrary, MTLLibraryError,
                             MTLRenderPipelineErrorDomain};
 pub use self::mtl_resource::{MTLResource, MTLCPUCacheMode, MTLStorageMode, MTLResourceOptions,
                              MTLPurgeableState, MTLResourceStorageModeShift, MTLResourceCPUCacheModeShift,
-                             MTLResourceCPUCacheModeDefaultCache,MTLResourceCPUCacheModeWriteCombined,
-                             MTLResourceStorageModeShared,MTLResourceStorageModePrivate,
-                             MTLResourceOptionCPUCacheModeDefault,MTLResourceOptionCPUCacheModeWriteCombined};
+                             MTLResourceCPUCacheModeDefaultCache, MTLResourceCPUCacheModeWriteCombined,
+                             MTLResourceStorageModeShared, MTLResourceStorageModePrivate,
+                             MTLResourceOptionCPUCacheModeDefault, MTLResourceOptionCPUCacheModeWriteCombined};
 pub use self::mtl_texture::{MTLTexture, MTLTextureType, MTLTextureUsage};
