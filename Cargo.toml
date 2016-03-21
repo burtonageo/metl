@@ -5,7 +5,7 @@ authors = ["George Burton <burtonageo@gmail.com>"]
 license = "MIT"
 keywords = ["graphics", "metal", "apple", "mtl"]
 description = "High-level bindings for Apple's Metal Graphics API"
-repository = "https://github.com/burtonageo/mtl-rs"
+repository = "https://github.com/burtonageo/metl"
 
 [dependencies]
 cocoa = "0.2.4"
