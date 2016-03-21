@@ -106,6 +106,7 @@ impl MTLResource for id {
 /// pollution, as write-combined memory can have surprising performance pitfalls.
 /// Another approach is to use nontemporal writes to normally cached memory (STNP
 /// on ARMv8, _mm_stream_* on x86_64).
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[repr(usize)]
 pub enum MTLCPUCacheMode {
     /// The default CPU cache mode.
@@ -125,6 +126,7 @@ pub enum MTLCPUCacheMode {
 /// completed via the `synchronizeResource:` or `synchronizeTexture:slice:level:`
 /// method of `MTLBlitCommandEncoder`. Blit overhead is incurred only if the GPU
 /// has modified the resource.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[repr(usize)]
 pub enum MTLStorageMode {
     /// The default storage mode for buffers.
@@ -184,6 +186,7 @@ bitflags! {
 }
 
 /// The purgeable state of the resource.
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[repr(usize)]
 pub enum MTLPurgeableState {
    MTLPurgeableStateKeepCurrent = 1,
