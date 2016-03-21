@@ -5,6 +5,7 @@ mod mtl_device;
 mod mtl_drawable;
 mod mtl_function;
 mod mtl_library;
+mod mtl_resource;
 mod mtl_texture;
 
 pub use self::mtl_command_buffer::MTLCommandBuffer;
@@ -21,4 +22,9 @@ pub use self::mtl_function::{MTLFunction, MTLFunctionType};
 pub use self::mtl_library::{MTLLanguageVersion, MTLLibrary, MTLLibraryError,
                             MTLLibraryErrorDomain, MTLRenderPipelineError,
                             MTLRenderPipelineErrorDomain};
+pub use self::mtl_resource::{MTLResource, MTLCPUCacheMode, MTLStorageMode, MTLResourceOptions,
+                             MTLPurgeableState, MTLResourceStorageModeShift, MTLResourceCPUCacheModeShift,
+                             MTLResourceCPUCacheModeDefaultCache,MTLResourceCPUCacheModeWriteCombined,
+                             MTLResourceStorageModeShared,MTLResourceStorageModePrivate,
+                             MTLResourceOptionCPUCacheModeDefault,MTLResourceOptionCPUCacheModeWriteCombined};
 pub use self::mtl_texture::{MTLTexture, MTLTextureType, MTLTextureUsage};

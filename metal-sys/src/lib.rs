@@ -1,7 +1,9 @@
 #![no_std]
-#![allow(non_camel_case_types, non_snake_case)]
+#![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 #![crate_type = "rlib"]
 
+#[macro_use]
+extern crate bitflags;
 extern crate block;
 extern crate cocoa;
 extern crate core_foundation;
@@ -38,7 +40,12 @@ pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState, 
                     MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
                     MTLNewRenderPipleineStateCompletionHandler, MTLRenderPipelineError,
-                    MTLRenderPipelineErrorDomain, MTLTexture, MTLTextureType, MTLTextureUsage};
+                    MTLRenderPipelineErrorDomain, MTLTexture, MTLTextureType, MTLTextureUsage,
+                    MTLResource, MTLCPUCacheMode, MTLStorageMode, MTLResourceOptions,
+                    MTLPurgeableState, MTLResourceStorageModeShift, MTLResourceCPUCacheModeShift,
+                    MTLResourceCPUCacheModeDefaultCache,MTLResourceCPUCacheModeWriteCombined,
+                    MTLResourceStorageModeShared,MTLResourceStorageModePrivate,
+                    MTLResourceOptionCPUCacheModeDefault,MTLResourceOptionCPUCacheModeWriteCombined};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
