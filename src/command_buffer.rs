@@ -38,8 +38,8 @@ impl CommandBuffer {
     }
 
     pub fn new_parallel_render_command_encoder(
-                                               &mut self, descriptor: &RenderPassDescriptor)
-                                               -> Result<ParallelRenderCommandEncoder, FromRawError> {
+        &mut self, descriptor: &RenderPassDescriptor)
+        -> Result<ParallelRenderCommandEncoder, FromRawError> {
         let par_render_command_encoder = unsafe {
             self.0.parallelRenderCommandEncoderWithDescriptor(*descriptor.as_raw())
         };

@@ -1,8 +1,8 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSUInteger;
 use sys::MTLRenderPassDescriptor;
-use {FromRaw, IntoRaw, RenderPassColorAttachmentDescriptorArray, RenderPassDepthAttachmentDescriptor,
-     RenderPassStencilAttachmentDescriptor};
+use {FromRaw, IntoRaw, RenderPassColorAttachmentDescriptorArray,
+     RenderPassDepthAttachmentDescriptor, RenderPassStencilAttachmentDescriptor};
 
 pub struct RenderPassDescriptor(id);
 

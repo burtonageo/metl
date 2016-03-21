@@ -13,7 +13,8 @@ impl RenderPassColorAttachmentDescriptor {
     }
 }
 
-impl_from_into_raw!(RenderPassColorAttachmentDescriptor, of class "MTLRenderPassColorAttachmentDescriptor");
+impl_from_into_raw!(RenderPassColorAttachmentDescriptor,
+                    of class "MTLRenderPassColorAttachmentDescriptor");
 
 impl Deref for RenderPassColorAttachmentDescriptor {
     type Target = RenderPassAttachmentDescriptor;

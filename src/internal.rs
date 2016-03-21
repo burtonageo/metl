@@ -58,7 +58,7 @@ pub fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
     // http://stackoverflow.com/questions/4994297
 
     #[link(name = "Foundation", kind = "framework")]
-    extern {
+    extern "C" {
         fn NSProtocolFromString(namestr: id) -> id;
     }
 
