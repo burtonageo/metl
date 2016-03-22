@@ -3,7 +3,7 @@ use cocoa::foundation::NSString;
 use error::NSError;
 use objc_bringup::NSArray;
 use std::borrow::Cow;
-use std::convert::{AsRef, From};
+use std::convert::From;
 use std::ffi::CStr;
 use std::io::Error as IoError;
 use std::mem;
@@ -13,9 +13,9 @@ use {Device, FromRaw, FromRawError, Function};
 pub struct Library(id);
 
 impl Library {
-    pub fn new_function_with_name(&mut self, function_name: &AsRef<str>) -> Option<Function> {
+    pub fn new_function_with_name(&mut self, function_name: &str) -> Option<Function> {
         unsafe {
-            let func_name_nsstr = NSString::alloc(nil).init_str(function_name.as_ref());
+            let func_name_nsstr = NSString::alloc(nil).init_str(function_name);
             let function = self.0.newFunctionWithName(func_name_nsstr);
             FromRaw::from_raw(function).ok()
         }
@@ -51,11 +51,13 @@ impl Library {
 
 impl_from_into_raw!(Library, of protocol "MTLLibrary");
 
+#[derive(Debug)]
 pub struct LibraryError {
     pub ns_error: Option<NSError>,
     pub error_type: LibraryErrorType
 }
 
+#[derive(Debug)]
 pub enum LibraryErrorType {
     SourceError,
     FromRaw(FromRawError),
