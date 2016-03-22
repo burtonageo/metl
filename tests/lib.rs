@@ -156,3 +156,27 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
     assert_eq!(names[0], "vertex_main");
     assert_eq!(names[1], "fragment_main");
 }
+
+#[test]
+#[ignore]
+fn shader_get_struct_info() {
+    use metl::{StructType, StructMember};
+    let mut device = Device::system_default_device().unwrap();
+    const SHADER: &'static str = r"
+        using namespace metal;
+
+        struct OtherStruct {
+            float4 color;
+        };
+
+        struct SomeStruct {
+            int some_field;
+            bool another_field;
+            OtherStruct nested;
+        };
+
+        void function(SomeStruct struct) { }
+    ";
+
+    unimplemented!();
+}
