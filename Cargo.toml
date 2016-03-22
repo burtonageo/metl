@@ -8,6 +8,7 @@ description = "High-level bindings for Apple's Metal Graphics API"
 repository = "https://github.com/burtonageo/metl"
 
 [dependencies]
+asynchronous = "0.4.5"
 cocoa = "0.2.4"
 core-foundation = "0.*"
 objc = "0.1.8"

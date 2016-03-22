@@ -1,5 +1,6 @@
 #![warn(trivial_casts, trivial_numeric_casts, unused_import_braces, unused_qualifications)]
 
+extern crate asynchronous;
 extern crate cocoa;
 extern crate core_foundation;
 extern crate metal_sys;
