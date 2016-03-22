@@ -152,6 +152,11 @@ impl Device {
         }
     }
 
+    #[allow(unused_variables)]
+    pub fn new_buffer_with_byes_no_copy<B, I>(&mut self, bytes: Vec<u8>, options: ResourceOptions) -> Buffer {
+        unimplemented!();
+    }
+
     pub fn new_texture(&mut self, descriptor: &TextureDescriptor) -> Result<Texture, FromRawError> {
         unsafe { FromRaw::from_raw(self.0.newTextureWithDescriptor(*descriptor.as_raw())) }
     }
