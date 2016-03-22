@@ -66,7 +66,6 @@ pub fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
         let protocol_name_nsstr = NSString::alloc(nil).init_str(protocol_name);
         let protocol = NSProtocolFromString(protocol_name_nsstr);
         let does_conform: BOOL = msg_send![object, conformsToProtocol:protocol];
-
         does_conform == NO
     }
 }
