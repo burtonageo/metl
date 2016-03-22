@@ -42,6 +42,8 @@ impl Resource {
 
 impl_from_into_raw!(Resource, of protocol "MTLResource");
 
+pub struct ResourceOptions;
+
 convertible_enum! {
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub enum StorageMode: MTLStorageMode {
