@@ -4,7 +4,7 @@ extern crate cocoa;
 use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
 use metl::{CompileOptions, Device, FeatureSet, LanguageVersion, SpecificLanguageVersion};
-use metl::LibraryErrorType;
+use metl::LibraryError;
 use metl::{FromRaw, FromRawError, IntoRaw};
 use metl::sys::{MTLCompileOptions, MTLLanguageVersion};
 
@@ -113,13 +113,8 @@ fn create_invalid_shader() {
     const BAD_SHADER: &'static str = r"abcdefghijklmnopqrstuvwxyz";
     match device.new_library_with_source(&BAD_SHADER, &Default::default()) {
         Ok(_) => panic!("Incorrect result: expected an error"),
-        Err(error) => {
-            if let LibraryErrorType::SourceError = error.error_type {
-                assert!(true);
-            } else {
-                panic!("Incorrect error type");
-            }
-        }
+        Err(LibraryError::SourceError(_)) => assert!(true),
+        Err(_) => panic!("Incorrect error type")
     }
 }
 
@@ -157,6 +152,15 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
     let names = library.function_names();
     assert_eq!(names[0], "vertex_main");
     assert_eq!(names[1], "fragment_main");
+}
+
+#[test]
+fn device_create_library_async() {
+    let mut device = Device::system_default_device().unwrap();
+    let library = device.new_library_with_source_async(&SHADER, &Default::default())
+                        .recv()
+                        .unwrap();
+    assert!(library.is_ok());
 }
 
 #[test]
