@@ -106,14 +106,14 @@ pub trait MTLDevice {
     unsafe fn supportsTextureSampleCount(self, textureSampleCount: NSUInteger) -> BOOL;
 
     unsafe fn newDefaultLibrary(self) -> id;
-    unsafe fn newLibraryWithFile_error(self, filePath: id, error: id) -> id;
+    unsafe fn newLibraryWithFile_error(self, filePath: id, error: *mut id) -> id;
     unsafe fn newLibraryWithSource_options_completionHandler(
         self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) -> id;
 
     #[cfg_attr(rustfmt, rustfmt_skip)] // This definition is too long to fit on one line
     unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: *mut id)
                                                  -> id;
-    unsafe fn newLibraryWithData_error(self, data: id, error: id) -> id;
+    unsafe fn newLibraryWithData_error(self, data: id, error: *mut id) -> id;
 
     unsafe fn newCommandQueue(self) -> id;
 
@@ -203,7 +203,7 @@ impl MTLDevice for id {
         msg_send![self, newDefaultLibrary]
     }
 
-    unsafe fn newLibraryWithFile_error(self, filePath: id, error: id) -> id {
+    unsafe fn newLibraryWithFile_error(self, filePath: id, error: *mut id) -> id {
         msg_send![self, newLibraryWithFile:filePath error:error]
     }
 
@@ -220,7 +220,7 @@ impl MTLDevice for id {
         msg_send![self, newLibraryWithSource:source options:options error:error]
     }
 
-    unsafe fn newLibraryWithData_error(self, data: id, error: id) -> id {
+    unsafe fn newLibraryWithData_error(self, data: id, error: *mut id) -> id {
         msg_send![self, newLibraryWithData:data error:error]
     }
 
