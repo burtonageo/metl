@@ -73,7 +73,7 @@ impl Error for LibraryError {
             LibraryError::SourceError(Some(ref e)) => e.domain(),
             LibraryError::SourceError(None) => "Could not parse source code.",
             LibraryError::FromRaw(_) => "Error converting library from pointer",
-            LibraryError::Io(_) => "Io error while loading library"
+            LibraryError::Io(_) => "Io error while loading library",
         }
     }
 
@@ -87,7 +87,7 @@ impl Error for LibraryError {
                 let e: &Error = e;
                 Some(e)
             }
-            _ => None
+            _ => None,
         }
     }
 }

@@ -13,9 +13,9 @@ use std::fmt::{self, Display, Formatter};
 use std::path::Path;
 use std::sync::mpsc;
 use sys::MTLFeatureSet;
-use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
-     LibraryError, ResourceOptions, Size, Texture, TextureDescriptor,
-     DepthStencilStateDescriptor, DepthStencilState};
+use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, DepthStencilState,
+     DepthStencilStateDescriptor, FromRaw, FromRawError, Library, LibraryError, ResourceOptions,
+     Size, Texture, TextureDescriptor};
 
 pub struct Device(id);
 
@@ -136,7 +136,7 @@ impl Device {
                 if lib != nil {
                     match FromRaw::from_raw(lib) {
                         Ok(library) => sender.send(Ok(library)).unwrap(),
-                        Err(e) => sender.send(Err(LibraryError::from(e))).unwrap()
+                        Err(e) => sender.send(Err(LibraryError::from(e))).unwrap(),
                     }
                 } else {
                     sender.send(Err(LibraryError::from(NSError::new(err)))).unwrap();
@@ -153,10 +153,11 @@ impl Device {
         unimplemented!();
     }
 
-    pub fn new_buffer_with_length(&mut self, length: usize, options: ResourceOptions)
-                                  -> Buffer {
+    pub fn new_buffer_with_length(&mut self, length: usize, options: ResourceOptions) -> Buffer {
         unsafe {
-            FromRaw::from_raw(self.0.newBufferWithLength_options(length as NSUInteger, options.into())).unwrap()
+            FromRaw::from_raw(self.0.newBufferWithLength_options(length as NSUInteger,
+                                                                 options.into()))
+                .unwrap()
         }
     }
 
@@ -171,7 +172,8 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_buffer_with_byes_no_copy<B, I>(&mut self, bytes: Vec<u8>, options: ResourceOptions) -> Buffer {
+    pub fn new_buffer_with_byes_no_copy<B, I>(&mut self, bytes: Vec<u8>, options: ResourceOptions)
+                                              -> Buffer {
         unimplemented!();
     }
 
@@ -185,6 +187,7 @@ impl Device {
         unimplemented!();
     }
 
+    #[allow(unused_variables)]
     pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilStateDescriptor)
                                    -> Result<DepthStencilState, FromRawError> {
         unimplemented!();
