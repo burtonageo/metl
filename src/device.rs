@@ -11,7 +11,7 @@ use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
 use sys::MTLFeatureSet;
-use {Buffer, CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
+use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
      LibraryError, LibraryErrorType, ResourceOptions, Size, Texture, TextureDescriptor};
 
 pub struct Device(id);
@@ -135,22 +135,25 @@ impl Device {
         unimplemented!();
     }
 
-    #[allow(unused_variables)]
     pub fn new_buffer_with_length(&mut self, length: usize, options: ResourceOptions)
-                                              -> Buffer {
-        unimplemented!();
+                                  -> Buffer {
+        unsafe {
+            FromRaw::from_raw(self.0.newBufferWithLength_options(length as NSUInteger, options.into())).unwrap()
+        }
     }
 
-    #[allow(unused_variables)]
     #[cfg_attr(rustfmt, rustfmt_skip)]
     pub fn new_buffer_with_bytes(&mut self, bytes: &[u8], options: ResourceOptions)
-                                         -> Buffer {
-        unimplemented!();
+                                 -> Buffer {
+        let len = bytes.len() as NSUInteger;
+        let bytes = bytes.as_ptr() as *const _;
+        unsafe {
+            FromRaw::from_raw(self.0.newBufferWithBytes_length_options(bytes, len, options.into())).unwrap()
+        }
     }
 
-    #[allow(unused_variables)]
     pub fn new_texture(&mut self, descriptor: &TextureDescriptor) -> Result<Texture, FromRawError> {
-        unimplemented!();
+        unsafe { FromRaw::from_raw(self.0.newTextureWithDescriptor(*descriptor.as_raw())) }
     }
 
     #[allow(unused_variables)]

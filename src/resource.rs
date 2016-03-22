@@ -3,6 +3,7 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use std::borrow::Cow;
+use std::convert::Into;
 use std::ffi::CStr;
 use std::mem;
 use sys::{MTLCPUCacheMode, MTLPurgeableState, MTLResource, MTLResourceCPUCacheModeDefaultCache,
@@ -42,7 +43,15 @@ impl Resource {
 
 impl_from_into_raw!(Resource, of protocol "MTLResource");
 
+// TODO(burtonageo): Implement properly
 pub struct ResourceOptions;
+
+// TODO(burtonageo): Implement properly
+impl Into<MTLResourceOptions> for ResourceOptions {
+    fn into(self) -> MTLResourceOptions {
+        MTLResourceOptionCPUCacheModeDefault
+    }
+}
 
 convertible_enum! {
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
