@@ -170,6 +170,10 @@ impl Deref for Texture {
 
 impl_from_into_raw!(Texture, of protocol "MTLTexture");
 
+pub struct TextureDescriptor(id);
+
+impl_from_into_raw!(TextureDescriptor, of class "MTLTextureDescriptor");
+
 convertible_enum! {
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub enum TextureType: MTLTextureType {
