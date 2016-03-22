@@ -31,7 +31,7 @@ impl DepthStencilStateDescriptor {
         unimplemented!();
     }
 
-    pub depth_write_enabled(&self) -> bool {
+    pub fn depth_write_enabled(&self) -> bool {
         unimplemented!();
     }
 
