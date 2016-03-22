@@ -11,8 +11,8 @@ use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
 use sys::MTLFeatureSet;
-use {CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
-     LibraryError, LibraryErrorType, Size};
+use {Buffer, CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
+     LibraryError, LibraryErrorType, ResourceOptions, Size, Texture, TextureDescriptor};
 
 pub struct Device(id);
 
@@ -116,8 +116,32 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    // TODO(George): `data` parameter should be of the correct type
+    // TODO(burtonageo): `data` parameter should be of the correct type
     pub fn new_library_with_data(&mut self, data: ()) -> Result<Library, LibraryError> {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    pub fn new_buffer_with_length_and_options(&mut self, length: usize, options: ResourceOptions)
+                                              -> Buffer {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    #[cfg_attr(rustfmt, rustfmt_skip)]
+    pub fn new_buffer_with_bytes_options(&mut self, bytes: &[u8], options: ResourceOptions)
+                                         -> Buffer {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    pub fn new_texture(&mut self, descriptor: &TextureDescriptor) -> Result<Texture, FromRawError> {
+        unimplemented!();
+    }
+
+    #[allow(unused_variables)]
+    // TODO(burtonageo): Model types correctly
+    pub fn new_sampler_state(&mut self, descriptor: ()) -> ! {
         unimplemented!();
     }
 }
