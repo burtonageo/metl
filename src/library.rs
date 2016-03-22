@@ -4,9 +4,12 @@ use error::NSError;
 use objc_bringup::NSArray;
 use std::borrow::Cow;
 use std::convert::From;
+use std::error::Error;
 use std::ffi::CStr;
+use std::fmt;
 use std::io::Error as IoError;
 use std::mem;
+use std::sync::Arc;
 use sys::MTLLibrary;
 use {Device, FromRaw, FromRawError, Function};
 
@@ -52,23 +55,67 @@ impl Library {
 impl_from_into_raw!(Library, of protocol "MTLLibrary");
 
 #[derive(Debug)]
-pub struct LibraryError {
-    pub ns_error: Option<NSError>,
-    pub error_type: LibraryErrorType
-}
-
-#[derive(Debug)]
-pub enum LibraryErrorType {
-    SourceError,
+pub enum LibraryError {
+    SourceError(Option<Arc<NSError>>),
     FromRaw(FromRawError),
     Io(IoError)
 }
 
+impl fmt::Display for LibraryError {
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        write!(formatter, "{}", self.description())
+    }
+}
+
+impl Error for LibraryError {
+    fn description(&self) -> &str {
+        match *self {
+            LibraryError::SourceError(Some(ref e)) => e.domain(),
+            LibraryError::SourceError(None) => "Could not parse source code.",
+            LibraryError::FromRaw(_) => "Error converting library from pointer",
+            LibraryError::Io(_) => "Io error while loading library"
+        }
+    }
+
+    fn cause(&self) -> Option<&Error> {
+        match *self {
+            LibraryError::FromRaw(ref e) => {
+                let e: &Error = e;
+                Some(e)
+            }
+            LibraryError::Io(ref e) => {
+                let e: &Error = e;
+                Some(e)
+            }
+            _ => None
+        }
+    }
+}
+
+impl From<NSError> for LibraryError {
+    fn from(error: NSError) -> Self {
+        LibraryError::SourceError(Some(Arc::new(error)))
+    }
+}
+
+impl From<Option<NSError>> for LibraryError {
+    fn from(error: Option<NSError>) -> Self {
+        if let Some(error) = error {
+            LibraryError::SourceError(Some(Arc::new(error)))
+        } else {
+            LibraryError::SourceError(None)
+        }
+    }
+}
+
 impl From<FromRawError> for LibraryError {
     fn from(error: FromRawError) -> Self {
-        LibraryError {
-            ns_error: None,
-            error_type: LibraryErrorType::FromRaw(error)
-        }
+        LibraryError::FromRaw(error)
+    }
+}
+
+impl From<IoError> for LibraryError {
+    fn from(error: IoError) -> Self {
+        LibraryError::Io(error)
     }
 }

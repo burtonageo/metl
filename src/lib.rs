@@ -1,6 +1,6 @@
 #![warn(trivial_casts, trivial_numeric_casts, unused_import_braces, unused_qualifications)]
 
-extern crate asynchronous;
+extern crate block;
 extern crate cocoa;
 extern crate core_foundation;
 extern crate metal_sys;
@@ -62,7 +62,7 @@ pub use device::{Device, DeviceError, FeatureSet};
 pub use drawable::Drawable;
 pub use error::NSError;
 pub use function::{Function, FunctionType};
-pub use library::{Library, LibraryError, LibraryErrorType};
+pub use library::{Library, LibraryError};
 pub use parallel_render_command_encoder::ParallelRenderCommandEncoder;
 pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
 pub use render_command_encoder::RenderCommandEncoder;

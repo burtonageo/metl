@@ -1,7 +1,8 @@
+use block::ConcreteBlock;
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
 use error::NSError;
-use objc::runtime::YES;
+use objc::runtime::{Object, YES};
 use objc_bringup::NSArray;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
@@ -10,9 +11,10 @@ use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
 use std::path::Path;
+use std::sync::mpsc;
 use sys::MTLFeatureSet;
 use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
-     LibraryError, LibraryErrorType, ResourceOptions, Size, Texture, TextureDescriptor,
+     LibraryError, ResourceOptions, Size, Texture, TextureDescriptor,
      DepthStencilStateDescriptor, DepthStencilState};
 
 pub struct Device(id);
@@ -102,10 +104,7 @@ impl Device {
             let mut error = nil;
             let library = self.0.newLibraryWithFile_error(path, &mut error);
             if library == nil {
-                Err(LibraryError {
-                    ns_error: NSError::new(error),
-                    error_type: LibraryErrorType::SourceError
-                })
+                Err(LibraryError::from(NSError::new(error)))
             } else {
                 Ok(try!(FromRaw::from_raw(library)))
             }
@@ -120,13 +119,31 @@ impl Device {
             let mut error = nil;
             let library = self.0.newLibraryWithSource_options_error(source, options, &mut error);
             if library == nil {
-                Err(LibraryError {
-                    ns_error: NSError::new(error),
-                    error_type: LibraryErrorType::SourceError
-                })
+                Err(LibraryError::from(NSError::new(error)))
             } else {
                 Ok(try!(FromRaw::from_raw(library)))
             }
+        }
+    }
+
+    pub fn new_library_with_source_async(&mut self, source: &str, compile_options: &CompileOptions)
+                                         -> mpsc::Receiver<Result<Library, LibraryError>> {
+        unsafe {
+            let source = NSString::alloc(nil).init_str(source);
+            let options = compile_options.mtl_compile_options();
+            let (sender, receiver) = mpsc::channel();
+            let block = ConcreteBlock::new(move |lib: *mut Object, err: *mut Object| {
+                if lib != nil {
+                    match FromRaw::from_raw(lib) {
+                        Ok(library) => sender.send(Ok(library)).unwrap(),
+                        Err(e) => sender.send(Err(LibraryError::from(e))).unwrap()
+                    }
+                } else {
+                    sender.send(Err(LibraryError::from(NSError::new(err)))).unwrap();
+                }
+            });
+            self.0.newLibraryWithSource_options_completionHandler(source, options, &block.copy());
+            receiver
         }
     }
 

@@ -108,7 +108,7 @@ pub trait MTLDevice {
     unsafe fn newDefaultLibrary(self) -> id;
     unsafe fn newLibraryWithFile_error(self, filePath: id, error: *mut id) -> id;
     unsafe fn newLibraryWithSource_options_completionHandler(
-        self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler) -> id;
+        self, source: id, options: id, completionHandler: &MTLNewLibraryCompletionHandler);
 
     #[cfg_attr(rustfmt, rustfmt_skip)] // This definition is too long to fit on one line
     unsafe fn newLibraryWithSource_options_error(self, source: id, options: id, error: *mut id)
@@ -209,8 +209,7 @@ impl MTLDevice for id {
     }
 
     unsafe fn newLibraryWithSource_options_completionHandler(
-        self, source: id, options: id, completionHandler: MTLNewLibraryCompletionHandler)
-        -> id {
+        self, source: id, options: id, completionHandler: &MTLNewLibraryCompletionHandler) {
         msg_send![self, newLibraryWithSource:source options:options
                            completionHandler:completionHandler]
     }
