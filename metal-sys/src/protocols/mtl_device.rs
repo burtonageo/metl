@@ -122,11 +122,9 @@ pub trait MTLDevice {
                                                        -> id;
 
     unsafe fn newBufferWithLength_options(self, length: NSUInteger, options: MTLResourceOptions) -> id;
-    // TODO(burtonage): Check mutability here
     unsafe fn newBufferWithBytes_length_options(self, pointer: *const c_void, length: NSUInteger,
                                                 options: MTLResourceOptions)
                                                 -> id;
-    // TODO(burtonage): Check mutability here
     unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self, pointer: *mut c_void,
                                                                   length: NSUInteger,
                                                                   options: MTLResourceOptions,
