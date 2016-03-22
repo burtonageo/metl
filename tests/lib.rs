@@ -3,7 +3,7 @@ extern crate cocoa;
 
 use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
-use metl::{CompileOptions, Device, LanguageVersion, SpecificLanguageVersion, FeatureSet};
+use metl::{CompileOptions, Device, FeatureSet, LanguageVersion, SpecificLanguageVersion};
 use metl::LibraryErrorType;
 use metl::{FromRaw, FromRawError, IntoRaw};
 use metl::sys::{MTLCompileOptions, MTLLanguageVersion};
@@ -45,8 +45,7 @@ fn set_get_command_queue_label() {
     const DUMMY_COMMAND_QUEUE_NAME: &'static str = "foo";
     command_queue.set_label(&DUMMY_COMMAND_QUEUE_NAME);
 
-    assert_eq!(command_queue.label(),
-               DUMMY_COMMAND_QUEUE_NAME);
+    assert_eq!(command_queue.label(), DUMMY_COMMAND_QUEUE_NAME);
 }
 
 #[test]
@@ -92,13 +91,14 @@ fn device_from_nullptr() {
 #[test]
 fn compile_opts_creation_is_correct() {
     let fast_math_enabled = true;
-    let options = CompileOptions::default()
-                      .fast_math_enabled(fast_math_enabled)
-                      .language_version(LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0))
-                      .with_macro("Foo", 54)
-                      .with_macro("Bar", 32.0)
-                      .with_macro("Baz", "Hi")
-                      .mtl_compile_options();
+    let options =
+        CompileOptions::default()
+            .fast_math_enabled(fast_math_enabled)
+            .language_version(LanguageVersion::Specific(SpecificLanguageVersion::Version_1_0))
+            .with_macro("Foo", 54)
+            .with_macro("Bar", 32.0)
+            .with_macro("Baz", "Hi")
+            .mtl_compile_options();
 
     unsafe {
         assert_eq!(fast_math_enabled as BOOL, options.fastMathEnabled());
@@ -158,9 +158,42 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
 }
 
 #[test]
+fn shader_get_function_with_name() {
+    let mut device = Device::system_default_device().unwrap();
+    const SHADER: &'static str = r"
+        using namespace metal;
+
+        struct ColoredVertex
+        {
+            float4 position [[position]];
+            float4 color;
+        };
+
+        vertex ColoredVertex vertex_main(constant float4 *position [[buffer(0)]],
+                                         constant float4 *color [[buffer(1)]],
+                                         uint vid [[vertex_id]])
+        {
+            ColoredVertex vert;
+            vert.position = position[vid];
+            vert.color = color[vid];
+            return vert;
+        }
+
+        fragment float4 fragment_main(ColoredVertex vert [[stage_in]])
+        {
+            return vert.color;
+        }
+    ";
+
+    let mut library = device.new_library_with_source(&SHADER, &Default::default()).ok().unwrap();
+    let function = library.new_function_with_name(&"fragment_main");
+    assert!(function.is_some());
+}
+
+#[test]
 #[ignore]
 fn shader_get_struct_info() {
-    use metl::{StructType, StructMember};
+    use metl::{StructMember, StructType};
     let mut device = Device::system_default_device().unwrap();
     const SHADER: &'static str = r"
         using namespace metal;
@@ -178,5 +211,7 @@ fn shader_get_struct_info() {
         void function(SomeStruct struct) { }
     ";
 
-    unimplemented!();
+    let mut library = device.new_library_with_source(&SHADER, &Default::default()).ok().unwrap();
+    let function = library.new_function_with_name(&"function");
+    unimplemented!()
 }
