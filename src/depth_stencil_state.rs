@@ -13,6 +13,7 @@ impl DepthStencilState {
         unimplemented!();
     }
 
+    #[allow(unused_variables)]
     pub fn set_label(&mut self, label: &str) {
         unimplemented!();
     }
@@ -27,6 +28,7 @@ impl DepthStencilStateDescriptor {
         unimplemented!();
     }
 
+    #[allow(unused_variables)]
     pub fn set_depth_compare_function(&mut self, compare_function: CompareFunction) {
         unimplemented!();
     }
@@ -35,6 +37,7 @@ impl DepthStencilStateDescriptor {
         unimplemented!();
     }
 
+    #[allow(unused_variables)]
     pub fn set_depth_write_enabled(&mut self, depth_write_enabled: bool) {
         unimplemented!();
     }
@@ -42,7 +45,8 @@ impl DepthStencilStateDescriptor {
     pub fn back_face_stencil(&self) -> StencilDescriptor {
         unimplemented!();
     }
-    
+
+    #[allow(unused_variables)]
     pub fn set_back_face_stencil(&mut self, back_face_stencil: StencilDescriptor) {
         unimplemented!();
     }
@@ -51,6 +55,7 @@ impl DepthStencilStateDescriptor {
         unimplemented!();
     }
 
+    #[allow(unused_variables)]
     pub fn set_front_face_stencil(&mut self, front_face_stencil: StencilDescriptor) {
         unimplemented!();
     }
@@ -58,7 +63,8 @@ impl DepthStencilStateDescriptor {
     pub fn label(&self) -> Cow<str> {
         unimplemented!();
     }
-    
+
+    #[allow(unused_variables)]
     pub fn set_label(&mut self, label: &str) {
         unimplemented!();
     }
