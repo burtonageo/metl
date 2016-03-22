@@ -123,34 +123,36 @@ fn create_invalid_shader() {
     }
 }
 
+// Shader source taken from http://metalbyexample.com/up-and-running-2/
+const SHADER: &'static str = r"
+using namespace metal;
+
+struct ColoredVertex
+{
+    float4 position [[position]];
+    float4 color;
+};
+
+vertex ColoredVertex vertex_main(constant float4 *position [[buffer(0)]],
+                                 constant float4 *color [[buffer(1)]],
+                                 uint vid [[vertex_id]])
+{
+    ColoredVertex vert;
+    vert.position = position[vid];
+    vert.color = color[vid];
+    return vert;
+}
+
+fragment float4 fragment_main(ColoredVertex vert [[stage_in]])
+{
+    return vert.color;
+}
+";
+
+
 #[test]
 fn device_create_library_with_valid_shader_code_and_get_fn_names() {
     let mut device = Device::system_default_device().unwrap();
-    // Shader source taken from http://metalbyexample.com/up-and-running-2/
-    const SHADER: &'static str = r"
-        using namespace metal;
-
-        struct ColoredVertex
-        {
-            float4 position [[position]];
-            float4 color;
-        };
-
-        vertex ColoredVertex vertex_main(constant float4 *position [[buffer(0)]],
-                                         constant float4 *color [[buffer(1)]],
-                                         uint vid [[vertex_id]])
-        {
-            ColoredVertex vert;
-            vert.position = position[vid];
-            vert.color = color[vid];
-            return vert;
-        }
-
-        fragment float4 fragment_main(ColoredVertex vert [[stage_in]])
-        {
-            return vert.color;
-        }
-    ";
     let library = device.new_library_with_source(&SHADER, &Default::default()).ok().unwrap();
     let names = library.function_names();
     assert_eq!(names[0], "vertex_main");
@@ -160,31 +162,6 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
 #[test]
 fn shader_get_function_with_name() {
     let mut device = Device::system_default_device().unwrap();
-    const SHADER: &'static str = r"
-        using namespace metal;
-
-        struct ColoredVertex
-        {
-            float4 position [[position]];
-            float4 color;
-        };
-
-        vertex ColoredVertex vertex_main(constant float4 *position [[buffer(0)]],
-                                         constant float4 *color [[buffer(1)]],
-                                         uint vid [[vertex_id]])
-        {
-            ColoredVertex vert;
-            vert.position = position[vid];
-            vert.color = color[vid];
-            return vert;
-        }
-
-        fragment float4 fragment_main(ColoredVertex vert [[stage_in]])
-        {
-            return vert.color;
-        }
-    ";
-
     let mut library = device.new_library_with_source(&SHADER, &Default::default()).ok().unwrap();
     let function = library.new_function_with_name(&"fragment_main");
     assert!(function.is_some());
@@ -195,23 +172,7 @@ fn shader_get_function_with_name() {
 fn shader_get_struct_info() {
     use metl::{StructMember, StructType};
     let mut device = Device::system_default_device().unwrap();
-    const SHADER: &'static str = r"
-        using namespace metal;
-
-        struct OtherStruct {
-            float4 color;
-        };
-
-        struct SomeStruct {
-            int some_field;
-            bool another_field;
-            OtherStruct nested;
-        };
-
-        void function(SomeStruct struct) { }
-    ";
-
     let mut library = device.new_library_with_source(&SHADER, &Default::default()).ok().unwrap();
-    let function = library.new_function_with_name(&"function");
-    unimplemented!()
+    let function = library.new_function_with_name(&"fragment_main").unwrap();
+    unimplemented!();
 }
