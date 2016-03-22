@@ -4,7 +4,7 @@ use block::Block;
 use cocoa::base::{BOOL, id};
 use cocoa::foundation::NSUInteger;
 use libc::c_void;
-use {MTLFeatureSet, MTLPipelineOption, MTLSize};
+use {MTLFeatureSet, MTLPipelineOption, MTLResourceOptions, MTLSize};
 
 /// The `MTLDevice` protocol defines the interface to a single graphics processor (GPU). You use
 /// an object that conforms to this protocol to query the capabilities of the processor and to
@@ -121,12 +121,13 @@ pub trait MTLDevice {
     unsafe fn newCommandQueueWithMaxCommandBufferCount(self, maxCommandBufferCount: NSUInteger)
                                                        -> id;
 
-    unsafe fn newBufferWithLength_Options(self, length: NSUInteger, options: id) -> id;
+    unsafe fn newBufferWithLength_Options(self, length: NSUInteger, options: MTLResourceOptions) -> id;
     unsafe fn newBufferWithBytes_Length_Options(self, pointer: *mut c_void, length: NSUInteger,
-                                                options: id)
+                                                options: MTLResourceOptions)
                                                 -> id;
     unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self, pointer: *mut c_void,
                                                                   length: NSUInteger,
+                                                                  options: MTLResourceOptions,
                                                                   deallocator: Block<(*mut c_void,
                                                                                       NSUInteger),
                                                                                      ()>);
@@ -235,22 +236,26 @@ impl MTLDevice for id {
         msg_send![self, newCommandQueueWithMaxCommandBufferCount:maxCommandBufferCount]
     }
 
-    unsafe fn newBufferWithLength_Options(self, length: NSUInteger, options: id) -> id {
+    unsafe fn newBufferWithLength_Options(self, length: NSUInteger, options: MTLResourceOptions) -> id {
         msg_send![self, newBufferWithLength:length options:options]
     }
 
     unsafe fn newBufferWithBytes_Length_Options(self, pointer: *mut c_void, length: NSUInteger,
-                                                options: id)
+                                                options: MTLResourceOptions)
                                                 -> id {
         msg_send![self, newBufferWithBytes:pointer length:length options:options]
     }
 
     unsafe fn newBufferWithBytesNoCopy_length_options_deallocator(self, pointer: *mut c_void,
                                                                   length: NSUInteger,
+                                                                  options: MTLResourceOptions,
                                                                   deallocator: Block<(*mut c_void,
                                                                                       NSUInteger),
                                                                                      ()>) {
-        msg_send![self, newBufferWithBytesNoCopy:pointer length:length deallocator:deallocator]
+        msg_send![self, newBufferWithBytesNoCopy:pointer
+                                          length:length
+                                         options:options
+                                     deallocator:deallocator]
     }
 
     unsafe fn newTextureWithDescriptor(self, descriptor: id) -> id {
