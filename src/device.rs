@@ -5,7 +5,7 @@ use objc::runtime::YES;
 use objc_bringup::NSArray;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
-use std::convert::{AsRef, From};
+use std::convert::From;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
@@ -92,12 +92,11 @@ impl Device {
 
     #[allow(unused_variables)]
     #[cfg_attr(rustfmt, rustfmt_skip)]
-    pub fn new_library_with_file(&mut self, file_path: &AsRef<Path>)
-                                 -> Result<Library, LibraryError> {
+    pub fn new_library_with_file(&mut self, file_path: &Path) -> Result<Library, LibraryError> {
         unimplemented!();
     }
 
-    pub fn new_library_with_source(&mut self, source: &AsRef<str>, compile_options: &CompileOptions)
+    pub fn new_library_with_source(&mut self, source: &str, compile_options: &CompileOptions)
                                    -> Result<Library, LibraryError> {
         unsafe {
             let source = NSString::alloc(nil).init_str(source.as_ref());
