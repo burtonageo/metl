@@ -136,14 +136,14 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_buffer_with_length_and_options(&mut self, length: usize, options: ResourceOptions)
+    pub fn new_buffer_with_length(&mut self, length: usize, options: ResourceOptions)
                                               -> Buffer {
         unimplemented!();
     }
 
     #[allow(unused_variables)]
     #[cfg_attr(rustfmt, rustfmt_skip)]
-    pub fn new_buffer_with_bytes_options(&mut self, bytes: &[u8], options: ResourceOptions)
+    pub fn new_buffer_with_bytes(&mut self, bytes: &[u8], options: ResourceOptions)
                                          -> Buffer {
         unimplemented!();
     }
