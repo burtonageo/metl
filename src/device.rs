@@ -12,7 +12,8 @@ use std::fmt::{self, Display, Formatter};
 use std::path::Path;
 use sys::MTLFeatureSet;
 use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, FromRaw, FromRawError, Library,
-     LibraryError, LibraryErrorType, ResourceOptions, Size, Texture, TextureDescriptor};
+     LibraryError, LibraryErrorType, ResourceOptions, Size, Texture, TextureDescriptor,
+     DepthStencilStateDescriptor, DepthStencilState};
 
 pub struct Device(id);
 
@@ -164,6 +165,11 @@ impl Device {
     #[allow(unused_variables)]
     // TODO(burtonageo): Model types correctly
     pub fn new_sampler_state(&mut self, descriptor: ()) -> ! {
+        unimplemented!();
+    }
+
+    pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilStateDescriptor)
+                                   -> Result<DepthStencilState, FromRawError> {
         unimplemented!();
     }
 }
