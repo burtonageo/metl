@@ -155,12 +155,15 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
 }
 
 #[test]
-fn device_create_library_async() {
+fn device_create_library_async_with_valid_shader_code_and_get_fn_names() {
     let mut device = Device::system_default_device().unwrap();
     let library = device.new_library_with_source_async(&SHADER, &Default::default())
                         .recv()
+                        .unwrap()
                         .unwrap();
-    assert!(library.is_ok());
+    let names = library.function_names();
+    assert_eq!(names[0], "vertex_main");
+    assert_eq!(names[1], "fragment_main");
 }
 
 #[test]
