@@ -90,16 +90,31 @@ impl Device {
         }
     }
 
-    #[allow(unused_variables)]
     #[cfg_attr(rustfmt, rustfmt_skip)]
     pub fn new_library_with_file(&mut self, file_path: &Path) -> Result<Library, LibraryError> {
-        unimplemented!();
+        unsafe {
+            let path_string = match file_path.as_os_str().to_str() {
+                None => unimplemented!(),
+                Some(s) => s
+            };
+            let path = NSString::alloc(nil).init_str(path_string);
+            let mut error = nil;
+            let library = self.0.newLibraryWithFile_error(path, &mut error);
+            if library == nil {
+                Err(LibraryError {
+                    ns_error: NSError::new(error),
+                    error_type: LibraryErrorType::SourceError
+                })
+            } else {
+                Ok(try!(FromRaw::from_raw(library)))
+            }
+        }
     }
 
     pub fn new_library_with_source(&mut self, source: &str, compile_options: &CompileOptions)
                                    -> Result<Library, LibraryError> {
         unsafe {
-            let source = NSString::alloc(nil).init_str(source.as_ref());
+            let source = NSString::alloc(nil).init_str(source);
             let options = compile_options.mtl_compile_options();
             let mut error = nil;
             let library = self.0.newLibraryWithSource_options_error(source, options, &mut error);
