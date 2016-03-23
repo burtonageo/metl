@@ -172,8 +172,8 @@ impl Device {
     }
 
     #[allow(unused_variables)]
-    pub fn new_buffer_with_byes_no_copy<B, I>(&mut self, bytes: Vec<u8>, options: ResourceOptions)
-                                              -> Buffer {
+    pub fn new_buffer_with_bytes_no_copy<B, I>(&mut self, bytes: Vec<u8>, options: ResourceOptions)
+                                               -> Buffer {
         unimplemented!();
     }
 
