@@ -2,7 +2,7 @@ use block::ConcreteBlock;
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSString, NSUInteger};
 use error::NSError;
-use objc::runtime::{Object, YES};
+use objc::runtime::YES;
 use objc_bringup::NSArray;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
 use std::borrow::Cow;
@@ -132,7 +132,7 @@ impl Device {
             let source = NSString::alloc(nil).init_str(source);
             let options = compile_options.mtl_compile_options();
             let (sender, receiver) = mpsc::channel();
-            let block = ConcreteBlock::new(move |lib: *mut Object, err: *mut Object| {
+            let block = ConcreteBlock::new(move |lib, err| {
                 if lib != nil {
                     match FromRaw::from_raw(lib) {
                         Ok(library) => sender.send(Ok(library)).unwrap(),
