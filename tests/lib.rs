@@ -118,6 +118,17 @@ fn create_invalid_shader() {
     }
 }
 
+#[test]
+fn create_invalid_shader_async() {
+    let mut device = Device::system_default_device().unwrap();
+    const BAD_SHADER: &'static str = r"FooBarBaz";
+    match device.new_library_with_source_async(&BAD_SHADER, &Default::default()).recv().unwrap() {
+        Ok(_) => panic!("Incorrect result: expected an error"),
+        Err(LibraryError::SourceError(_)) => assert!(true),
+        Err(_) => panic!("Incorrect error type")
+    }
+}
+
 // Shader source taken from http://metalbyexample.com/up-and-running-2/
 const SHADER: &'static str = r"
 using namespace metal;
@@ -155,6 +166,7 @@ fn device_create_library_with_valid_shader_code_and_get_fn_names() {
 }
 
 #[test]
+#[ignore]
 fn device_create_library_async_with_valid_shader_code_and_get_fn_names() {
     let mut device = Device::system_default_device().unwrap();
     let library = device.new_library_with_source_async(&SHADER, &Default::default())
