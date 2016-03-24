@@ -1,6 +1,9 @@
-use cocoa::base::id;
+use cocoa::base::{BOOL, id, nil, YES};
+use cocoa::foundation::NSString;
 use std::borrow::Cow;
-use {CompareFunction, Device, StencilDescriptor};
+use std::ffi::CStr;
+use sys::MTLDepthStencilStateDescriptor;
+use {CompareFunction, Device, FromRaw, IntoRaw, StencilDescriptor};
 
 pub struct DepthStencilState(id);
 
@@ -25,47 +28,52 @@ pub struct DepthStencilStateDescriptor(id);
 
 impl DepthStencilStateDescriptor {
     pub fn depth_compare_function(&self) -> CompareFunction {
-        unimplemented!();
+        unsafe { self.0.depthCompareFunction().into() }
     }
 
-    #[allow(unused_variables)]
     pub fn set_depth_compare_function(&mut self, compare_function: CompareFunction) {
-        unimplemented!();
+        unsafe { self.0.setDepthCompareFunction(compare_function.into()) }
     }
 
     pub fn depth_write_enabled(&self) -> bool {
-        unimplemented!();
+        unsafe { self.0.depthWriteEnabled() == YES }
     }
 
-    #[allow(unused_variables)]
     pub fn set_depth_write_enabled(&mut self, depth_write_enabled: bool) {
-        unimplemented!();
+        unsafe { self.0.setDepthWriteEnabled(depth_write_enabled as BOOL)}
     }
 
-    pub fn back_face_stencil(&self) -> StencilDescriptor {
-        unimplemented!();
+    pub fn back_face_stencil(&self) -> Option<StencilDescriptor> {
+        unsafe { FromRaw::from_raw(self.0.backFaceStencil()).ok() }
     }
 
-    #[allow(unused_variables)]
     pub fn set_back_face_stencil(&mut self, back_face_stencil: StencilDescriptor) {
-        unimplemented!();
+        unsafe { self.0.setBackFaceStencil(back_face_stencil.into_raw()) }
     }
 
-    pub fn front_face_stencil(&self) -> StencilDescriptor {
-        unimplemented!();
+    pub fn clear_back_face_stencil(&mut self) {
+        unsafe { self.0.setBackFaceStencil(nil) }
     }
 
-    #[allow(unused_variables)]
+    pub fn front_face_stencil(&self) -> Option<StencilDescriptor> {
+        unsafe { FromRaw::from_raw(self.0.frontFaceStencil()).ok() }
+    }
+
     pub fn set_front_face_stencil(&mut self, front_face_stencil: StencilDescriptor) {
-        unimplemented!();
+        unsafe { self.0.setFrontFaceStencil(front_face_stencil.into_raw()) }
+    }
+
+    pub fn clear_front_face_stencil(&mut self) {
+        unsafe { self.0.setFrontFaceStencil(nil) }
     }
 
     pub fn label(&self) -> Cow<str> {
-        unimplemented!();
+        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
     }
 
-    #[allow(unused_variables)]
     pub fn set_label(&mut self, label: &str) {
-        unimplemented!();
+        unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
     }
 }
+
+impl_from_into_raw!(DepthStencilStateDescriptor, of class "MTLDepthStencilStateDescriptor");

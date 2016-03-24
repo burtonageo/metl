@@ -24,7 +24,7 @@ pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
                   MTLRenderPassColorAttachmentDescriptorArray,
                   MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor,
                   MTLRenderPassStencilAttachmentDescriptor, MTLStoreAction, MTLStructMember,
-                  MTLStructType, MTLVertexAttribute};
+                  MTLStructType, MTLVertexAttribute, MTLDepthStencilStateDescriptor};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
