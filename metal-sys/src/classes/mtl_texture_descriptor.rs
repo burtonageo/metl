@@ -41,6 +41,10 @@ pub trait MTLTextureDescriptor {
                                                                             mipmapped:mipmapped]
     }
 
+    unsafe fn new(_: Self) -> id {
+        msg_send![class("MTLTextureDescriptor"), new]
+    }
+
     /// The dimension and arrangement of texture image data.
     ///
     /// # Discussion
@@ -146,6 +150,8 @@ pub trait MTLTextureDescriptor {
     /// the `MTLTextureUsageUnknown` value for the best performance.
     unsafe fn usage(self) -> MTLTextureUsage;
     unsafe fn setUsage(self, usage: MTLTextureUsage);
+
+    unsafe fn copy(self) -> id;
 }
 
 impl MTLTextureDescriptor for id {    
@@ -243,5 +249,9 @@ impl MTLTextureDescriptor for id {
 
     unsafe fn setUsage(self, usage: MTLTextureUsage) {
         msg_send![self, setUsage:usage]
+    }
+
+    unsafe fn copy(self) -> id {
+        msg_send![self, copy]
     }
 }
