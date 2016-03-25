@@ -167,7 +167,8 @@ impl Device {
         let len = bytes.len() as NSUInteger;
         let bytes = bytes.as_ptr() as *const _;
         unsafe {
-            FromRaw::from_raw(self.0.newBufferWithBytes_length_options(bytes, len, options.into())).unwrap()
+            FromRaw::from_raw(self.0.newBufferWithBytes_length_options(
+                bytes, len,options.into())).unwrap()
         }
     }
 
@@ -189,7 +190,9 @@ impl Device {
 
     pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilStateDescriptor)
                                    -> Result<DepthStencilState, FromRawError> {
-        unsafe { FromRaw::from_raw(self.0.newDepthStencilStateWithDescriptor(*descriptor.as_raw())) }
+        unsafe {
+            FromRaw::from_raw(self.0.newDepthStencilStateWithDescriptor(*descriptor.as_raw()))
+        }
     }
 }
 

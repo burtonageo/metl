@@ -1,4 +1,4 @@
-use cocoa::base::{BOOL, id, nil, YES};
+use cocoa::base::{BOOL, YES, id, nil};
 use cocoa::foundation::NSString;
 use std::borrow::Cow;
 use std::ffi::CStr;
@@ -40,7 +40,7 @@ impl DepthStencilStateDescriptor {
     }
 
     pub fn set_depth_write_enabled(&mut self, depth_write_enabled: bool) {
-        unsafe { self.0.setDepthWriteEnabled(depth_write_enabled as BOOL)}
+        unsafe { self.0.setDepthWriteEnabled(depth_write_enabled as BOOL) }
     }
 
     pub fn back_face_stencil(&self) -> Option<StencilDescriptor> {

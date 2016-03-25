@@ -239,7 +239,10 @@ impl TextureDescriptor {
         Size::new(self.width(), self.height(), self.depth())
     }
 
-    pub fn set_size(&mut self, Size {width, height, depth}: Size) {
+    pub fn set_size(&mut self, size: Size) {
+        // Destructure here rather than in method sig due to
+        // github.com/rust-lang-nursery/rustfmt/issues/875
+        let Size {width, height, depth} = size;
         self.set_width(width);
         self.set_height(height);
         self.set_depth(depth);
