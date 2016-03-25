@@ -187,10 +187,9 @@ impl Device {
         unimplemented!();
     }
 
-    #[allow(unused_variables)]
-    pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilStateDescriptor)
+    pub fn new_stencil_depth_state(&mut self, descriptor: &DepthStencilStateDescriptor)
                                    -> Result<DepthStencilState, FromRawError> {
-        unimplemented!();
+        unsafe { FromRaw::from_raw(self.0.newStencilDepthStateWithDescriptor(*descriptor.as_raw())) }
     }
 }
 
