@@ -1,4 +1,4 @@
-use cocoa::base::id;
+use cocoa::base::{class, id};
 use cocoa::foundation::NSUInteger;
 use objc::runtime::BOOL;
 use MTLCompareFunction;
@@ -115,7 +115,7 @@ pub trait MTLSamplerDescriptor {
     ///
     /// * `maxAnisotropy` must be `1`.
     unsafe fn normalizedCoordinates(self) -> BOOL;
-    unsafe fn setNormalizedCoordinates(self, normalizedCoordinates: BOOL)
+    unsafe fn setNormalizedCoordinates(self, normalizedCoordinates: BOOL);
 
     /// The sampler comparison function used when sampling texels from a depth texture.
     ///
@@ -223,7 +223,7 @@ impl MTLSamplerDescriptor for id {
         msg_send![self, normalizedCoordinates]
     }
 
-    unsafe fn setNormalizedCoordinates(self, normalizedCoordinates: BOOL {
+    unsafe fn setNormalizedCoordinates(self, normalizedCoordinates: BOOL) {
         msg_send![self, setNormalizedCoordinates:normalizedCoordinates]
     }
 
