@@ -10,6 +10,8 @@ use std::convert::From;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
+use std::marker::PhantomData;
+use std::ops::Deref;
 use std::path::Path;
 use std::sync::mpsc;
 use sys::MTLFeatureSet;
@@ -172,10 +174,25 @@ impl Device {
         }
     }
 
-    #[allow(unused_variables)]
-    pub fn new_buffer_with_bytes_no_copy<B, I>(&mut self, bytes: Vec<u8>, options: ResourceOptions)
-                                               -> Buffer {
-        unimplemented!();
+    pub fn new_buffer_with_bytes_no_copy<'a>(&mut self, bytes: &'a mut [u8], options: ResourceOptions)
+                                             -> BufferRef<'a> {
+        let len = bytes.len() as NSUInteger;
+        let bytes = bytes.as_ptr() as *mut _;
+        let dealloc = ConcreteBlock::new(|ptr, len| {
+            use std::slice;
+            unsafe {
+                drop(slice::from_raw_parts(ptr as *const u8, len as usize))
+            }
+        });
+        let buffer = unsafe {
+            FromRaw::from_raw(self.0.newBufferWithBytesNoCopy_length_options_deallocator(bytes, len, 
+                                                                                         options.into(),
+                                                                                         &dealloc)).unwrap()
+        };
+        BufferRef {
+            buffer: buffer,
+            marker: PhantomData
+        }
     }
 
     pub fn new_texture(&mut self, descriptor: &TextureDescriptor) -> Result<Texture, FromRawError> {
@@ -193,6 +210,18 @@ impl Device {
         unsafe {
             FromRaw::from_raw(self.0.newDepthStencilStateWithDescriptor(*descriptor.as_raw()))
         }
+    }
+}
+
+pub struct BufferRef<'a> {
+    buffer: Buffer,
+    marker: PhantomData<&'a ()>
+}
+
+impl<'a> Deref for BufferRef<'a> {
+    type Target = Buffer;
+    fn deref(&self) -> &Self::Target {
+        &self.buffer
     }
 }
 
