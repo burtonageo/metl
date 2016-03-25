@@ -53,6 +53,13 @@ impl Into<MTLResourceOptions> for ResourceOptions {
     }
 }
 
+// TODO(burtonageo): Implement properly
+impl From<MTLResourceOptions> for ResourceOptions {
+    fn from(_options: MTLResourceOptions) -> Self {
+        ResourceOptions
+    }
+}
+
 convertible_enum! {
     #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub enum StorageMode: MTLStorageMode {
