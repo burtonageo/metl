@@ -6,6 +6,7 @@ mod mtl_drawable;
 mod mtl_function;
 mod mtl_library;
 mod mtl_resource;
+mod mtl_sampler_state;
 mod mtl_texture;
 
 pub use self::mtl_command_buffer::MTLCommandBuffer;
@@ -29,4 +30,5 @@ pub use self::mtl_resource::{MTLCPUCacheMode, MTLPurgeableState, MTLResource,
                              MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
                              MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
                              MTLResourceStorageModeShift, MTLStorageMode};
+pub use self::mtl_sampler_state::MTLSamplerState;
 pub use self::mtl_texture::{MTLTexture, MTLTextureType, MTLTextureUsage};

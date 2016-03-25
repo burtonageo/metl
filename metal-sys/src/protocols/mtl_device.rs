@@ -131,7 +131,8 @@ pub trait MTLDevice {
                                                                   options: MTLResourceOptions,
                                                                   deallocator: &Block<(*mut c_void,
                                                                                        NSUInteger),
-                                                                                      ()>) -> id;
+                                                                                      ()>)
+                                                                  -> id;
 
     unsafe fn newTextureWithDescriptor(self, descriptor: id) -> id;
 
@@ -251,8 +252,9 @@ impl MTLDevice for id {
                                                                   length: NSUInteger,
                                                                   options: MTLResourceOptions,
                                                                   deallocator: &Block<(*mut c_void,
-                                                                                      NSUInteger),
-                                                                                     ()>) -> id {
+                                                                                       NSUInteger),
+                                                                                      ()>)
+                                                                  -> id {
         msg_send![self, newBufferWithBytesNoCopy:pointer
                                           length:length
                                          options:options

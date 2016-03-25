@@ -8,6 +8,7 @@ mod mtl_render_pass_color_attachment_descriptor;
 mod mtl_render_pass_depth_attachment_descriptor;
 mod mtl_render_pass_descriptor;
 mod mtl_render_pass_stencil_attachment_descriptor;
+mod mtl_sampler_descriptor;
 mod mtl_struct_member;
 mod mtl_struct_type;
 mod mtl_texture_descriptor;
@@ -26,6 +27,8 @@ pub use self::mtl_render_pass_depth_attachment_descriptor::{MTLMultisampleDepthR
                                                             MTLRenderPassDepthAttachmentDescriptor};
 pub use self::mtl_render_pass_descriptor::MTLRenderPassDescriptor;
 pub use self::mtl_render_pass_stencil_attachment_descriptor::MTLRenderPassStencilAttachmentDescriptor;
+pub use self::mtl_sampler_descriptor::{MTLSamplerAddressMode, MTLSamplerDescriptor,
+                                       MTLSamplerMinMagFilter, MTLSamplerMipFilter};
 pub use self::mtl_struct_member::MTLStructMember;
 pub use self::mtl_struct_type::MTLStructType;
 pub use self::mtl_texture_descriptor::MTLTextureDescriptor;

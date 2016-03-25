@@ -24,8 +24,10 @@ pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
                   MTLRenderPassColorAttachmentDescriptor,
                   MTLRenderPassColorAttachmentDescriptorArray,
                   MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor,
-                  MTLRenderPassStencilAttachmentDescriptor, MTLStoreAction, MTLStructMember,
-                  MTLStructType, MTLTextureDescriptor, MTLVertexAttribute};
+                  MTLRenderPassStencilAttachmentDescriptor, MTLSamplerAddressMode,
+                  MTLSamplerDescriptor, MTLSamplerMinMagFilter, MTLSamplerMipFilter,
+                  MTLStoreAction, MTLStructMember, MTLStructType, MTLTextureDescriptor,
+                  MTLVertexAttribute};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
@@ -46,8 +48,8 @@ pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLCompu
                     MTLResourceCPUCacheModeWriteCombined, MTLResourceOptionCPUCacheModeDefault,
                     MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
                     MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
-                    MTLResourceStorageModeShift, MTLStorageMode, MTLTexture, MTLTextureType,
-                    MTLTextureUsage};
+                    MTLResourceStorageModeShift, MTLSamplerState, MTLStorageMode, MTLTexture,
+                    MTLTextureType, MTLTextureUsage};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
