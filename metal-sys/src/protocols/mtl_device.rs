@@ -136,7 +136,7 @@ pub trait MTLDevice {
 
     unsafe fn newSamplerStateWithDescriptor(self, descriptor: id) -> id;
 
-    unsafe fn newStencilDepthStateWithDescriptor(self, descriptor: id) -> id;
+    unsafe fn newDepthStencilStateWithDescriptor(self, descriptor: id) -> id;
 
     unsafe fn newRenderPipleineStateWithDescriptor_completionHandler(
             self, descriptor: id, completionHandler: MTLNewRenderPipleineStateCompletionHandler);
@@ -265,8 +265,8 @@ impl MTLDevice for id {
         msg_send![self, newSamplerStateWithDescriptor:descriptor]
     }
 
-    unsafe fn newStencilDepthStateWithDescriptor(self, descriptor: id) -> id {
-        msg_send![self, newStencilDepthStateWithDescriptor:descriptor]
+    unsafe fn newDepthStencilStateWithDescriptor(self, descriptor: id) -> id {
+        msg_send![self, newDepthStencilStateWithDescriptor:descriptor]
     }
 
     unsafe fn newRenderPipleineStateWithDescriptor_completionHandler(
