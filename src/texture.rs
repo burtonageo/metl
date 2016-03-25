@@ -1,11 +1,12 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::{NSInteger, NSUInteger};
 use core_foundation::base::CFRange;
-use objc::runtime::YES;
+use objc::runtime::{BOOL, YES};
 use std::mem;
 use std::ops::{Deref, Range};
-use sys::{MTLTexture, MTLTextureType, MTLTextureUsage};
-use {FromRaw, FromRawError, PixelFormat, Region, Resource, Size};
+use sys::{MTLTexture, MTLTextureDescriptor, MTLTextureType, MTLTextureUsage};
+use {CpuCacheMode, FromRaw, FromRawError, PixelFormat, Region, Resource, ResourceOptions, Size,
+     StorageMode};
 #[cfg(target_os = "ios")]
 use Buffer;
 
@@ -83,23 +84,23 @@ impl Texture {
     }
 
     pub fn texture_type(&self) -> TextureType {
-        unsafe { self.0.textureType().into() }
+        unsafe { MTLTexture::textureType(self.0).into() }
     }
 
     pub fn pixel_format(&self) -> PixelFormat {
-        unsafe { self.0.pixelFormat().into() }
+        unsafe { MTLTexture::pixelFormat(self.0).into() }
     }
 
     pub fn width(&self) -> usize {
-        unsafe { self.0.width() as usize }
+        unsafe { MTLTexture::width(self.0) as usize }
     }
 
     pub fn height(&self) -> usize {
-        unsafe { self.0.height() as usize }
+        unsafe { MTLTexture::height(self.0) as usize }
     }
 
     pub fn depth(&self) -> usize {
-        unsafe { self.0.depth() as usize }
+        unsafe { MTLTexture::depth(self.0) as usize }
     }
 
     pub fn size(&self) -> Size {
@@ -107,15 +108,15 @@ impl Texture {
     }
 
     pub fn mipmap_level_count(&self) -> usize {
-        unsafe { self.0.mipmapLevelCount() as usize }
+        unsafe { MTLTexture::mipmapLevelCount(self.0) as usize }
     }
 
     pub fn array_length(&self) -> usize {
-        unsafe { self.0.arrayLength() as usize }
+        unsafe { MTLTexture::arrayLength(self.0) as usize }
     }
 
     pub fn sample_count(&self) -> usize {
-        unsafe { self.0.sampleCount() as usize }
+        unsafe { MTLTexture::sampleCount(self.0) as usize }
     }
 
     pub fn is_frame_buffer_only(&self) -> bool {
@@ -127,7 +128,7 @@ impl Texture {
     }
 
     pub fn usage(&self) -> TextureUsage {
-        unsafe { self.0.usage().into() }
+        unsafe { MTLTexture::usage(self.0).into() }
     }
 
     pub fn parent_texture(&self) -> Option<Self> {
@@ -171,6 +172,141 @@ impl Deref for Texture {
 impl_from_into_raw!(Texture, of protocol "MTLTexture");
 
 pub struct TextureDescriptor(id);
+
+impl TextureDescriptor {
+    pub fn new() -> Self {
+        unsafe { FromRaw::from_raw(MTLTextureDescriptor::new(nil)).unwrap() }
+    }
+
+    pub fn new_2d(pixel_format: PixelFormat, width: usize, height: usize, mipmapped: bool) -> Self {
+        let raw = unsafe {
+            MTLTextureDescriptor::texture2DDescriptorWithPixelFormat_width_height_mipmapped(
+                nil, pixel_format.into(), width as NSUInteger, height as NSUInteger,
+                mipmapped as BOOL)
+        };
+        FromRaw::from_raw(raw).unwrap()
+    }
+
+    pub fn new_cube(pixel_format: PixelFormat, size: usize, mipmapped: bool) -> Self {
+        let raw = unsafe {
+            MTLTextureDescriptor::textureCubeDescriptorWithPixelFormat_size_mipmapped(
+                nil, pixel_format.into(), size as NSUInteger, mipmapped as BOOL)
+        };
+        FromRaw::from_raw(raw).unwrap()
+    }
+
+    pub fn texture_type(&self) -> TextureType {
+        unsafe { MTLTextureDescriptor::textureType(self.0).into() }
+    }
+
+    pub fn set_texture_type(&mut self, texture_type: TextureType) {
+        unsafe { self.0.setTextureType(texture_type.into()) }
+    }
+
+    pub fn pixel_format(&self) -> PixelFormat {
+        unsafe { MTLTextureDescriptor::pixelFormat(self.0).into() }
+    }
+
+    pub fn set_pixel_format(&mut self, pixel_format: PixelFormat) {
+        unsafe { self.0.setPixelFormat(pixel_format.into()) }
+    }
+
+    pub fn width(&self) -> usize {
+        unsafe { MTLTextureDescriptor::width(self.0) as usize }
+    }
+
+    pub fn set_width(&mut self, width: usize) {
+        unsafe { self.0.setWidth(width as NSUInteger) }
+    }
+
+    pub fn height(&self) -> usize {
+        unsafe { MTLTextureDescriptor::height(self.0) as usize }
+    }
+
+    pub fn set_height(&mut self, height: usize) {
+        unsafe { self.0.setHeight(height as NSUInteger) }
+    }
+
+    pub fn depth(&self) -> usize {
+        unsafe { MTLTextureDescriptor::depth(self.0) as usize }
+    }
+
+    pub fn set_depth(&mut self, depth: usize) {
+        unsafe { self.0.setDepth(depth as NSUInteger) }
+    }
+
+    pub fn size(&self) -> Size {
+        Size::new(self.width(), self.height(), self.depth())
+    }
+
+    pub fn set_size(&mut self, Size {width, height, depth}: Size) {
+        self.set_width(width);
+        self.set_height(height);
+        self.set_depth(depth);
+    }
+
+    pub fn mipmap_level_count(&self) -> usize {
+        unsafe { MTLTextureDescriptor::mipmapLevelCount(self.0) as usize }
+    }
+
+    pub fn set_mipmap_level_count(&mut self, mipmap_level_count: usize) {
+        unsafe { self.0.setMipmapLevelCount(mipmap_level_count as NSUInteger) }
+    }
+
+    pub fn sample_count(&self) -> usize {
+        unsafe { MTLTextureDescriptor::sampleCount(self.0) as usize }
+    }
+
+    pub fn set_sample_count(&mut self, sample_count: usize) {
+        unsafe { self.0.setSampleCount(sample_count as NSUInteger) }
+    }
+
+    pub fn array_length(&self) -> usize {
+        unsafe { MTLTextureDescriptor::arrayLength(self.0) as usize }
+    }
+
+    pub fn set_array_length(&mut self, array_length: usize) {
+        unsafe { self.0.setArrayLength(array_length as NSUInteger) }
+    }
+
+    pub fn resource_options(&self) -> ResourceOptions {
+        unsafe { self.0.resourceOptions().into() }
+    }
+
+    pub fn set_resource_options(&mut self, options: ResourceOptions) {
+        unsafe { self.0.setResourceOptions(options.into()) }
+    }
+
+    pub fn cpu_cache_mode(&self) -> CpuCacheMode {
+        unsafe { self.0.cpuCacheMode().into() }
+    }
+
+    pub fn set_cpu_cache_mode(&mut self, cache_mode: CpuCacheMode) {
+        unsafe { self.0.setCpuCacheMode(cache_mode.into()) }
+    }
+
+    pub fn storage_mode(&self) -> StorageMode {
+        unsafe { self.0.storageMode().into() }
+    }
+
+    pub fn set_storage_mode(&mut self, storage_mode: StorageMode) {
+        unsafe { self.0.setStorageMode(storage_mode.into()) }
+    }
+
+    pub fn usage(&self) -> TextureUsage {
+        unsafe { MTLTextureDescriptor::usage(self.0).into() }
+    }
+
+    pub fn set_usage(&mut self, usage: TextureUsage) {
+        unsafe { self.0.setUsage(usage.into()) }
+    }
+}
+
+impl Clone for TextureDescriptor {
+    fn clone(&self) -> Self {
+        unsafe { FromRaw::from_raw(self.0.copy()).unwrap() }
+    }
+}
 
 impl_from_into_raw!(TextureDescriptor, of class "MTLTextureDescriptor");
 
