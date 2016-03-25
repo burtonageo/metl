@@ -17,7 +17,7 @@ use std::sync::mpsc;
 use sys::MTLFeatureSet;
 use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, DepthStencilState,
      DepthStencilStateDescriptor, FromRaw, FromRawError, Library, LibraryError, ResourceOptions,
-     Size, Texture, TextureDescriptor};
+     SamplerDescriptor, SamplerState, Size, Texture, TextureDescriptor};
 
 pub struct Device(id);
 
@@ -195,10 +195,8 @@ impl Device {
         unsafe { FromRaw::from_raw(self.0.newTextureWithDescriptor(*descriptor.as_raw())) }
     }
 
-    #[allow(unused_variables)]
-    // TODO(burtonageo): Model types correctly
-    pub fn new_sampler_state(&mut self, descriptor: ()) -> ! {
-        unimplemented!();
+    pub fn new_sampler_state(&mut self, descriptor: &SamplerDescriptor) -> Result<SamplerState, FromRawError> {
+        unsafe { FromRaw::from_raw(self.0.newSamplerStateWithDescriptor(*descriptor.as_raw())) }
     }
 
     pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilStateDescriptor)

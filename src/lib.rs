@@ -37,6 +37,7 @@ mod render_pass_depth_attachment_descriptor;
 mod render_pass_descriptor;
 mod render_pass_stencil_attachment_descriptor;
 mod resource;
+mod sampler_state;
 mod stencil_descriptor;
 mod struct_member;
 mod struct_type;
@@ -74,6 +75,7 @@ pub use render_pass_depth_attachment_descriptor::RenderPassDepthAttachmentDescri
 pub use render_pass_descriptor::RenderPassDescriptor;
 pub use render_pass_stencil_attachment_descriptor::RenderPassStencilAttachmentDescriptor;
 pub use resource::{CpuCacheMode, PurgeableState, Resource, ResourceOptions, StorageMode};
+pub use sampler_state::{SamplerDescriptor, SamplerState};
 pub use stencil_descriptor::StencilDescriptor;
 pub use struct_member::StructMember;
 pub use struct_type::StructType;
