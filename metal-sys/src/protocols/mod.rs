@@ -22,9 +22,11 @@ pub use self::mtl_function::{MTLFunction, MTLFunctionType};
 pub use self::mtl_library::{MTLLanguageVersion, MTLLibrary, MTLLibraryError,
                             MTLLibraryErrorDomain, MTLRenderPipelineError,
                             MTLRenderPipelineErrorDomain};
-pub use self::mtl_resource::{MTLResource, MTLCPUCacheMode, MTLStorageMode, MTLResourceOptions,
-                             MTLPurgeableState, MTLResourceStorageModeShift, MTLResourceCPUCacheModeShift,
-                             MTLResourceCPUCacheModeDefaultCache, MTLResourceCPUCacheModeWriteCombined,
-                             MTLResourceStorageModeShared, MTLResourceStorageModePrivate,
-                             MTLResourceOptionCPUCacheModeDefault, MTLResourceOptionCPUCacheModeWriteCombined};
+pub use self::mtl_resource::{MTLCPUCacheMode, MTLPurgeableState, MTLResource,
+                             MTLResourceCPUCacheModeDefaultCache, MTLResourceCPUCacheModeShift,
+                             MTLResourceCPUCacheModeWriteCombined,
+                             MTLResourceOptionCPUCacheModeDefault,
+                             MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
+                             MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
+                             MTLResourceStorageModeShift, MTLStorageMode};
 pub use self::mtl_texture::{MTLTexture, MTLTextureType, MTLTextureUsage};

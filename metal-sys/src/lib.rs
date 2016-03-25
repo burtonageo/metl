@@ -19,13 +19,13 @@ mod protocols;
 mod types;
 
 pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
-                  MTLCompileOptions, MTLDataType, MTLLoadAction, MTLMultisampleDepthResolveFilter,
-                  MTLRenderPassAttachmentDescriptor, MTLRenderPassColorAttachmentDescriptor,
+                  MTLCompileOptions, MTLDataType, MTLDepthStencilStateDescriptor, MTLLoadAction,
+                  MTLMultisampleDepthResolveFilter, MTLRenderPassAttachmentDescriptor,
+                  MTLRenderPassColorAttachmentDescriptor,
                   MTLRenderPassColorAttachmentDescriptorArray,
                   MTLRenderPassDepthAttachmentDescriptor, MTLRenderPassDescriptor,
                   MTLRenderPassStencilAttachmentDescriptor, MTLStoreAction, MTLStructMember,
-                  MTLStructType, MTLVertexAttribute, MTLDepthStencilStateDescriptor,
-                  MTLTextureDescriptor};
+                  MTLStructType, MTLTextureDescriptor, MTLVertexAttribute};
 
 pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, MTLPipelineOption,
                     MTLPixelFormat};
@@ -33,20 +33,21 @@ pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, M
 pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice,
                     MTLOriginMake, MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
-pub use protocols::{MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState, MTLDevice,
-                    MTLDrawable, MTLFunction, MTLFunctionType, MTLLanguageVersion, MTLLibrary,
-                    MTLLibraryError, MTLLibraryErrorDomain,
+pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState,
+                    MTLDevice, MTLDrawable, MTLFunction, MTLFunctionType, MTLLanguageVersion,
+                    MTLLibrary, MTLLibraryError, MTLLibraryErrorDomain,
                     MTLNewComputePipelineStateCompletionHandler,
                     MTLNewComputePipelineStateWithReflectionCompletionHandler,
                     MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
-                    MTLNewRenderPipleineStateCompletionHandler, MTLRenderPipelineError,
-                    MTLRenderPipelineErrorDomain, MTLTexture, MTLTextureType, MTLTextureUsage,
-                    MTLResource, MTLCPUCacheMode, MTLStorageMode, MTLResourceOptions,
-                    MTLPurgeableState, MTLResourceStorageModeShift, MTLResourceCPUCacheModeShift,
-                    MTLResourceCPUCacheModeDefaultCache,MTLResourceCPUCacheModeWriteCombined,
-                    MTLResourceStorageModeShared,MTLResourceStorageModePrivate,
-                    MTLResourceOptionCPUCacheModeDefault,MTLResourceOptionCPUCacheModeWriteCombined};
+                    MTLNewRenderPipleineStateCompletionHandler, MTLPurgeableState,
+                    MTLRenderPipelineError, MTLRenderPipelineErrorDomain, MTLResource,
+                    MTLResourceCPUCacheModeDefaultCache, MTLResourceCPUCacheModeShift,
+                    MTLResourceCPUCacheModeWriteCombined, MTLResourceOptionCPUCacheModeDefault,
+                    MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
+                    MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
+                    MTLResourceStorageModeShift, MTLStorageMode, MTLTexture, MTLTextureType,
+                    MTLTextureUsage};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,

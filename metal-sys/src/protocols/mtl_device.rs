@@ -121,7 +121,8 @@ pub trait MTLDevice {
     unsafe fn newCommandQueueWithMaxCommandBufferCount(self, maxCommandBufferCount: NSUInteger)
                                                        -> id;
 
-    unsafe fn newBufferWithLength_options(self, length: NSUInteger, options: MTLResourceOptions) -> id;
+    unsafe fn newBufferWithLength_options(self, length: NSUInteger, options: MTLResourceOptions)
+                                          -> id;
     unsafe fn newBufferWithBytes_length_options(self, pointer: *const c_void, length: NSUInteger,
                                                 options: MTLResourceOptions)
                                                 -> id;
@@ -235,7 +236,8 @@ impl MTLDevice for id {
         msg_send![self, newCommandQueueWithMaxCommandBufferCount:maxCommandBufferCount]
     }
 
-    unsafe fn newBufferWithLength_options(self, length: NSUInteger, options: MTLResourceOptions) -> id {
+    unsafe fn newBufferWithLength_options(self, length: NSUInteger, options: MTLResourceOptions)
+                                          -> id {
         msg_send![self, newBufferWithLength:length options:options]
     }
 

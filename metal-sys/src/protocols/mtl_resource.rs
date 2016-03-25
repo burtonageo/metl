@@ -130,10 +130,10 @@ pub enum MTLCPUCacheMode {
 #[repr(usize)]
 pub enum MTLStorageMode {
     /// The default storage mode for buffers.
-    MTLStorageModeShared  = 0,
+    MTLStorageModeShared = 0,
 
     /// The storage mode for a resource kept entirely in GPU memory.
-    MTLStorageModePrivate = 2,
+    MTLStorageModePrivate = 2
 }
 
 // TODO(burtonageo): Placeholder
@@ -146,42 +146,45 @@ pub const MTLResourceCPUCacheModeShift: usize = 12;
 /// texture objects.
 bitflags! {
     pub flags MTLResourceOptions: usize {
-        /// The default CPU cache mode for the resource. Guarantees that read and
-        /// write operations are executed in the expected order.
+/// The default CPU cache mode for the resource. Guarantees that read and
+/// write operations are executed in the expected order.
         const MTLResourceCPUCacheModeDefaultCache =
-            (::MTLCPUCacheMode::MTLCPUCacheModeDefaultCache as usize) << ::MTLResourceCPUCacheModeShift,
-        
-        /// A write-combined CPU cache mode for the resource. Optimized for resources
-        /// that the CPU will write into, but never read.
+            (::MTLCPUCacheMode::MTLCPUCacheModeDefaultCache as usize) <<
+             ::MTLResourceCPUCacheModeShift,
+
+/// A write-combined CPU cache mode for the resource. Optimized for resources
+/// that the CPU will write into, but never read.
         const MTLResourceCPUCacheModeWriteCombined =
-            (::MTLCPUCacheMode::MTLCPUCacheModeWriteCombined as usize) << ::MTLResourceCPUCacheModeShift,
-        
-        /// The CPU and GPU both use the same underlying memory when accessing the
-        /// contents of the resource. Coherency is guaranteed only at command buffer
-        /// boundaries to minimize the required flushing of CPU or GPU caches.
+            (::MTLCPUCacheMode::MTLCPUCacheModeWriteCombined as usize) <<
+             ::MTLResourceCPUCacheModeShift,
+
+/// The CPU and GPU both use the same underlying memory when accessing the
+/// contents of the resource. Coherency is guaranteed only at command buffer
+/// boundaries to minimize the required flushing of CPU or GPU caches.
         const MTLResourceStorageModeShared = (::MTLStorageMode::MTLStorageModeShared as usize) <<
                                              ::MTLResourceStorageModeShift,
 
-        /// The storage mode for a resource kept entirely in GPU memory. No coherency
-        /// of any kind must be maintained in this mode because the resource will
-        /// never be directly accessed by the CPU.
+/// The storage mode for a resource kept entirely in GPU memory. No coherency
+/// of any kind must be maintained in this mode because the resource will
+/// never be directly accessed by the CPU.
         const MTLResourceStorageModePrivate = (::MTLStorageMode::MTLStorageModePrivate as usize) <<
                                               ::MTLResourceStorageModeShift,
-        
-        /// The default CPU cache mode for general-purpose access to the storage
-        /// allocation of the resource, which guarantees that read and write operations
-        /// are executed in the expected order.
-        ///
-        /// This constant was deprecated in iOS 9.0 and OS X 10.11. Use
-        /// `MTLResourceCPUCacheModeDefaultCache` instead.
+
+/// The default CPU cache mode for general-purpose access to the storage
+/// allocation of the resource, which guarantees that read and write operations
+/// are executed in the expected order.
+///
+/// This constant was deprecated in iOS 9.0 and OS X 10.11. Use
+/// `MTLResourceCPUCacheModeDefaultCache` instead.
         const MTLResourceOptionCPUCacheModeDefault = MTLResourceCPUCacheModeDefaultCache.bits,
-        
-        /// A CPU cache mode set to use write-combined memory for the storage allocation
-        /// of the resource.
-        ///
-        /// This constant was deprecated in iOS 9.0 and OS X 10.11. Use
-        /// `MTLResourceCPUCacheModeWriteCombined` instead.
-        const MTLResourceOptionCPUCacheModeWriteCombined = MTLResourceCPUCacheModeWriteCombined.bits,
+
+/// A CPU cache mode set to use write-combined memory for the storage allocation
+/// of the resource.
+///
+/// This constant was deprecated in iOS 9.0 and OS X 10.11. Use
+/// `MTLResourceCPUCacheModeWriteCombined` instead.
+        const MTLResourceOptionCPUCacheModeWriteCombined =
+              MTLResourceCPUCacheModeWriteCombined.bits
     }
 }
 
@@ -189,8 +192,8 @@ bitflags! {
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[repr(usize)]
 pub enum MTLPurgeableState {
-   MTLPurgeableStateKeepCurrent = 1,
-   MTLPurgeableStateNonVolatile = 2,
-   MTLPurgeableStateVolatile = 3,
-   MTLPurgeableStateEmpty = 4
+    MTLPurgeableStateKeepCurrent = 1,
+    MTLPurgeableStateNonVolatile = 2,
+    MTLPurgeableStateVolatile = 3,
+    MTLPurgeableStateEmpty = 4
 }

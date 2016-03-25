@@ -24,9 +24,12 @@ use {MTLCPUCacheMode, MTLPixelFormat, MTLResourceOptions, MTLStorageMode, MTLTex
 /// `textureCubeDescriptorWithPixelFormat:size:mipmapped:`.
 pub trait MTLTextureDescriptor {
     /// Creates a texture descriptor object for a 2D texture.
-    unsafe fn texture2DDescriptorWithPixelFormat_width_height_mipmapped(
-        _: Self, format: MTLPixelFormat, width: NSUInteger, height: NSUInteger,
-        mipmapped: BOOL) -> id {
+    unsafe fn texture2DDescriptorWithPixelFormat_width_height_mipmapped(_: Self,
+                                                                        format: MTLPixelFormat,
+                                                                        width: NSUInteger,
+                                                                        height: NSUInteger,
+                                                                        mipmapped: BOOL)
+                                                                        -> id {
         msg_send![class("MTLTextureDescriptor"), texture2DDescriptorWithPixelFormat:format
                                                                               width:width
                                                                              height:height
@@ -34,8 +37,9 @@ pub trait MTLTextureDescriptor {
     }
 
     /// Creates a texture descriptor object for a cube texture.
-    unsafe fn textureCubeDescriptorWithPixelFormat_size_mipmapped(
-        _: Self, format: MTLPixelFormat, size: NSUInteger, mipmapped: BOOL) -> id {
+    unsafe fn textureCubeDescriptorWithPixelFormat_size_mipmapped(_: Self, format: MTLPixelFormat,
+                                                                  size: NSUInteger, mipmapped: BOOL)
+                                                                  -> id {
         msg_send![class("MTLTextureDescriptor"), textureCubeDescriptorWithPixelFormat:format
                                                                                  size:size
                                                                             mipmapped:mipmapped]
@@ -154,7 +158,7 @@ pub trait MTLTextureDescriptor {
     unsafe fn copy(self) -> id;
 }
 
-impl MTLTextureDescriptor for id {    
+impl MTLTextureDescriptor for id {
     unsafe fn textureType(self) -> MTLTextureType {
         msg_send![self, textureType]
     }
