@@ -3,7 +3,8 @@ extern crate cocoa;
 
 use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
-use metl::{CompileOptions, Device, FeatureSet, LanguageVersion, SpecificLanguageVersion};
+use metl::{CompileOptions, Device, FeatureSet, LanguageVersion, PixelFormat, SpecificLanguageVersion,
+           SamplerDescriptor, TextureDescriptor};
 use metl::LibraryError;
 use metl::{FromRaw, FromRawError, IntoRaw};
 use metl::sys::{MTLCompileOptions, MTLLanguageVersion};
@@ -105,6 +106,35 @@ fn compile_opts_creation_is_correct() {
         assert_eq!(options.languageVersion(),
                    MTLLanguageVersion::MTLLanguageVersion1_0);
     }
+}
+
+#[test]
+fn create_sampler_and_set_label() {
+    const SAMPLER_LABEL: &'static str = "ExampleSampler";
+
+    let mut device = Device::system_default_device().unwrap();
+    let mut sampler_descriptor = SamplerDescriptor::new();
+    sampler_descriptor.set_label(&SAMPLER_LABEL);
+    let sampler = device.new_sampler_state(&sampler_descriptor).unwrap();
+
+    assert_eq!(sampler_descriptor.label(), SAMPLER_LABEL);
+    assert_eq!(sampler.label(), sampler_descriptor.label());
+}
+
+#[test]
+fn create_texture() {
+    const PIX_FORMAT: PixelFormat = PixelFormat::Rgba8UnormSrgb;
+    const TEX_DIMS: (usize, usize) = (600, 800);
+    const MIPPED: bool = false;
+
+    let mut device = Device::system_default_device().unwrap();
+    let mut tex_descriptor = TextureDescriptor::new_2d(PIX_FORMAT, TEX_DIMS.0, TEX_DIMS.1, MIPPED);
+    let texture = device.new_texture(&tex_descriptor).unwrap();
+
+    assert_eq!(texture.pixel_format(), PIX_FORMAT);
+    assert_eq!(texture.width(), TEX_DIMS.0);
+    assert_eq!(texture.height(), TEX_DIMS.1);
+    assert_eq!(texture.texture_type(), metl::TextureType::Type2D);
 }
 
 #[test]
