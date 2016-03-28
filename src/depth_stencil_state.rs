@@ -13,7 +13,7 @@ impl DepthStencilState {
 
     pub fn label(&self) -> &str {
         unimplemented!()
-        //unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
+        // unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     #[allow(unused_variables)]

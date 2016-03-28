@@ -183,7 +183,7 @@ impl Device {
             unsafe { drop(slice::from_raw_parts(ptr as *const u8, len as usize)) }
         });
         let buffer = unsafe {
-            FromRaw::from_raw(self.0.newBufferWithBytesNoCopy_length_options_deallocator(bytes, len, 
+            FromRaw::from_raw(self.0.newBufferWithBytesNoCopy_length_options_deallocator(bytes, len,
                                                                                          options.into(),
                                                                                          &dealloc)).unwrap()
         };
@@ -194,7 +194,8 @@ impl Device {
         unsafe { FromRaw::from_raw(self.0.newTextureWithDescriptor(*descriptor.as_raw())) }
     }
 
-    pub fn new_sampler_state(&mut self, descriptor: &SamplerDescriptor) -> Result<SamplerState, FromRawError> {
+    pub fn new_sampler_state(&mut self, descriptor: &SamplerDescriptor)
+                             -> Result<SamplerState, FromRawError> {
         unsafe { FromRaw::from_raw(self.0.newSamplerStateWithDescriptor(*descriptor.as_raw())) }
     }
 

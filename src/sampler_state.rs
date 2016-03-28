@@ -1,10 +1,10 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
-use sys::{MTLSamplerState, MTLSamplerDescriptor, MTLSamplerAddressMode, MTLSamplerMinMagFilter,
-          MTLSamplerMipFilter};
+use sys::{MTLSamplerAddressMode, MTLSamplerDescriptor, MTLSamplerMinMagFilter,
+          MTLSamplerMipFilter, MTLSamplerState};
 use std::ffi::CStr;
 use std::mem;
-use {FromRaw, Device};
+use {Device, FromRaw};
 
 pub struct SamplerState(id);
 
@@ -14,7 +14,9 @@ impl SamplerState {
     }
 
     pub fn label(&self) -> &str {
-        unsafe { CStr::from_ptr(MTLSamplerState::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
+        unsafe {
+            CStr::from_ptr(MTLSamplerState::label(self.0).UTF8String()).to_str().unwrap_or(&"")
+        }
     }
 }
 
@@ -28,7 +30,11 @@ impl SamplerDescriptor {
     }
 
     pub fn label(&self) -> &str {
-        unsafe { CStr::from_ptr(MTLSamplerDescriptor::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
+        unsafe {
+            CStr::from_ptr(MTLSamplerDescriptor::label(self.0).UTF8String())
+                .to_str()
+                .unwrap_or(&"")
+        }
     }
 
     pub fn set_label(&mut self, label: &str) {
