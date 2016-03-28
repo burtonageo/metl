@@ -1,7 +1,6 @@
 use cocoa::base::{YES, id, nil};
 use cocoa::foundation::NSString;
 use error::NSError;
-use std::borrow::Cow;
 use std::error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
@@ -109,8 +108,10 @@ impl CommandBuffer {
         unsafe { MTLCommandBuffer::setLabel(self.0, NSString::alloc(nil).init_str(label)) }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe {
+            CStr::from_ptr(MTLCommandBuffer::label(self.0).UTF8String()).to_str().unwrap_or(&"")
+        }
     }
 
     fn get_error(&self) -> Result<(), CommandBufferError> {

@@ -1,6 +1,5 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
-use std::borrow::Cow;
 use std::error::Error;
 use std::ffi::CStr;
 use std::fmt::{self, Display, Formatter};
@@ -35,8 +34,8 @@ impl CommandQueue {
         unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn device(&self) -> &Device {
