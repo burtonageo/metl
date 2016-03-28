@@ -84,7 +84,7 @@ mod tests {
             assert!(conforms_to_protocol(nsstr, "NSCopying"));
         }
     }
-    
+
     #[test]
     fn test_doesnt_conform_to_protocol() {
         unsafe {
@@ -92,13 +92,13 @@ mod tests {
             assert!(!conforms_to_protocol(nsstr, "MTLDevice"));
         }
     }
-    
+
     #[test]
     fn test_is_kind_of_class() {
         let nsstr = unsafe { NSString::alloc(nil).init_str("Hello, world") };
         assert!(is_kind_of_class(nsstr, "NSString"));
     }
-    
+
     #[test]
     fn test_is_not_kind_of_class() {
         use sys::MTLCompileOptions;
