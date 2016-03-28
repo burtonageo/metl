@@ -19,29 +19,26 @@ unsafe impl Sync for CommandBuffer {}
 impl CommandBuffer {
     pub fn new_render_command_encoder(&mut self, descriptor: &RenderPassDescriptor)
                                       -> Result<RenderCommandEncoder, FromRawError> {
-        let render_command_encoder = unsafe {
-            self.0.renderCommandEncoderWithDescriptor(*descriptor.as_raw())
-        };
-        RenderCommandEncoder::from_raw(render_command_encoder)
+        unsafe {
+            FromRaw::from_raw(self.0.renderCommandEncoderWithDescriptor(*descriptor.as_raw()))
+        }
     }
 
     pub fn new_blit_command_encoder(&mut self) -> Result<BlitCommandEncoder, FromRawError> {
-        let blit_command_encoder = unsafe { self.0.blitCommandEncoder() };
-        BlitCommandEncoder::from_raw(blit_command_encoder)
+        unsafe { FromRaw::from_raw(self.0.blitCommandEncoder()) }
     }
 
     pub fn new_compute_command_encoder(&mut self) -> Result<ComputeCommandEncoder, FromRawError> {
-        let compute_command_encoder = unsafe { self.0.computeCommandEncoder() };
-        ComputeCommandEncoder::from_raw(compute_command_encoder)
+        unsafe { FromRaw::from_raw(self.0.computeCommandEncoder()) }
     }
 
     pub fn new_parallel_render_command_encoder(
         &mut self, descriptor: &RenderPassDescriptor)
         -> Result<ParallelRenderCommandEncoder, FromRawError> {
-        let par_render_command_encoder = unsafe {
-            self.0.parallelRenderCommandEncoderWithDescriptor(*descriptor.as_raw())
-        };
-        ParallelRenderCommandEncoder::from_raw(par_render_command_encoder)
+        unsafe {
+            FromRaw::from_raw(self.0
+                                  .parallelRenderCommandEncoderWithDescriptor(*descriptor.as_raw()))
+        }
     }
 
     pub fn enqueue(&mut self) -> Result<(), CommandBufferError> {
