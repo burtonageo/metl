@@ -2,15 +2,14 @@ use cocoa::base::id;
 use cocoa::foundation::NSString;
 use metal_sys::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLDataType};
 use objc::runtime::YES;
-use std::borrow::Cow;
 use std::ffi::CStr;
 use {FromRaw, StructType, TextureType};
 
 pub struct Argument(id);
 
 impl Argument {
-    pub fn name(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
+    pub fn name(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn access(&self) -> ArgumentAccess {
