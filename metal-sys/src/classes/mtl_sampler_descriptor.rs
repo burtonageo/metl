@@ -177,7 +177,7 @@ impl MTLSamplerDescriptor for id {
     unsafe fn setMagFilter(self, magFilter: MTLSamplerMinMagFilter) {
         msg_send![self, setMagFilter:magFilter]
     }
-    
+
     unsafe fn mipFilter(self) -> MTLSamplerMipFilter {
         msg_send![self, mipFilter]
     }
@@ -186,7 +186,7 @@ impl MTLSamplerDescriptor for id {
         msg_send![self, setMipFilter:mipFilter]
     }
 
-    
+
     unsafe fn lodMinClamp(self) -> f32 {
         msg_send![self, lodMinClamp]
     }
