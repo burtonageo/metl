@@ -2,7 +2,6 @@ use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use sys::{MTLSamplerState, MTLSamplerDescriptor, MTLSamplerAddressMode, MTLSamplerMinMagFilter,
           MTLSamplerMipFilter};
-use std::borrow::Cow;
 use std::ffi::CStr;
 use std::mem;
 use {FromRaw, Device};
@@ -14,8 +13,8 @@ impl SamplerState {
         unsafe { mem::transmute(MTLSamplerState::device(self.0)) }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(MTLSamplerState::label(self.0).UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe { CStr::from_ptr(MTLSamplerState::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
     }
 }
 
@@ -28,8 +27,8 @@ impl SamplerDescriptor {
         unsafe { FromRaw::from_raw(MTLSamplerDescriptor::new(nil)).unwrap() }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(MTLSamplerState::label(self.0).UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe { CStr::from_ptr(MTLSamplerDescriptor::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn set_label(&mut self, label: &str) {

@@ -28,7 +28,7 @@ fn get_all_devices() {
 #[test]
 fn get_device_name() {
     let device = Device::system_default_device().unwrap();
-    assert!(!device.name().into_owned().is_empty());
+    assert!(!device.name().is_empty());
 }
 
 #[cfg(target_os = "macos")]

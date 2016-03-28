@@ -2,7 +2,6 @@
 
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
-use std::borrow::Cow;
 use std::convert::Into;
 use std::ffi::CStr;
 use std::mem;
@@ -28,8 +27,8 @@ impl Resource {
         unsafe { mem::transmute(self.0.device()) }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn set_label(&mut self, label: &str) {

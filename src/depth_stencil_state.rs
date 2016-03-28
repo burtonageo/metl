@@ -1,6 +1,5 @@
 use cocoa::base::{BOOL, YES, id, nil};
 use cocoa::foundation::NSString;
-use std::borrow::Cow;
 use std::ffi::CStr;
 use sys::MTLDepthStencilStateDescriptor;
 use {CompareFunction, Device, FromRaw, IntoRaw, StencilDescriptor};
@@ -12,8 +11,9 @@ impl DepthStencilState {
         unimplemented!();
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unimplemented!();
+    pub fn label(&self) -> &str {
+        unimplemented!()
+        //unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     #[allow(unused_variables)]
@@ -67,8 +67,8 @@ impl DepthStencilStateDescriptor {
         unsafe { self.0.setFrontFaceStencil(nil) }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn set_label(&mut self, label: &str) {

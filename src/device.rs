@@ -5,7 +5,6 @@ use error::NSError;
 use objc::runtime::YES;
 use objc_bringup::NSArray;
 use sys::{MTLCopyAllDevices, MTLCreateSystemDefaultDevice, MTLDevice};
-use std::borrow::Cow;
 use std::convert::From;
 use std::error::Error;
 use std::ffi::CStr;
@@ -61,8 +60,8 @@ impl Device {
         unsafe { self.0.maxThreadsPerGroup().into() }
     }
 
-    pub fn name(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
+    pub fn name(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn supports_feature_set(&self, feature_set: FeatureSet) -> bool {
