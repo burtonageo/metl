@@ -9,9 +9,9 @@ repository = "https://github.com/burtonageo/metl"
 
 [dependencies]
 block = "0.*"
-cocoa = "0.2.4"
+cocoa = "0.3.0"
 core-foundation = "0.*"
-objc = "0.1.8"
+objc = "0.2.0"
 
 [dependencies.metal-sys]
 path = "metal-sys"
