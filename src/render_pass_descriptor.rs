@@ -1,8 +1,9 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSUInteger;
 use sys::MTLRenderPassDescriptor;
-use {FromRaw, IntoRaw, RenderPassColorAttachmentDescriptorArray,
-     RenderPassDepthAttachmentDescriptor, RenderPassStencilAttachmentDescriptor};
+use {FromRaw, IntoRaw, RenderPassColorAttachmentDescriptor,
+     RenderPassColorAttachmentDescriptorArray, RenderPassDepthAttachmentDescriptor,
+     RenderPassStencilAttachmentDescriptor};
 
 pub struct RenderPassDescriptor(id);
 
@@ -43,6 +44,36 @@ impl RenderPassDescriptor {
     #[cfg(target_os = "macos")]
     pub fn set_render_target_array_length(&mut self, target_array_length: usize) {
         unsafe { self.0.setRenderTargetArrayLength(target_array_length as NSUInteger) }
+    }
+
+    /// Attempt to downcast this descriptor to a `RenderPassDepthAttachmentDescriptor`. If `self`
+    /// is not a `RenderPassDepthAttachmentDescriptor`, then `self` will be returned in the `Err`
+    /// branch.
+    pub fn downcast_to_depth_descriptor(self) -> Result<RenderPassDepthAttachmentDescriptor, Self> {
+        match FromRaw::from_raw(self.0) {
+            Ok(descriptor) => Ok(descriptor),
+            Err(_) => Err(self)
+        }
+    }
+
+    /// Attempt to downcast this descriptor to a `RenderPassColorAttachmentDescriptor`. If `self`
+    /// is not a `RenderPassColorAttachmentDescriptor`, then `self` will be returned in the `Err`
+    /// branch.
+    pub fn downcast_to_color_descriptor(self) -> Result<RenderPassColorAttachmentDescriptor, Self> {
+        match FromRaw::from_raw(self.0) {
+            Ok(descriptor) => Ok(descriptor),
+            Err(_) => Err(self)
+        }
+    }
+
+    /// Attempt to downcast this descriptor to a `RenderPassStencilAttachmentDescriptor`. If `self`
+    /// is not a `RenderPassStencilAttachmentDescriptor`, then `self` will be returned in the `Err`
+    /// branch.
+    pub fn downcast_to_stencil_descriptor(self) -> Result<RenderPassStencilAttachmentDescriptor, Self> {
+        match FromRaw::from_raw(self.0) {
+            Ok(descriptor) => Ok(descriptor),
+            Err(_) => Err(self)
+        }
     }
 }
 
