@@ -1,6 +1,6 @@
 use cocoa::base::{class, id, nil};
 use cocoa::foundation::NSString;
-use objc::runtime::{BOOL, NO, YES};
+use objc::runtime::{BOOL, Class, NO, Object, Protocol, YES};
 
 macro_rules! convertible_enum {
     ($(#[$top_lvl_attrs:meta])* pub enum $enum_nm:ident : $convert:ident {
@@ -51,44 +51,36 @@ macro_rules! convertible_enum {
 }
 
 pub fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
-    // I need a better way to do this function, as NSProtocolFromString doesn't
-    // work without predeclaring protocols. For now, this function doesn't do
-    // any actual checking.
-    //
-    // http://stackoverflow.com/questions/4994297
-
-    #[link(name = "Foundation", kind = "framework")]
-    extern "C" {
-        fn NSProtocolFromString(namestr: id) -> id;
-    }
-
     unsafe {
-        let protocol_name_nsstr = NSString::alloc(nil).init_str(protocol_name);
-        let protocol = NSProtocolFromString(protocol_name_nsstr);
+        let protocol = match Protocol::get(protocol_name) {
+            Some(p) => p,
+            None => return false
+        };
         let does_conform: BOOL = msg_send![object, conformsToProtocol:protocol];
-        does_conform == NO
+        does_conform == YES
     }
 }
 
 pub fn is_kind_of_class(object: id, class_name: &str) -> bool {
     unsafe {
-        let class = class(class_name);
+        let class = match Class::get(class_name) {
+            Some(c) => c,
+            None => return false
+        };
         let is_kind_of_class: BOOL = msg_send![object, isKindOfClass:class];
         is_kind_of_class == YES
     }
 }
 
 #[test]
-#[ignore]
 fn test_conforms_to_protocol() {
     unsafe {
         let nsstr = NSString::alloc(nil).init_str("Hello, world");
-        assert!(conforms_to_protocol(nsstr, "NSObject"));
+        assert!(conforms_to_protocol(nsstr, "NSCopying"));
     }
 }
 
 #[test]
-#[ignore]
 fn test_doesnt_conform_to_protocol() {
     unsafe {
         let nsstr = NSString::alloc(nil).init_str("blah");
