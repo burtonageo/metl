@@ -110,17 +110,17 @@ fn compile_opts_creation_is_correct() {
 }
 
 #[test]
-// TODO(burtonageo): Fix setting the label
 fn create_sampler_and_set_label() {
     const SAMPLER_LABEL: &'static str = "ExampleSampler";
-
     let mut device = Device::system_default_device().unwrap();
-    let mut sampler_descriptor = SamplerDescriptor::new();
-    //sampler_descriptor.set_label(&SAMPLER_LABEL);
-    let sampler = device.new_sampler_state(&sampler_descriptor).unwrap();
 
-    //assert_eq!(sampler_descriptor.label(), SAMPLER_LABEL);
-    //assert_eq!(sampler.label(), sampler_descriptor.label());
+    let mut sampler_descriptor = SamplerDescriptor::new();
+    sampler_descriptor.set_label(&SAMPLER_LABEL);
+    assert_eq!(sampler_descriptor.label(), SAMPLER_LABEL);
+
+    let sampler = device.new_sampler_state(&sampler_descriptor).unwrap();
+    // TODO(burtonageo): Fix getting the label
+    // assert_eq!(sampler.label(), sampler_descriptor.label());
 }
 
 #[test]
