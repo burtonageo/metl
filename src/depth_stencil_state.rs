@@ -1,7 +1,7 @@
 use cocoa::base::{BOOL, YES, id, nil};
 use cocoa::foundation::NSString;
 use std::ffi::CStr;
-use sys::MTLDepthStencilStateDescriptor;
+use sys::MTLDepthStencilDescriptor;
 use {CompareFunction, Device, FromRaw, IntoRaw, StencilDescriptor};
 
 pub struct DepthStencilState(id);
@@ -24,9 +24,9 @@ impl DepthStencilState {
 
 impl_from_into_raw!(DepthStencilState, of protocol "MTLDepthStencilState");
 
-pub struct DepthStencilStateDescriptor(id);
+pub struct DepthStencilDescriptor(id);
 
-impl DepthStencilStateDescriptor {
+impl DepthStencilDescriptor {
     pub fn depth_compare_function(&self) -> CompareFunction {
         unsafe { self.0.depthCompareFunction().into() }
     }
@@ -76,4 +76,4 @@ impl DepthStencilStateDescriptor {
     }
 }
 
-impl_from_into_raw!(DepthStencilStateDescriptor, of class "MTLDepthStencilStateDescriptor");
+impl_from_into_raw!(DepthStencilDescriptor, of class "MTLDepthStencilDescriptor");

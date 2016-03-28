@@ -15,7 +15,7 @@ use std::path::Path;
 use std::sync::mpsc;
 use sys::MTLFeatureSet;
 use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, DepthStencilState,
-     DepthStencilStateDescriptor, FromRaw, FromRawError, Library, LibraryError, ResourceOptions,
+     DepthStencilDescriptor, FromRaw, FromRawError, Library, LibraryError, ResourceOptions,
      SamplerDescriptor, SamplerState, Size, Texture, TextureDescriptor};
 
 pub struct Device(id);
@@ -199,7 +199,7 @@ impl Device {
         unsafe { FromRaw::from_raw(self.0.newSamplerStateWithDescriptor(*descriptor.as_raw())) }
     }
 
-    pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilStateDescriptor)
+    pub fn new_depth_stencil_state(&mut self, descriptor: &DepthStencilDescriptor)
                                    -> Result<DepthStencilState, FromRawError> {
         unsafe {
             FromRaw::from_raw(self.0.newDepthStencilStateWithDescriptor(*descriptor.as_raw()))

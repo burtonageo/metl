@@ -2,7 +2,7 @@ use cocoa::base::id;
 use objc::runtime::BOOL;
 use MTLCompareFunction;
 
-pub trait MTLDepthStencilStateDescriptor {
+pub trait MTLDepthStencilDescriptor {
     unsafe fn depthCompareFunction(self) -> MTLCompareFunction;
     unsafe fn setDepthCompareFunction(self, depthCompareFunction: MTLCompareFunction);
 
@@ -19,7 +19,7 @@ pub trait MTLDepthStencilStateDescriptor {
     unsafe fn setLabel(self, label: id);
 }
 
-impl MTLDepthStencilStateDescriptor for id {
+impl MTLDepthStencilDescriptor for id {
     unsafe fn depthCompareFunction(self) -> MTLCompareFunction {
         msg_send![self, depthCompareFunction]
     }

@@ -1,7 +1,7 @@
 mod mtl_argument;
 mod mtl_array_type;
 mod mtl_compile_options;
-mod mtl_depth_stencil_state_descriptor;
+mod mtl_depth_stencil_descriptor;
 mod mtl_render_pass_attachment_descriptor;
 mod mtl_render_pass_color_attachment_descriptor_array;
 mod mtl_render_pass_color_attachment_descriptor;
@@ -17,7 +17,7 @@ mod mtl_vertex_attribute;
 pub use self::mtl_argument::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLDataType};
 pub use self::mtl_array_type::MTLArrayType;
 pub use self::mtl_compile_options::MTLCompileOptions;
-pub use self::mtl_depth_stencil_state_descriptor::MTLDepthStencilStateDescriptor;
+pub use self::mtl_depth_stencil_descriptor::MTLDepthStencilDescriptor;
 pub use self::mtl_render_pass_attachment_descriptor::{MTLLoadAction,
                                                       MTLRenderPassAttachmentDescriptor,
                                                       MTLStoreAction};

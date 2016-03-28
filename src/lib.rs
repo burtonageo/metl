@@ -58,7 +58,7 @@ pub use compile_options::{CompileOptions, LanguageVersion, PreprocessorMacroValu
                           SpecificLanguageVersion};
 pub use compute_command_encoder::ComputeCommandEncoder;
 pub use constants::{CompareFunction, PipelineOption, PixelFormat};
-pub use depth_stencil_state::{DepthStencilState, DepthStencilStateDescriptor};
+pub use depth_stencil_state::{DepthStencilState, DepthStencilDescriptor};
 pub use device::{BufferRef, Device, DeviceError, FeatureSet};
 pub use drawable::Drawable;
 pub use error::NSError;

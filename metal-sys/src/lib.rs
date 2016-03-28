@@ -19,7 +19,7 @@ mod protocols;
 mod types;
 
 pub use classes::{MTLArgument, MTLArgumentAccess, MTLArgumentType, MTLArrayType,
-                  MTLCompileOptions, MTLDataType, MTLDepthStencilStateDescriptor, MTLLoadAction,
+                  MTLCompileOptions, MTLDataType, MTLDepthStencilDescriptor, MTLLoadAction,
                   MTLMultisampleDepthResolveFilter, MTLRenderPassAttachmentDescriptor,
                   MTLRenderPassColorAttachmentDescriptor,
                   MTLRenderPassColorAttachmentDescriptorArray,
