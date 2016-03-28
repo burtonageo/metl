@@ -110,6 +110,7 @@ fn compile_opts_creation_is_correct() {
 }
 
 #[test]
+#[allow(unused_variables)]
 fn create_sampler_and_set_label() {
     const SAMPLER_LABEL: &'static str = "ExampleSampler";
     let mut device = Device::system_default_device().unwrap();
@@ -130,7 +131,7 @@ fn create_texture() {
     const MIPPED: bool = false;
 
     let mut device = Device::system_default_device().unwrap();
-    let mut tex_descriptor = TextureDescriptor::new_2d(PIX_FORMAT, TEX_DIMS.0, TEX_DIMS.1, MIPPED);
+    let tex_descriptor = TextureDescriptor::new_2d(PIX_FORMAT, TEX_DIMS.0, TEX_DIMS.1, MIPPED);
     let texture = device.new_texture(&tex_descriptor).unwrap();
 
     assert_eq!(texture.pixel_format(), PIX_FORMAT);
@@ -219,6 +220,7 @@ fn shader_get_function_with_name() {
 }
 
 #[test]
+#[allow(unused_imports, unused_variables)]
 #[ignore]
 fn shader_get_struct_info() {
     use metl::{StructMember, StructType};

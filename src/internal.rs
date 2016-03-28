@@ -1,6 +1,5 @@
-use cocoa::base::{class, id, nil};
-use cocoa::foundation::NSString;
-use objc::runtime::{BOOL, Class, NO, Object, Protocol, YES};
+use cocoa::base::{class, id};
+use objc::runtime::{BOOL, Class, Protocol, YES};
 
 macro_rules! convertible_enum {
     ($(#[$top_lvl_attrs:meta])* pub enum $enum_nm:ident : $convert:ident {
@@ -72,31 +71,38 @@ pub fn is_kind_of_class(object: id, class_name: &str) -> bool {
     }
 }
 
-#[test]
-fn test_conforms_to_protocol() {
-    unsafe {
-        let nsstr = NSString::alloc(nil).init_str("Hello, world");
-        assert!(conforms_to_protocol(nsstr, "NSCopying"));
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cocoa::base::nil;
+    use cocoa::foundation::NSString;
+
+    #[test]
+    fn test_conforms_to_protocol() {
+        unsafe {
+            let nsstr = NSString::alloc(nil).init_str("Hello, world");
+            assert!(conforms_to_protocol(nsstr, "NSCopying"));
+        }
     }
-}
-
-#[test]
-fn test_doesnt_conform_to_protocol() {
-    unsafe {
-        let nsstr = NSString::alloc(nil).init_str("blah");
-        assert!(!conforms_to_protocol(nsstr, "MTLDevice"));
+    
+    #[test]
+    fn test_doesnt_conform_to_protocol() {
+        unsafe {
+            let nsstr = NSString::alloc(nil).init_str("blah");
+            assert!(!conforms_to_protocol(nsstr, "MTLDevice"));
+        }
     }
-}
-
-#[test]
-fn test_is_kind_of_class() {
-    let nsstr = unsafe { NSString::alloc(nil).init_str("Hello, world") };
-    assert!(is_kind_of_class(nsstr, "NSString"));
-}
-
-#[test]
-fn test_is_not_kind_of_class() {
-    use sys::MTLCompileOptions;
-    let compile_opts = unsafe { MTLCompileOptions::new(nil) };
-    assert!(!is_kind_of_class(compile_opts, "NSString"));
+    
+    #[test]
+    fn test_is_kind_of_class() {
+        let nsstr = unsafe { NSString::alloc(nil).init_str("Hello, world") };
+        assert!(is_kind_of_class(nsstr, "NSString"));
+    }
+    
+    #[test]
+    fn test_is_not_kind_of_class() {
+        use sys::MTLCompileOptions;
+        let compile_opts = unsafe { MTLCompileOptions::new(nil) };
+        assert!(!is_kind_of_class(compile_opts, "NSString"));
+    }
 }
