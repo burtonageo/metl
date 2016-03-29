@@ -1,6 +1,5 @@
 use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
-use std::borrow::Cow;
 use std::convert::From;
 use std::ffi::CStr;
 use std::mem;
@@ -10,8 +9,8 @@ use Device;
 pub struct Function(id);
 
 impl Function {
-    pub fn name(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_string_lossy() }
+    pub fn name(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.name().UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn device(&self) -> &Device {

@@ -2,7 +2,6 @@ use cocoa::base::{id, nil};
 use cocoa::foundation::NSString;
 use error::NSError;
 use objc_bringup::NSArray;
-use std::borrow::Cow;
 use std::convert::From;
 use std::error::Error;
 use std::ffi::CStr;
@@ -24,13 +23,13 @@ impl Library {
         }
     }
 
-    pub fn function_names(&self) -> Vec<Cow<str>> {
+    pub fn function_names(&self) -> Vec<&str> {
         let names_array = unsafe { self.0.functionNames() };
         let names_len = unsafe { names_array.count() };
         let mut names_vec = vec![];
         for i in 0..names_len {
             let name = unsafe {
-                CStr::from_ptr(names_array.objectAtIndex(i).UTF8String()).to_string_lossy()
+                CStr::from_ptr(names_array.objectAtIndex(i).UTF8String()).to_str().unwrap_or(&"")
             };
             names_vec.push(name);
         }
@@ -47,8 +46,8 @@ impl Library {
         unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
     }
 
-    pub fn label(&self) -> Cow<str> {
-        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_string_lossy() }
+    pub fn label(&self) -> &str {
+        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
     }
 }
 
