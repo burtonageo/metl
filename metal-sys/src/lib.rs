@@ -49,7 +49,7 @@ pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLCompu
                     MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
                     MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
                     MTLResourceStorageModeShift, MTLSamplerState, MTLStorageMode, MTLTexture,
-                    MTLTextureType, MTLTextureUsage};
+                    MTLTextureType, MTLTextureUsage, MTLDepthStencilState};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
