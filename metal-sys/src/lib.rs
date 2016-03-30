@@ -36,8 +36,8 @@ pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefault
                     MTLOriginMake, MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
 pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState,
-                    MTLDevice, MTLDrawable, MTLFunction, MTLFunctionType, MTLLanguageVersion,
-                    MTLLibrary, MTLLibraryError, MTLLibraryErrorDomain,
+                    MTLDepthStencilState, MTLDevice, MTLDrawable, MTLFunction, MTLFunctionType,
+                    MTLLanguageVersion, MTLLibrary, MTLLibraryError, MTLLibraryErrorDomain,
                     MTLNewComputePipelineStateCompletionHandler,
                     MTLNewComputePipelineStateWithReflectionCompletionHandler,
                     MTLNewLibraryCompletionHandler,
@@ -49,7 +49,7 @@ pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLCompu
                     MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
                     MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
                     MTLResourceStorageModeShift, MTLSamplerState, MTLStorageMode, MTLTexture,
-                    MTLTextureType, MTLTextureUsage, MTLDepthStencilState};
+                    MTLTextureType, MTLTextureUsage};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,
