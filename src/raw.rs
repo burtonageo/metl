@@ -1,6 +1,9 @@
 use cocoa::base::id;
+use std::convert::{From, Into};
 use std::error::Error;
-use std::fmt::{self, Display, Formatter};
+use std::fmt;
+use std::mem;
+use std::ops::{Deref, DerefMut};
 
 /// A type which can be constructed from an Objective-C pointer.
 pub trait FromRaw: Sized {
@@ -22,6 +25,100 @@ pub trait AsRaw {
 pub trait IntoRaw {
     /// Get the underlying pointer to the object. Releases ownership.
     fn into_raw(self) -> id;
+}
+
+impl FromRaw for id {
+    fn from_raw(ptr: id) -> Result<Self, FromRawError> {
+        Ok(ptr)
+    }
+}
+
+impl AsRaw for id {
+    fn as_raw(&self) -> &id {
+        self
+    }
+
+    fn as_raw_mut(&mut self) -> &mut id {
+        self
+    }
+}
+
+impl IntoRaw for id {
+    fn into_raw(self) -> id {
+        self
+    }
+}
+
+/// An Objective-C pointer which sends the `release` message to its object on drop
+#[derive(Eq, PartialEq)]
+pub struct StrongPtr(id);
+
+impl fmt::Debug for StrongPtr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "StrongPtr({:p})", self.0)
+    }
+}
+
+impl fmt::Display for StrongPtr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Pointer::fmt(self, f)
+    }
+}
+
+impl fmt::Pointer for StrongPtr {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:p}", self.0)
+    }
+}
+
+impl Deref for StrongPtr {
+    type Target = id;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl AsRaw for StrongPtr {
+    fn as_raw(&self) -> &id {
+        self.deref()
+    }
+
+    fn as_raw_mut(&mut self) -> &mut id {
+        self.deref_mut()
+    }
+}
+
+impl IntoRaw for StrongPtr {
+    fn into_raw(self) -> id {
+        self.into()
+    }
+}
+
+impl DerefMut for StrongPtr {
+    fn deref_mut(&mut self) -> &mut <Self as Deref>::Target {
+        &mut self.0
+    }
+}
+
+impl Drop for StrongPtr {
+    fn drop(&mut self) {
+        unsafe { msg_send![self.0, release] }
+    }
+}
+
+impl From<id> for StrongPtr {
+    fn from(ptr: id) -> Self {
+        StrongPtr(ptr)
+    }
+}
+
+impl Into<id> for StrongPtr {
+    /// Get the underlying pointer from `Self`. The pointer will no longer be released on drop.
+    fn into(self) -> id {
+        let self_ptr = self.0;
+        mem::forget(self);
+        self_ptr
+    }
 }
 
 /// Represents errors which may occur when constructing an object from a pointer.
@@ -49,7 +146,7 @@ macro_rules! impl_from_into_raw {
                 } else if !conforms_to_protocol(raw_pointer, $protocol) {
                     Err($crate::FromRawError::WrongPointerType)
                 } else {
-                    Ok($wrapper_type(raw_pointer))
+                    Ok($wrapper_type(From::from(raw_pointer)))
                 }
             }
         }
@@ -66,7 +163,7 @@ macro_rules! impl_from_into_raw {
 
         impl $crate::IntoRaw for $wrapper_type {
             fn into_raw(self) -> id {
-                self.0
+                self.0.into()
             }
         }
     );
@@ -81,7 +178,7 @@ macro_rules! impl_from_into_raw {
                 } else if !is_kind_of_class(raw_pointer, $class) {
                     Err($crate::FromRawError::WrongPointerType)
                 } else {
-                    Ok($wrapper_type(raw_pointer))
+                    Ok($wrapper_type(From::from(raw_pointer)))
                 }
             }
         }
@@ -98,14 +195,14 @@ macro_rules! impl_from_into_raw {
 
         impl $crate::IntoRaw for $wrapper_type {
             fn into_raw(self) -> id {
-                self.0
+                self.0.into()
             }
         }
     )
 }
 
-impl Display for FromRawError {
-    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+impl fmt::Display for FromRawError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let descr = match *self {
             FromRawError::NilPointer => "FromRawError::NilPointer",
             FromRawError::WrongPointerType => "FromRawError::WrongPointerType",

@@ -3,7 +3,7 @@ use cocoa::foundation::NSString;
 use std::ffi::CStr;
 use std::mem;
 use sys::{MTLDepthStencilDescriptor, MTLDepthStencilState};
-use {CompareFunction, Device, FromRaw, IntoRaw, StencilDescriptor};
+use {CompareFunction, Device, FromRaw, IntoRaw, StencilDescriptor, StrongPtr};
 
 pub struct DepthStencilState(id);
 
@@ -23,7 +23,7 @@ impl DepthStencilState {
 
 impl_from_into_raw!(DepthStencilState, of protocol "MTLDepthStencilState");
 
-pub struct DepthStencilDescriptor(id);
+pub struct DepthStencilDescriptor(StrongPtr);
 
 impl DepthStencilDescriptor {
     pub fn new() -> Self {
@@ -72,7 +72,7 @@ impl DepthStencilDescriptor {
 
     pub fn label(&self) -> &str {
         unsafe {
-            CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String())
+            CStr::from_ptr(MTLDepthStencilState::label(*self.0).UTF8String())
                 .to_str()
                 .unwrap_or(&"")
         }

@@ -65,7 +65,7 @@ pub use error::NSError;
 pub use function::{Function, FunctionType};
 pub use library::{Library, LibraryError};
 pub use parallel_render_command_encoder::ParallelRenderCommandEncoder;
-pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
+pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw, StrongPtr};
 pub use render_command_encoder::RenderCommandEncoder;
 pub use render_pass_attachment_descriptor::{LoadAction, RenderPassAttachmentDescriptor,
                                             StoreAction};

@@ -4,7 +4,7 @@ use sys::{MTLSamplerAddressMode, MTLSamplerDescriptor, MTLSamplerMinMagFilter,
           MTLSamplerMipFilter, MTLSamplerState};
 use std::ffi::CStr;
 use std::mem;
-use {CompareFunction, Device, FromRaw};
+use {CompareFunction, Device, FromRaw, StrongPtr};
 
 pub struct SamplerState(id);
 
@@ -22,7 +22,7 @@ impl SamplerState {
 
 impl_from_into_raw!(SamplerState, of protocol "MTLSamplerState");
 
-pub struct SamplerDescriptor(id);
+pub struct SamplerDescriptor(StrongPtr);
 
 impl SamplerDescriptor {
     pub fn new() -> Self {
@@ -127,7 +127,7 @@ impl SamplerDescriptor {
 
     pub fn label(&self) -> &str {
         unsafe {
-            CStr::from_ptr(MTLSamplerDescriptor::label(self.0).UTF8String())
+            CStr::from_ptr(MTLSamplerDescriptor::label(*self.0).UTF8String())
                 .to_str()
                 .unwrap_or(&"")
         }
