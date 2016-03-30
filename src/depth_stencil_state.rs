@@ -1,24 +1,19 @@
 use cocoa::base::{BOOL, YES, id, nil};
 use cocoa::foundation::NSString;
 use std::ffi::CStr;
-use sys::MTLDepthStencilDescriptor;
+use std::mem;
+use sys::{MTLDepthStencilDescriptor, MTLDepthStencilState};
 use {CompareFunction, Device, FromRaw, IntoRaw, StencilDescriptor};
 
 pub struct DepthStencilState(id);
 
 impl DepthStencilState {
     pub fn device(&self) -> &Device {
-        unimplemented!();
+        unsafe { mem::transmute(self.0.device()) }
     }
 
     pub fn label(&self) -> &str {
-        unimplemented!()
-        // unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
-    }
-
-    #[allow(unused_variables)]
-    pub fn set_label(&mut self, label: &str) {
-        unimplemented!();
+        unsafe { CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
     }
 }
 
@@ -68,7 +63,7 @@ impl DepthStencilDescriptor {
     }
 
     pub fn label(&self) -> &str {
-        unsafe { CStr::from_ptr(self.0.label().UTF8String()).to_str().unwrap_or(&"") }
+        unsafe { CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
     }
 
     pub fn set_label(&mut self, label: &str) {
