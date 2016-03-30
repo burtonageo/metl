@@ -14,8 +14,8 @@ use std::ops::Deref;
 use std::path::Path;
 use std::sync::mpsc;
 use sys::MTLFeatureSet;
-use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, DepthStencilState,
-     DepthStencilDescriptor, FromRaw, FromRawError, Library, LibraryError, ResourceOptions,
+use {AsRaw, Buffer, CommandQueue, CommandQueueError, CompileOptions, DepthStencilDescriptor,
+     DepthStencilState, FromRaw, FromRawError, Library, LibraryError, ResourceOptions,
      SamplerDescriptor, SamplerState, Size, Texture, TextureDescriptor};
 
 pub struct Device(id);

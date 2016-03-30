@@ -52,7 +52,7 @@ impl RenderPassDescriptor {
     pub fn downcast_to_depth_descriptor(self) -> Result<RenderPassDepthAttachmentDescriptor, Self> {
         match FromRaw::from_raw(self.0) {
             Ok(descriptor) => Ok(descriptor),
-            Err(_) => Err(self)
+            Err(_) => Err(self),
         }
     }
 
@@ -62,17 +62,19 @@ impl RenderPassDescriptor {
     pub fn downcast_to_color_descriptor(self) -> Result<RenderPassColorAttachmentDescriptor, Self> {
         match FromRaw::from_raw(self.0) {
             Ok(descriptor) => Ok(descriptor),
-            Err(_) => Err(self)
+            Err(_) => Err(self),
         }
     }
 
     /// Attempt to downcast this descriptor to a `RenderPassStencilAttachmentDescriptor`. If `self`
     /// is not a `RenderPassStencilAttachmentDescriptor`, then `self` will be returned in the `Err`
     /// branch.
-    pub fn downcast_to_stencil_descriptor(self) -> Result<RenderPassStencilAttachmentDescriptor, Self> {
+    pub fn downcast_to_stencil_descriptor(
+        self)
+        -> Result<RenderPassStencilAttachmentDescriptor, Self> {
         match FromRaw::from_raw(self.0) {
             Ok(descriptor) => Ok(descriptor),
-            Err(_) => Err(self)
+            Err(_) => Err(self),
         }
     }
 }
