@@ -13,7 +13,11 @@ impl DepthStencilState {
     }
 
     pub fn label(&self) -> &str {
-        unsafe { CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
+        unsafe {
+            CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String())
+                .to_str()
+                .unwrap_or(&"")
+        }
     }
 }
 
@@ -22,6 +26,10 @@ impl_from_into_raw!(DepthStencilState, of protocol "MTLDepthStencilState");
 pub struct DepthStencilDescriptor(id);
 
 impl DepthStencilDescriptor {
+    pub fn new() -> Self {
+        unsafe { FromRaw::from_raw(MTLDepthStencilDescriptor::new(nil)).unwrap() }
+    }
+
     pub fn depth_compare_function(&self) -> CompareFunction {
         unsafe { self.0.depthCompareFunction().into() }
     }
@@ -63,11 +71,21 @@ impl DepthStencilDescriptor {
     }
 
     pub fn label(&self) -> &str {
-        unsafe { CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String()).to_str().unwrap_or(&"") }
+        unsafe {
+            CStr::from_ptr(MTLDepthStencilState::label(self.0).UTF8String())
+                .to_str()
+                .unwrap_or(&"")
+        }
     }
 
     pub fn set_label(&mut self, label: &str) {
         unsafe { self.0.setLabel(NSString::alloc(nil).init_str(label)) }
+    }
+}
+
+impl Clone for DepthStencilDescriptor {
+    fn clone(&self) -> Self {
+        unsafe { FromRaw::from_raw(self.0.copy()).unwrap() }
     }
 }
 

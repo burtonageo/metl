@@ -1,8 +1,12 @@
-use cocoa::base::id;
+use cocoa::base::{class, id};
 use objc::runtime::BOOL;
 use MTLCompareFunction;
 
 pub trait MTLDepthStencilDescriptor {
+    unsafe fn new(_: Self) -> id {
+        msg_send![class("MTLDepthStencilDescriptor"), new]
+    }
+
     unsafe fn depthCompareFunction(self) -> MTLCompareFunction;
     unsafe fn setDepthCompareFunction(self, depthCompareFunction: MTLCompareFunction);
 
@@ -17,6 +21,8 @@ pub trait MTLDepthStencilDescriptor {
 
     unsafe fn label(self) -> id;
     unsafe fn setLabel(self, label: id);
+
+    unsafe fn copy(self) -> id;
 }
 
 impl MTLDepthStencilDescriptor for id {
@@ -58,5 +64,9 @@ impl MTLDepthStencilDescriptor for id {
 
     unsafe fn setLabel(self, label: id) {
         msg_send![self, setLabel:label]
+    }
+
+    unsafe fn copy(self) -> id {
+        msg_send![self, copy]
     }
 }

@@ -4,7 +4,7 @@ extern crate cocoa;
 
 use cocoa::base::{BOOL, nil};
 use cocoa::foundation::NSString;
-use metl::{CompileOptions, Device, FeatureSet, LanguageVersion, PixelFormat, SpecificLanguageVersion,
+use metl::{CompileOptions, DepthStencilDescriptor, Device, FeatureSet, LanguageVersion, PixelFormat, SpecificLanguageVersion,
            SamplerDescriptor, TextureDescriptor};
 use metl::LibraryError;
 use metl::{FromRaw, FromRawError, IntoRaw};
@@ -122,6 +122,20 @@ fn create_sampler_and_set_label() {
     let sampler = device.new_sampler_state(&sampler_descriptor).unwrap();
     // TODO(burtonageo): Fix getting the label
     // assert_eq!(sampler.label(), sampler_descriptor.label());
+}
+
+#[test]
+fn create_depth_stencil_state() {
+    const DEPTH_STENCIL_LABEL: &'static str = "ExampleDepthStencil";
+    let mut device = Device::system_default_device().unwrap();
+
+    let mut depth_stencil_descriptor = DepthStencilDescriptor::new();
+    depth_stencil_descriptor.set_label(&DEPTH_STENCIL_LABEL);
+    assert_eq!(depth_stencil_descriptor.label(), DEPTH_STENCIL_LABEL);
+
+    let depth_stencil = device.new_depth_stencil_state(&depth_stencil_descriptor).unwrap();
+    // TODO(burtonageo): Fix getting the label
+    // assert_eq!(depth_stencil.label(), depth_stencil_descriptor.label());
 }
 
 #[test]
