@@ -78,6 +78,18 @@ impl Deref for StrongPtr {
     }
 }
 
+impl DerefMut for StrongPtr {
+    fn deref_mut(&mut self) -> &mut <Self as Deref>::Target {
+        &mut self.0
+    }
+}
+
+impl FromRaw for StrongPtr {
+    fn from_raw(ptr: id) -> Result<Self, FromRawError> {
+        Ok(From::from(ptr))
+    }
+}
+
 impl AsRaw for StrongPtr {
     fn as_raw(&self) -> &id {
         self.deref()
@@ -91,12 +103,6 @@ impl AsRaw for StrongPtr {
 impl IntoRaw for StrongPtr {
     fn into_raw(self) -> id {
         self.into()
-    }
-}
-
-impl DerefMut for StrongPtr {
-    fn deref_mut(&mut self) -> &mut <Self as Deref>::Target {
-        &mut self.0
     }
 }
 
