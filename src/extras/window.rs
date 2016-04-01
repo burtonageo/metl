@@ -33,7 +33,22 @@ pub struct WindowBuilder {
     pub color_depth: ColorDepth
 }
 
+impl Default for WindowBuilder {
+    fn default() -> Self {
+        WindowBuilder {
+            size: (800, 600),
+            border_style: WindowBorderStyle::Windowed,
+            controls: WindowResizeControls::All,
+            color_depth: ColorDepth::Depth24Bit
+        }
+    }
+}
+
 impl WindowBuilder {
+    pub fn new() -> Self {
+        Default::default()
+    }
+
     pub fn window_size(self, size: (usize, usize)) -> Self {
         WindowBuilder { size: size, ..self }
     }
