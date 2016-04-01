@@ -7,6 +7,8 @@ extern crate metal_sys;
 #[macro_use]
 extern crate objc;
 
+pub mod extras;
+
 #[macro_use]
 mod raw;
 
