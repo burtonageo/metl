@@ -1,22 +1,101 @@
-use cocoa::appkit::{NSApp, NSApplication, NSApplicationActivationPolicyRegular, NSMenu, NSMenuItem,
-                    NSApplicationActivateIgnoringOtherApps, NSWindow, NSTitledWindowMask, NSBackingStoreBuffered,
-                    NSRunningApplication, NSResizableWindowMask, NSClosableWindowMask, NSFullScreenWindowMask,
-                    NSMiniaturizableWindowMask};
-use cocoa::base::{nil, NO};
-use cocoa::foundation::{NSUInteger, NSAutoreleasePool, NSString, NSProcessInfo, NSRect, NSPoint, NSSize};
+use cocoa::appkit::{NSApp, NSApplication, NSApplicationActivateIgnoringOtherApps,
+                    NSApplicationActivationPolicyRegular, NSBackingStoreBuffered,
+                    NSClosableWindowMask, NSFullScreenWindowMask, NSMenu, NSMenuItem,
+                    NSMiniaturizableWindowMask, NSResizableWindowMask, NSRunningApplication,
+                    NSTitledWindowMask, NSWindow, NSEventType};
+use cocoa::base::{BOOL, NO, YES, id, nil};
+use cocoa::foundation::{NSAutoreleasePool, NSPoint, NSProcessInfo, NSRect, NSSize, NSString,
+                        NSUInteger};
+use objc::declare::ClassDecl;
+use objc::runtime::{Class, Object, Protocol, Sel};
 use std::convert::Into;
 use std::ffi::CStr;
-use std::sync::{Once, ONCE_INIT};
+use std::iter::Iterator;
+use std::sync::{ONCE_INIT, Once};
 use StrongPtr;
+
+fn metl_app_delegate() -> Option<id> {
+    const APP_DELEGATE_CLASS_NAME: &'static str = "MetlApplicationDelegate";
+    static APP_DELEGATE_DECLARE: Once = ONCE_INIT;
+
+    APP_DELEGATE_DECLARE.call_once(|| {
+        let nsobject = Class::get("NSObject").unwrap();
+        let mut decl = ClassDecl::new(APP_DELEGATE_CLASS_NAME, nsobject).unwrap();
+
+        // todo(burtonageo): Can't get NSApplicationDelegate protocol for some reason :-/
+        //                   Investigate why
+
+        // let ns_application_delegate_protocol = Protocol::get("NSApplicationDelegate").unwrap();
+        // decl.add_protocol(ns_application_delegate_protocol);
+
+        extern "C" fn terminate_after_window_close(_this: &Object, _cmd: Sel, _sender: id) -> BOOL {
+            YES
+        }
+
+        unsafe {
+            let on_window_close: extern "C" fn(&Object, Sel, id) -> BOOL =
+                terminate_after_window_close;
+            decl.add_method(sel!(applicationShouldTerminateAfterLastWindowClosed:),
+                            on_window_close);
+        }
+
+        decl.register();
+    });
+
+    let cls = Class::get(APP_DELEGATE_CLASS_NAME);
+    cls.map(|cls| unsafe { msg_send![cls, new] })
+}
 
 pub struct Window(StrongPtr);
 
 impl Window {
-    pub fn display(&self) {
+    pub fn events(&self) -> Events {
+        unsafe {
+            let current_app = NSRunningApplication::currentApplication(nil);
+            current_app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps);
+            self.0.makeKeyAndOrderFront_(current_app);
+            NSApp().run();
+            Events { window: &self }
+        }
     }
+}
 
-    pub fn size(&self) -> (usize, usize) {
-        unimplemented!();
+pub struct Events<'a> {
+    window: &'a Window
+}
+
+pub enum KeyPress {
+    PressDown,
+    PressUp,
+    Repeat
+}
+
+pub enum Event {
+    Idle,
+    Display,
+    KeyBoard(KeyPress, char),
+    Mouse
+}
+
+impl<'a> Iterator for Events<'a> {
+    type Item = Event;
+    fn next(&mut self) -> Option<Self::Item> {
+        let is_running: BOOL = unsafe { msg_send![NSApp(), running] };
+        if is_running == NO {
+            return None
+        }
+
+        let current_event: id = unsafe {
+            let win_ptr: id = *self.window.0;
+            msg_send![win_ptr, currentEvent]
+        };
+
+        if current_event.is_null() {
+            Some(Event::Idle)
+        } else {
+            // blah
+            Some(Event::Display)
+        }
     }
 }
 
@@ -108,7 +187,10 @@ impl WindowBuilder {
         APP_START.call_once(|| {
             unsafe {
                 let _pool = NSAutoreleasePool::new(nil);
+
                 let app = NSApp();
+                let delegate = metl_app_delegate().unwrap_or(nil);
+                app.setDelegate_(delegate);
                 app.setActivationPolicy_(NSApplicationActivationPolicyRegular);
 
                 let menubar = NSMenu::new(nil).autorelease();
@@ -118,14 +200,15 @@ impl WindowBuilder {
 
                 let app_menu = NSMenu::new(nil).autorelease();
                 let quit_prefix = NSString::alloc(nil).init_str("Quit ");
-                let quit_title = quit_prefix.stringByAppendingString_(NSProcessInfo::processInfo(nil).processName());
-                let quit_action = sel!(terminate:);
+                let quit_title =
+                    quit_prefix.stringByAppendingString_(NSProcessInfo::processInfo(nil)
+                                                             .processName());
                 let quit_key = NSString::alloc(nil).init_str("q");
-                let quit_item = NSMenuItem::alloc(nil).initWithTitle_action_keyEquivalent_(
-                    quit_title,
-                    quit_action,
-                    quit_key
-                ).autorelease();
+                let quit_item = NSMenuItem::alloc(nil)
+                                    .initWithTitle_action_keyEquivalent_(quit_title,
+                                                                         sel!(terminate:),
+                                                                         quit_key)
+                                    .autorelease();
                 app_menu.addItem_(quit_item);
                 app_menu_item.setSubmenu_(app_menu);
             }
@@ -134,7 +217,7 @@ impl WindowBuilder {
         unsafe {
             let position = match self.position {
                 WindowPosition::Centered => NSPoint::new(0.0, 0.0),
-                WindowPosition::AtPoint(x, y) => NSPoint::new(x, y)
+                WindowPosition::AtPoint(x, y) => NSPoint::new(x, y),
             };
 
             let window = NSWindow::alloc(nil).initWithContentRect_styleMask_backing_defer_(
@@ -143,16 +226,15 @@ impl WindowBuilder {
                                                   NSBackingStoreBuffered,
                                                   NO)
                                               .autorelease();
+
             if let WindowPosition::Centered = self.position {
                 window.center();
             }
 
             window.setTitle_(NSString::alloc(nil).init_str(&self.title));
 
-            let current_app = NSRunningApplication::currentApplication(nil);
-            current_app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps);
-            window.makeKeyAndOrderFront_(current_app);
-            NSApp().run();
+            // TODO(burtonageo): Add metal view here
+
             Ok(Window(StrongPtr::from(window)))
         }
     }
