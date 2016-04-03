@@ -106,6 +106,13 @@ impl IntoRaw for StrongPtr {
     }
 }
 
+impl Clone for StrongPtr {
+    fn clone(&self) -> Self {
+        let retained = unsafe { msg_send![self.0, retain] };
+        StrongPtr(retained)
+    }
+}
+
 impl Drop for StrongPtr {
     fn drop(&mut self) {
         unsafe { msg_send![self.0, release] }
