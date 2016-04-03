@@ -1,4 +1,4 @@
-use cocoa::base::id;
+use cocoa::base::{id, nil};
 use std::convert::{From, Into};
 use std::error::Error;
 use std::fmt;
@@ -115,7 +115,8 @@ impl Clone for StrongPtr {
 
 impl Drop for StrongPtr {
     fn drop(&mut self) {
-        unsafe { msg_send![self.0, release] }
+        unsafe { msg_send![self.0, release] };
+        self.0 = nil;
     }
 }
 
