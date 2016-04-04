@@ -96,7 +96,7 @@ impl Clone for RenderPassAttachmentDescriptor {
 impl_from_into_raw!(RenderPassAttachmentDescriptor, of class "MTLRenderPassAttachmentDescriptor");
 
 convertible_enum! {
-    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub enum LoadAction: MTLLoadAction {
         DontCare => MTLLoadActionDontCare,
         Load => MTLLoadActionLoad,
