@@ -38,6 +38,7 @@ mod render_pass_color_attachment_descriptor;
 mod render_pass_depth_attachment_descriptor;
 mod render_pass_descriptor;
 mod render_pass_stencil_attachment_descriptor;
+mod render_pipeline_state;
 mod resource;
 mod sampler_state;
 mod stencil_descriptor;
@@ -76,6 +77,7 @@ pub use render_pass_color_attachment_descriptor::{RenderPassColorAttachmentDescr
 pub use render_pass_depth_attachment_descriptor::RenderPassDepthAttachmentDescriptor;
 pub use render_pass_descriptor::RenderPassDescriptor;
 pub use render_pass_stencil_attachment_descriptor::RenderPassStencilAttachmentDescriptor;
+pub use render_pipeline_state::RenderPipelineState;
 pub use resource::{CpuCacheMode, PurgeableState, Resource, ResourceOptions, StorageMode};
 pub use sampler_state::{SamplerDescriptor, SamplerState};
 pub use stencil_descriptor::StencilDescriptor;
