@@ -35,23 +35,24 @@ pub use constants::{MTLCommandBufferStatus, MTLCompareFunction, MTLFeatureSet, M
 pub use functions::{MTLClearColorMake, MTLCopyAllDevices, MTLCreateSystemDefaultDevice,
                     MTLOriginMake, MTLRegionMake1D, MTLRegionMake2D, MTLRegionMake3D, MTLSizeMake};
 
-pub use protocols::{MTLCPUCacheMode, MTLClipMode, MTLCommandBuffer, MTLCommandQueue,
-                    MTLComputePipelineState, MTLCullMode, MTLDepthStencilState, MTLDevice,
-                    MTLDrawable, MTLFunction, MTLFunctionType, MTLLanguageVersion, MTLLibrary,
+pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLComputePipelineState,
+                    MTLCullMode, MTLDepthClipMode, MTLDepthStencilState, MTLDevice, MTLDrawable,
+                    MTLFunction, MTLFunctionType, MTLIndexType, MTLLanguageVersion, MTLLibrary,
                     MTLLibraryError, MTLLibraryErrorDomain,
                     MTLNewComputePipelineStateCompletionHandler,
                     MTLNewComputePipelineStateWithReflectionCompletionHandler,
                     MTLNewLibraryCompletionHandler,
                     MTLNewRenderPipelineStateWithReflectionCompletionHandler,
-                    MTLNewRenderPipleineStateCompletionHandler, MTLPurgeableState,
-                    MTLRenderCommandEncoder, MTLRenderPipelineError, MTLRenderPipelineErrorDomain,
-                    MTLResource, MTLResourceCPUCacheModeDefaultCache,
-                    MTLResourceCPUCacheModeShift, MTLResourceCPUCacheModeWriteCombined,
-                    MTLResourceOptionCPUCacheModeDefault,
+                    MTLNewRenderPipleineStateCompletionHandler, MTLPrimitiveType,
+                    MTLPurgeableState, MTLRenderCommandEncoder, MTLRenderPipelineError,
+                    MTLRenderPipelineErrorDomain, MTLResource,
+                    MTLResourceCPUCacheModeDefaultCache, MTLResourceCPUCacheModeShift,
+                    MTLResourceCPUCacheModeWriteCombined, MTLResourceOptionCPUCacheModeDefault,
                     MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
                     MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
                     MTLResourceStorageModeShift, MTLSamplerState, MTLStorageMode, MTLTexture,
-                    MTLTextureType, MTLTextureUsage, MTLWinding};
+                    MTLTextureType, MTLTextureUsage, MTLTriangleFillModeFill,
+                    MTLVisibilityResultMode, MTLWinding};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,
                 MTLDrawIndexedPrimitivesIndirectArguments, MTLDrawPrimitivesIndirectArguments,

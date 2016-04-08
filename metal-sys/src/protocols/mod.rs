@@ -26,7 +26,9 @@ pub use self::mtl_function::{MTLFunction, MTLFunctionType};
 pub use self::mtl_library::{MTLLanguageVersion, MTLLibrary, MTLLibraryError,
                             MTLLibraryErrorDomain, MTLRenderPipelineError,
                             MTLRenderPipelineErrorDomain};
-pub use self::mtl_render_command_encoder::{MTLClipMode, MTLCullMode, MTLRenderCommandEncoder,
+pub use self::mtl_render_command_encoder::{MTLCullMode, MTLDepthClipMode, MTLIndexType,
+                                           MTLPrimitiveType, MTLRenderCommandEncoder,
+                                           MTLTriangleFillModeFill, MTLVisibilityResultMode,
                                            MTLWinding};
 pub use self::mtl_resource::{MTLCPUCacheMode, MTLPurgeableState, MTLResource,
                              MTLResourceCPUCacheModeDefaultCache, MTLResourceCPUCacheModeShift,
