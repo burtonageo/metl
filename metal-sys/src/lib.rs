@@ -51,7 +51,7 @@ pub use protocols::{MTLCPUCacheMode, MTLCommandBuffer, MTLCommandQueue, MTLCompu
                     MTLResourceOptionCPUCacheModeWriteCombined, MTLResourceOptions,
                     MTLResourceStorageModePrivate, MTLResourceStorageModeShared,
                     MTLResourceStorageModeShift, MTLSamplerState, MTLStorageMode, MTLTexture,
-                    MTLTextureType, MTLTextureUsage, MTLTriangleFillModeFill,
+                    MTLTextureType, MTLTextureUsage, MTLTriangleFillMode,
                     MTLVisibilityResultMode, MTLWinding};
 
 pub use types::{MTLClearColor, MTLDispatchThreadgroupsIndirectArguments,

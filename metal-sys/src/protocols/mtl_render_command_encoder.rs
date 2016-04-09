@@ -55,7 +55,7 @@ pub enum MTLWinding {
 
 #[repr(usize)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub enum MTLTriangleFillModeFill {
+pub enum MTLTriangleFillMode {
     MTLTriangleFillModeFill = 0,
     MTLTriangleFillModeLines = 1
 }
