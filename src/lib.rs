@@ -69,7 +69,9 @@ pub use function::{Function, FunctionType};
 pub use library::{Library, LibraryError};
 pub use parallel_render_command_encoder::ParallelRenderCommandEncoder;
 pub use raw::{AsRaw, FromRaw, FromRawError, IntoRaw, StrongPtr};
-pub use render_command_encoder::RenderCommandEncoder;
+pub use render_command_encoder::{CullMode, DepthClipMode, IndexType, PrimitiveType,
+                                 RenderCommandEncoder, TriangleFillModeFill, VisibilityResultMode,
+                                 Winding};
 pub use render_pass_attachment_descriptor::{LoadAction, RenderPassAttachmentDescriptor,
                                             StoreAction};
 pub use render_pass_color_attachment_descriptor::{RenderPassColorAttachmentDescriptor,
