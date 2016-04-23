@@ -50,22 +50,22 @@ macro_rules! convertible_enum {
 }
 
 pub fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
-    let protocol = match Protocol::get(protocol_name) {
-        Some(p) => p,
-        None => return false,
-    };
-    let does_conform: BOOL = unsafe { msg_send![object, conformsToProtocol:protocol] };
-    does_conform == YES
-
+    match Protocol::get(protocol_name) {
+        Some(protocol) => unsafe { &*object }.class().conforms_to(protocol),
+        None => false
+    }
 }
 
 pub fn is_kind_of_class(object: id, class_name: &str) -> bool {
-    let class = match Class::get(class_name) {
-        Some(c) => c,
-        None => return false,
-    };
-    let is_kind_of_class: BOOL = unsafe { msg_send![object, isKindOfClass:class] };
-    is_kind_of_class == YES
+    match Class::get(class_name) {
+        None => false,
+        Some(class) => {
+            let is_class: BOOL = unsafe {
+                msg_send![object, isKindOfClass:class]
+            };
+            is_class == YES
+        }
+    }
 }
 
 #[cfg(test)]
