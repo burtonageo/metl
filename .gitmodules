@@ -1,3 +1,0 @@
-[submodule "rust-objc"]
-	path = rust-objc
-	url = https://github.com/burtonageo/rust-objc
