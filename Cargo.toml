@@ -11,7 +11,7 @@ repository = "https://github.com/burtonageo/metl"
 block = "0.*"
 cocoa = "0.3.0"
 core-foundation = "0.*"
-objc = "0.2.0"
+objc = "0.2.1"
 
 [dependencies.metal-sys]
 path = "metal-sys"
