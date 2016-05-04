@@ -6,6 +6,7 @@ extern crate core_foundation;
 extern crate metal_sys;
 #[macro_use]
 extern crate objc;
+extern crate winit;
 
 pub mod extras;
 

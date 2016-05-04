@@ -1,7 +1,6 @@
 extern crate metl;
 
-use metl::extras::window::WindowBuilder;
-use metl::extras::events::Event;
+use metl::extras::window::{Event, WindowBuilder};
 
 fn main() {
     let window = WindowBuilder::new().build().unwrap();
