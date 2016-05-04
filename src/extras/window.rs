@@ -1,6 +1,7 @@
 use cocoa::base::id;
 use std::error::Error;
 use std::fmt;
+use std::ops::Deref;
 use std::ptr;
 use winit;
 use Device;
@@ -159,6 +160,15 @@ pub struct Window {
     view: id
 }
 
+pub struct WinRef<'a>(&'a winit::Window);
+
+impl<'a> Deref for WinRef<'a> {
+    type Target = winit::Window;
+    fn deref(&self) -> &Self::Target {
+        self.0
+    }
+}
+
 impl Window {
     pub fn poll_events(&self) -> PollEventsIterator {
         self.window.poll_events()
@@ -166,6 +176,10 @@ impl Window {
 
     pub fn wait_events(&self) -> WaitEventsIterator {
         self.window.wait_events()
+    }
+
+    pub fn window(&self) -> WinRef {
+        WinRef(&self.window)
     }
 }
 
@@ -184,8 +198,8 @@ impl WindowBuilderExt for WindowBuilder {
 }
 
 pub struct MetalFacade {
-    window: Window,
-    device: Device
+    pub window: Window,
+    pub device: Device
 }
 
 impl MetalFacade {
