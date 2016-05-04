@@ -198,11 +198,31 @@ impl WindowBuilderExt for WindowBuilder {
 }
 
 pub struct MetalFacade {
-    pub window: Window,
-    pub device: Device
+    window: Window,
+    device: Device
 }
 
 impl MetalFacade {
+    #[inline]
+    pub fn window(&self) -> &Window {
+        &self.window
+    }
+
+    #[inline]
+    pub fn window_mut(&mut self) -> &mut Window {
+        &mut self.window
+    }
+
+    #[inline]
+    pub fn device(&self) -> &Device {
+        &self.device
+    }
+    
+    #[inline]
+    pub fn device_mut(&mut self) -> &mut Device {
+        &mut self.device
+    }
+
     #[inline]
     pub fn poll_events(&self) -> PollEventsIterator {
         self.window.poll_events()
