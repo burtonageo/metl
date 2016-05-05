@@ -217,7 +217,7 @@ impl MetalFacade {
     pub fn device(&self) -> &Device {
         &self.device
     }
-    
+
     #[inline]
     pub fn device_mut(&mut self) -> &mut Device {
         &mut self.device
