@@ -3,7 +3,10 @@ extern crate metl;
 use metl::extras::window::{Event, WindowBuilder};
 
 fn main() {
-    let window = WindowBuilder::new().build().unwrap();
+    let window = WindowBuilder::new()
+                     .with_dimensions(800, 600)
+                     .build()
+                     .unwrap();
     let _device = metl::Device::system_default_device().unwrap();
 
     'mainloop: loop {
