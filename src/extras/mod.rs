@@ -241,8 +241,9 @@ pub mod window {
         }
 
         pub fn set_delegate<VD: ViewDelegate + 'static>(&self, delegate: VD) {
-            use super::uuid::Uuid;
             use objc::{Encode, Encoding};
+            use super::uuid::Uuid;
+            use std::os::raw::c_void;
 
             let delegate_class_name = {
                 format!("Metl_MTKViewDelegate_{}", Uuid::new_v4().urn().to_string())
@@ -278,22 +279,38 @@ pub mod window {
                 }
             }
 
-            extern fn draw_in_mtk_view(_this: &Object, _cmd: Sel, view: id) {
-                // unimplemented!();
+            const DELEGATE_OBJECT_IVAR: &'static str = "RustDelegateStruct";
+
+            extern fn draw_in_mtk_view<VD: ViewDelegate>(this: &Object, _cmd: Sel, view: id) {
+                let rust_delegate: &VD = unsafe {
+                    let ivar: *mut c_void = *this.get_ivar(DELEGATE_OBJECT_IVAR);
+                    &*(ivar as *mut VD)
+                };
+
+                let mut view = View(view);
+                rust_delegate.draw_into_view(&mut view);
             }
 
-            extern fn mtk_view_drawable_size_will_change(_this: &Object, _cmd: Sel,
-                                                         view: id, size: CGSizeEncode) {
-                // unimplemented!();
+            extern fn mtk_view_drawable_size_will_change<VD: ViewDelegate>(
+                this: &Object, _cmd: Sel, view: id,
+                CGSizeEncode(CGSize {width, height}): CGSizeEncode) {
+                let rust_delegate: &VD = unsafe {
+                    let ivar: *mut c_void = *this.get_ivar(DELEGATE_OBJECT_IVAR);
+                    &*(ivar as *mut VD)
+                };
+
+                let mut view = View(view);
+                rust_delegate.on_resize(&mut view, (width, height));
             }
 
-            let draw_callback: extern fn(&Object, Sel, id) = draw_in_mtk_view;
+            let draw_callback: extern fn(&Object, Sel, id) = draw_in_mtk_view::<VD>;
             let resize_callback: extern fn(&Object, Sel, id, CGSizeEncode) =
-                mtk_view_drawable_size_will_change;
+                mtk_view_drawable_size_will_change::<VD>;
 
             unsafe {
                 delegate_class_decl.add_method(sel!(mtkView:drawableSizeWillChange:), resize_callback);
                 delegate_class_decl.add_method(sel!(drawInMTKView:), draw_callback);
+                delegate_class_decl.add_ivar::<*mut c_void>(DELEGATE_OBJECT_IVAR);
             }
             delegate_class_decl.register();
 
@@ -301,6 +318,7 @@ pub mod window {
                                      .expect(_e!("Could not get delegate class"));
             unsafe {
                 let delegate_object: id = msg_send![delegate_class, new];
+                (*delegate_object).set_ivar(DELEGATE_OBJECT_IVAR, Box::into_raw(Box::new(delegate)) as *mut c_void);
                 msg_send![self.0, setDelegate:delegate_object]
             }
         }
@@ -415,7 +433,7 @@ pub mod window {
 
     pub trait ViewDelegate {
         fn draw_into_view(&self, view: &mut View);
-        fn on_resize(self, view: &mut View, new_size: (f64, f64));
+        fn on_resize(&self, view: &mut View, new_size: (f64, f64));
     }
 
     #[derive(Clone, Debug)]
