@@ -244,9 +244,6 @@ pub mod window {
             use super::uuid::Uuid;
             use objc::{Encode, Encoding};
 
-            // Don't call this method, you get an invalid memory reference
-            unimplemented!();
-
             let delegate_class_name = {
                 format!("Metl_MTKViewDelegate_{}", Uuid::new_v4().urn().to_string())
             };
@@ -282,12 +279,12 @@ pub mod window {
             }
 
             extern fn draw_in_mtk_view(_this: &Object, _cmd: Sel, view: id) {
-                unimplemented!();
+                // unimplemented!();
             }
 
             extern fn mtk_view_drawable_size_will_change(_this: &Object, _cmd: Sel,
                                                          view: id, size: CGSizeEncode) {
-                unimplemented!();
+                // unimplemented!();
             }
 
             let draw_callback: extern fn(&Object, Sel, id) = draw_in_mtk_view;
@@ -303,7 +300,7 @@ pub mod window {
             let delegate_class = Class::get(&delegate_class_name)
                                      .expect(_e!("Could not get delegate class"));
             unsafe {
-                let delegate_object = msg_send![delegate_class, new];
+                let delegate_object: id = msg_send![delegate_class, new];
                 msg_send![self.0, setDelegate:delegate_object]
             }
         }
