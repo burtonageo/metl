@@ -18,3 +18,8 @@ objc = "0.2.1"
 [dependencies.metal-sys]
 path = "metal-sys"
 version = "0.0.0"
+
+[features]
+default = ["extras"]
+extras = ["MetalKit"]
+MetalKit = []

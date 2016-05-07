@@ -15,6 +15,7 @@ mod raw;
 #[macro_use]
 mod internal;
 
+#[cfg(feature = "extras")]
 pub mod extras;
 
 mod argument;
