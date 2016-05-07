@@ -1,10 +1,14 @@
 use cocoa::base::id;
+use cocoa::foundation::NSUInteger;
+use core_graphics::geometry::{CGRect, CGPoint, CGSize};
+use objc::runtime::Class;
+use raw::{AsRaw, FromRaw, FromRawError};
 use std::error::Error;
 use std::fmt;
 use std::ops::Deref;
-use std::ptr;
+use sys::{MTLClearColor, MTLPixelFormat};
 use winit;
-use Device;
+use {ClearColor, Device, PixelFormat};
 
 pub use winit::{
     CursorState,
@@ -23,12 +27,13 @@ pub use winit::{
 };
 
 pub struct WindowBuilder {
-    window: winit::WindowBuilder
+    window: winit::WindowBuilder,
+    device: Device
 }
 
 #[derive(Debug)]
 pub enum CreationError {
-    NoDevice,
+    ViewCreation(ViewError),
     Winit(winit::CreationError)
 }
 
@@ -41,16 +46,15 @@ impl fmt::Display for CreationError {
 impl Error for CreationError {
     fn description(&self) -> &str {
         match *self {
-            CreationError::NoDevice => "A device was not set for the windowbuilder",
+            CreationError::ViewCreation(ref e) => e.description(),
             CreationError::Winit(ref e) => e.description()
         }
     }
 
     fn cause(&self) -> Option<&Error> {
-        if let CreationError::Winit(ref e) = *self {
-            Some(e)
-        } else {
-            None
+        match *self {
+            CreationError::ViewCreation(ref e) => Some(e),
+            CreationError::Winit(ref e) => Some(e)
         }
     }
 }
@@ -61,12 +65,19 @@ impl From<winit::CreationError> for CreationError {
     }
 }
 
+impl From<ViewError> for CreationError {
+    fn from(error: ViewError) -> Self {
+        CreationError::ViewCreation(error)
+    }
+}
+
 impl WindowBuilder {
     /// Initializes a new `WindowBuilder` with default values.
     #[inline]
-    pub fn new() -> Self {
+    pub fn new(device: Device) -> Self {
         WindowBuilder {
-            window: winit::WindowBuilder::new()
+            window: winit::WindowBuilder::new(),
+            device: device
         }
     }
 
@@ -77,7 +88,7 @@ impl WindowBuilder {
     pub fn with_dimensions(self, width: u32, height: u32) -> WindowBuilder {
         WindowBuilder {window: self.window.with_dimensions(width, height), ..self}
     }
-    
+
     /// Sets a minimum dimension size for the window
     ///
     /// Width and height are in pixels.
@@ -85,7 +96,7 @@ impl WindowBuilder {
     pub fn with_min_dimensions(self, width: u32, height: u32) -> WindowBuilder {
         WindowBuilder {window: self.window.with_min_dimensions(width, height), ..self}
     }
-    
+
     /// Sets a maximum dimension size for the window
     ///
     /// Width and height are in pixels.
@@ -93,13 +104,13 @@ impl WindowBuilder {
     pub fn with_max_dimensions(self, width: u32, height: u32) -> WindowBuilder {
         WindowBuilder {window: self.window.with_max_dimensions(width, height), ..self}
     }
-    
+
     /// Requests a specific title for the window.
     #[inline]
     pub fn with_title(self, title: String) -> WindowBuilder {
         WindowBuilder {window: self.window.with_title(title), ..self}
     }
-    
+
     /// Requests fullscreen mode.
     ///
     /// If you don't specify dimensions for the window, it will match the monitor's.
@@ -107,44 +118,46 @@ impl WindowBuilder {
     pub fn with_fullscreen(self, monitor: MonitorId) -> WindowBuilder {
         WindowBuilder {window: self.window.with_fullscreen(monitor), ..self}
     }
-    
+
     /// Sets whether the window will be initially hidden or visible.
     #[inline]
     pub fn with_visibility(self, visible: bool) -> WindowBuilder {
         WindowBuilder {window: self.window.with_visibility(visible), ..self}
     }
-    
+
     /// Sets whether the background of the window should be transparent.
     #[inline]
     pub fn with_transparency(self, transparent: bool) -> WindowBuilder {
         WindowBuilder {window: self.window.with_transparency(transparent), ..self}
     }
-    
+
     /// Sets whether the window should have a border, a title bar, etc.
     #[inline]
     pub fn with_decorations(self, decorations: bool) -> WindowBuilder {
         WindowBuilder {window: self.window.with_decorations(decorations), ..self}
     }
-    
+
     /// Enables multitouch
     #[inline]
     pub fn with_multitouch(self) -> WindowBuilder {
         WindowBuilder {window: self.window.with_multitouch(), ..self}
     }
-    
+
     /// Builds the window.
     ///
     /// Error should be very rare and only occur in case of permission denied, incompatible system,
     /// out of memory, etc.
     pub fn build(self) -> Result<Window, CreationError> {
         let window = try!(self.window.build());
+        let view = try!(View::new(&window, self.device));	
         let native_window: id = unsafe { window.platform_window() as id };
-        Ok(Window { 
+        unsafe { msg_send![native_window, setContentView:view.mtk_view.0] };
+        Ok(Window {
             window: window,
-            view: ptr::null_mut()
+            view: view
         })
     }
-    
+
     /// Builds the window.
     ///
     /// The context is build in a *strict* way. That means that if the backend couldn't give
@@ -157,16 +170,7 @@ impl WindowBuilder {
 
 pub struct Window {
     window: winit::Window,
-    view: id
-}
-
-pub struct WinRef<'a>(&'a winit::Window);
-
-impl<'a> Deref for WinRef<'a> {
-    type Target = winit::Window;
-    fn deref(&self) -> &Self::Target {
-        self.0
-    }
+    pub view: View
 }
 
 impl Window {
@@ -178,8 +182,177 @@ impl Window {
         self.window.wait_events()
     }
 
-    pub fn window(&self) -> WinRef {
-        WinRef(&self.window)
+    pub fn window(&self) -> Ref<winit::Window> {
+        Ref(&self.window)
+    }
+}
+
+pub struct View {
+    mtk_view: MtkView,
+    device: Device
+}
+
+struct MtkView(id);
+impl_from_into_raw!(MtkView, of class "MTKView");
+
+impl View {
+    fn new(window: &winit::Window, device: Device) -> Result<Self, ViewError> {
+        let window_origin = {
+            let (x, y) = try!(window.get_position().ok_or(ViewError::no_window()));
+            CGPoint { x: x as f64, y: y as f64 }
+        };
+
+        let window_size = {
+            let (w, h) = try!(window.get_inner_size().ok_or(ViewError::no_window()));
+            CGSize { width: w as f64, height: h as f64 }
+        };
+
+        let view_frame = CGRect { origin: window_origin, size: window_size };
+
+        let view_object: id = unsafe {
+            // Dummy function to ensure that we link against MetalKit
+            #[allow(dead_code)]
+            #[link(name = "MetalKit", kind = "framework")]
+            extern "C" {
+                fn MTKModelIOVertexDescriptorFromMetal(metalDescriptor: id) -> id;
+            }
+
+            let view_class = Class::get("MTKView").expect("Could not find MTKView class");
+            let view: id = msg_send![view_class, alloc];
+            msg_send![view, initWithFrame:view_frame
+                                   device:*device.as_raw()]
+        };
+
+        Ok(View {
+            mtk_view: try!(MtkView::from_raw(view_object)),
+            device: device
+        })
+    }
+
+    pub fn device(&self) -> Option<&Device> {
+        Some(&self.device)
+    }
+
+    pub fn device_mut(&mut self) -> Option<&mut Device> {
+        Some(&mut self.device)
+    }
+
+    pub fn clear_color(&self) -> ClearColor {
+        let color: MTLClearColor = unsafe {
+            msg_send![*self.mtk_view.as_raw(), clearColor]
+        };
+        color.into()
+    }
+
+    pub fn set_clear_color<C: Into<MTLClearColor>>(&mut self, clear_color: C) {
+        unsafe { msg_send![*self.mtk_view.as_raw(), setClearColor:clear_color.into()] }
+    }
+
+    pub fn clear_depth(&self) -> f64 {
+        unsafe { msg_send![*self.mtk_view.as_raw(), clearDepth] }
+    }
+
+    pub fn set_clear_depth(&mut self, clear_depth: f64) {
+        unsafe { msg_send![*self.mtk_view.as_raw(), setClearDepth:clear_depth] }
+    }
+
+    pub fn clear_stencil(&self) -> u32 {
+        unsafe { msg_send![*self.mtk_view.as_raw(), clearStencil] }
+    }
+
+    pub fn set_clear_stencil(&mut self, clear_stencil: u32) {
+        unsafe { msg_send![*self.mtk_view.as_raw(), setClearStencil:clear_stencil] }
+    }
+
+    pub fn color_pixel_format(&self) -> PixelFormat {
+        let pixel_format: MTLPixelFormat = unsafe {
+            msg_send![*self.mtk_view.as_raw(), colorPixelFormat]
+        };
+        pixel_format.into()
+    }
+
+    pub fn set_color_pixel_format<P: Into<MTLPixelFormat>>(&mut self, color_pixel_format: P) {
+        unsafe { msg_send![*self.mtk_view.as_raw(), setColorPixelFormat:color_pixel_format.into()] }
+    }
+
+    pub fn depth_stencil_pixel_format(&self) -> PixelFormat {
+        let pixel_format: MTLPixelFormat = unsafe {
+            msg_send![*self.mtk_view.as_raw(), depthStencilPixelFormat]
+        };
+        pixel_format.into()
+    }
+
+    pub fn set_depth_stencil_pixel_format<P: Into<MTLPixelFormat>>(&mut self, depth_stencil_pixel_format: P) {
+        unsafe { msg_send![*self.mtk_view.as_raw(), setDepthPixelFormat:depth_stencil_pixel_format.into()] }
+    }
+
+    pub fn sample_count(&self) -> usize {
+        let sample_count: NSUInteger = unsafe {
+            msg_send![*self.mtk_view.as_raw(), sampleCount]
+        };
+        sample_count as usize
+    }
+
+    pub fn set_sample_count(&mut self, sample_count: usize) {
+        let sample_count = sample_count as NSUInteger;
+        unsafe { msg_send![*self.mtk_view.as_raw(), setSampleCount:sample_count] }
+    }
+
+    pub fn draw(&self) {
+        unsafe { msg_send![*self.mtk_view.as_raw(), draw] }
+    } 
+}
+
+#[derive(Clone, Debug)]
+pub struct ViewError(ViewErrorInner);
+
+#[derive(Clone, Debug)]
+enum ViewErrorInner {
+    NoWindow,
+    CreateError(FromRawError)
+}
+
+impl ViewError {
+    fn no_window() -> Self {
+        ViewError(ViewErrorInner::NoWindow)
+    }
+}
+
+impl fmt::Display for ViewError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.description())
+    }
+}
+
+impl Error for ViewError {
+    fn description(&self) -> &str {
+        match self.0 {
+            ViewErrorInner::NoWindow => "The native window no longer exists",
+            ViewErrorInner::CreateError(_) => "There was an issue creating the view",
+        }
+    }
+
+    fn cause(&self) -> Option<&Error> {
+        if let ViewErrorInner::CreateError(ref e) = self.0 {
+            Some(e)
+        } else {
+            None
+        }
+    }
+}
+
+impl From<FromRawError> for ViewError {
+    fn from(error: FromRawError) -> Self {
+        ViewError(ViewErrorInner::CreateError(error))
+    }
+}
+
+pub struct Ref<'a, T: 'a>(&'a T);
+
+impl<'a, T> Deref for Ref<'a, T> {
+    type Target = T;
+    fn deref(&self) -> &Self::Target {
+        self.0
     }
 }
 

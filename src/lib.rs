@@ -3,18 +3,19 @@
 extern crate block;
 extern crate cocoa;
 extern crate core_foundation;
+extern crate core_graphics;
 extern crate metal_sys;
 #[macro_use]
 extern crate objc;
 extern crate winit;
-
-pub mod extras;
 
 #[macro_use]
 mod raw;
 
 #[macro_use]
 mod internal;
+
+pub mod extras;
 
 mod argument;
 mod array_type;
