@@ -243,6 +243,10 @@ pub mod window {
             device.ok().map(|d| PhantomRefMut(d, marker::PhantomData))
         }
 
+        pub fn set_device(&mut self, device: Device) {
+            unsafe { msg_send![self.0, setDevice:device] }
+        }
+
         pub fn clear_color(&self) -> ClearColor {
             let color: MTLClearColor = unsafe {
                 msg_send![self.0, clearColor]
