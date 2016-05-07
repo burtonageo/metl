@@ -11,9 +11,10 @@ repository = "https://github.com/burtonageo/metl"
 block = "0.*"
 cocoa = "0.3.0"
 core-foundation = "0.*"
-core-graphics = "0.3.0"
-winit = "0.5.0"
 objc = "0.2.1"
+
+core-graphics = { version = "0.3.0", optional = true }
+winit = { version = "0.5.0", optional = true }
 
 [dependencies.metal-sys]
 path = "metal-sys"
@@ -21,5 +22,5 @@ version = "0.0.0"
 
 [features]
 default = ["extras"]
-extras = ["MetalKit"]
+extras = ["MetalKit", "winit", "core-graphics"]
 MetalKit = []

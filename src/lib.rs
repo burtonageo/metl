@@ -3,11 +3,9 @@
 extern crate block;
 extern crate cocoa;
 extern crate core_foundation;
-extern crate core_graphics;
 extern crate metal_sys;
 #[macro_use]
 extern crate objc;
-extern crate winit;
 
 #[macro_use]
 mod raw;
@@ -17,6 +15,11 @@ mod internal;
 
 #[cfg(feature = "extras")]
 pub mod extras;
+
+#[cfg(feature = "extras")]
+extern crate core_graphics;
+#[cfg(feature = "extras")]
+extern crate winit;
 
 mod argument;
 mod array_type;
