@@ -16,11 +16,6 @@ mod internal;
 #[cfg(feature = "extras")]
 pub mod extras;
 
-#[cfg(feature = "extras")]
-extern crate core_graphics;
-#[cfg(feature = "extras")]
-extern crate winit;
-
 mod argument;
 mod array_type;
 mod blit_command_encoder;

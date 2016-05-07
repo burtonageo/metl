@@ -15,6 +15,7 @@ objc = "0.2.1"
 
 core-graphics = { version = "0.3.0", optional = true }
 winit = { version = "0.5.0", optional = true }
+uuid = { version = "0.2.0", optional = true, features = ["v4"] }
 
 [dependencies.metal-sys]
 path = "metal-sys"
@@ -22,5 +23,5 @@ version = "0.0.0"
 
 [features]
 default = ["extras"]
-extras = ["MetalKit", "winit", "core-graphics"]
+extras = ["MetalKit", "winit", "core-graphics", "uuid"]
 MetalKit = []

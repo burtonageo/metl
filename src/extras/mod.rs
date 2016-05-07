@@ -1,20 +1,25 @@
+extern crate core_graphics;
+extern crate uuid;
+extern crate winit;
+
 pub mod window {
     use cocoa::base::id;
     use cocoa::foundation::NSUInteger;
     use cocoa::appkit::NSWindow;
-    use core_graphics::geometry::{CGRect, CGPoint, CGSize};
-    use objc::runtime::{BOOL, Class, YES};
+    use super::core_graphics::geometry::{CGRect, CGPoint, CGSize};
+    use objc::declare::ClassDecl;
+    use objc::runtime::{BOOL, Class, Object, Sel, YES};
     use raw::{FromRaw, FromRawError, IntoRaw};
     use std::error::Error;
     use std::fmt;
     use std::marker;
     use std::ops::{Deref, DerefMut};
     use sys::{MTLClearColor, MTLPixelFormat};
-    use winit;
-    use winit::os::macos::WindowExt;
+    use super::winit;
+    use super::winit::os::macos::WindowExt;
     use {ClearColor, Device, PixelFormat, RenderPassDescriptor, Texture};
 
-    pub use winit::{
+    pub use super::winit::{
         CursorState,
         Event,
         MonitorId,
@@ -29,6 +34,12 @@ pub mod window {
         ScanCode,
         VirtualKeyCode
     };
+
+    macro_rules! _e {
+        ($e:expr) => {
+            concat!(file!(), ":", line!(), "- ", $e)
+        }
+    }
 
     pub struct WindowBuilder {
         window: winit::WindowBuilder,
@@ -220,13 +231,81 @@ pub mod window {
                     fn MTKModelIOVertexDescriptorFromMetal(metalDescriptor: id) -> id;
                 }
 
-                let view_class = Class::get("MTKView").expect("Could not find MTKView class");
+                let view_class = Class::get("MTKView").expect(_e!("Could not find MTKView class"));
                 let view: id = msg_send![view_class, alloc];
                 msg_send![view, initWithFrame:view_frame
                                        device:device.into_raw()]
             };
 
             View::from_raw(view_object).map_err(From::from)
+        }
+
+        pub fn set_delegate<VD: ViewDelegate + 'static>(&self, delegate: VD) {
+            use super::uuid::Uuid;
+            use objc::{Encode, Encoding};
+
+            // Don't call this method, you get an invalid memory reference
+            unimplemented!();
+
+            let delegate_class_name = {
+                format!("Metl_MTKViewDelegate_{}", Uuid::new_v4().urn().to_string())
+            };
+
+            let mut delegate_class_decl = {
+                let mkerr = Box::<Error + Send + Sync>::from;
+                let nm = &delegate_class_name;
+                Class::get("NSObject").ok_or(mkerr(_e!("Could not find NSObject definition")))
+                                      .and_then(|o| ClassDecl::new(nm, o)
+                                                        .ok_or(mkerr(_e!(
+                                                            "Could not create class delegate"))))
+                                      .unwrap_or_else(|e| panic!(e))
+            };
+
+            struct CGSizeEncode(CGSize);
+
+            impl From<CGSize> for CGSizeEncode {
+                fn from(size: CGSize) -> Self {
+                    CGSizeEncode(size)
+                }
+            }
+
+            impl Into<CGSize> for CGSizeEncode {
+                fn into(self) -> CGSize {
+                    self.0
+                }
+            }
+
+            unsafe impl Encode for CGSizeEncode {
+                fn encode() -> Encoding {
+                    unsafe { Encoding::from_str("{CGSize=dd}") }
+                }
+            }
+
+            extern fn draw_in_mtk_view(_this: &Object, _cmd: Sel, view: id) {
+                unimplemented!();
+            }
+
+            extern fn mtk_view_drawable_size_will_change(_this: &Object, _cmd: Sel,
+                                                         view: id, size: CGSizeEncode) {
+                unimplemented!();
+            }
+
+            let draw_callback: extern fn(&Object, Sel, id) = draw_in_mtk_view;
+            let resize_callback: extern fn(&Object, Sel, id, CGSizeEncode) =
+                mtk_view_drawable_size_will_change;
+
+            unsafe {
+                delegate_class_decl.add_method(sel!(mtkView:drawableSizeWillChange:), resize_callback);
+                delegate_class_decl.add_method(sel!(drawInMTKView:), draw_callback);
+            }
+            delegate_class_decl.register();
+
+            let delegate_class = Class::get(&delegate_class_name)
+                                     .expect(_e!("Could not get delegate class"));
+            unsafe {
+                let delegate_object = msg_send![delegate_class, new];
+                msg_send![self.0, setDelegate:delegate_object]
+            }
         }
 
         pub fn device<'a>(&self) -> Option<PhantomRef<'a, Device>> {
@@ -335,6 +414,11 @@ pub mod window {
         pub fn draw(&self) {
             unsafe { msg_send![self.0, draw] }
         }
+    }
+
+    pub trait ViewDelegate {
+        fn draw_into_view(&self, view: &mut View);
+        fn on_resize(self, view: &mut View, new_size: (f64, f64));
     }
 
     #[derive(Clone, Debug)]
