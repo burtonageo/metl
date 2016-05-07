@@ -1,7 +1,7 @@
 extern crate metl;
 
 use metl::extras::window::{Event, WindowBuilder};
-use metl::ClearColor;
+use metl::{ClearColor, PixelFormat};
 
 fn main() {
     let device = metl::Device::system_default_device().unwrap();
@@ -10,6 +10,8 @@ fn main() {
                      .with_title("Metal Window".into())
                      .build()
                      .unwrap();
+
+    window.view.set_depth_stencil_pixel_format(PixelFormat::Rgba8Unorm);
     window.view.set_clear_color(ClearColor::new(1.0, 0.0, 0.0, 1.0));
 
     'mainloop: loop {
@@ -22,7 +24,6 @@ fn main() {
             }
         }
 
-        // drawing code here
         window.view.draw();
     }
 }
