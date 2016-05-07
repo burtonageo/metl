@@ -4,7 +4,7 @@ pub mod window {
     use cocoa::appkit::NSWindow;
     use core_graphics::geometry::{CGRect, CGPoint, CGSize};
     use objc::runtime::{BOOL, Class, YES};
-    use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
+    use raw::{FromRaw, FromRawError, IntoRaw};
     use std::error::Error;
     use std::fmt;
     use std::marker;
@@ -157,7 +157,7 @@ pub mod window {
 
             unsafe {
                 let native_window: id = window.get_nswindow() as id;
-                native_window.setContentView_(view.mtk_view.0);
+                native_window.setContentView_(view.0);
             }
 
             Ok(Window {
@@ -195,12 +195,8 @@ pub mod window {
         }
     }
 
-    pub struct View {
-        mtk_view: MtkView
-    }
-
-    struct MtkView(id);
-    impl_from_into_raw!(MtkView, of class "MTKView");
+    pub struct View(id);
+    impl_from_into_raw!(View, of class "MTKView");
 
     impl View {
         fn new(window: &winit::Window, device: Device) -> Result<Self, ViewError> {
@@ -230,122 +226,114 @@ pub mod window {
                                        device:device.into_raw()]
             };
 
-            Ok(View {
-                mtk_view: try!(MtkView::from_raw(view_object)),
-            })
-        }
-
-        fn raw_view(&self) -> id {
-            self.mtk_view.0
+            View::from_raw(view_object).map_err(From::from)
         }
 
         pub fn device<'a>(&self) -> Option<PhantomRef<'a, Device>> {
             let device = unsafe {
-                Device::from_raw(msg_send![*self.mtk_view.as_raw(), device])
+                Device::from_raw(msg_send![self.0, device])
             };
             device.ok().map(|d| PhantomRef(d, marker::PhantomData))
         }
 
         pub fn device_mut<'a>(&mut self) -> Option<PhantomRefMut<'a, Device>> {
             let device = unsafe {
-                Device::from_raw(msg_send![*self.mtk_view.as_raw(), device])
+                Device::from_raw(msg_send![self.0, device])
             };
             device.ok().map(|d| PhantomRefMut(d, marker::PhantomData))
         }
 
         pub fn clear_color(&self) -> ClearColor {
             let color: MTLClearColor = unsafe {
-                msg_send![*self.mtk_view.as_raw(), clearColor]
+                msg_send![self.0, clearColor]
             };
             color.into()
         }
 
         pub fn set_clear_color<C: Into<MTLClearColor>>(&mut self, clear_color: C) {
-            unsafe { msg_send![*self.mtk_view.as_raw(), setClearColor:clear_color.into()] }
+            unsafe { msg_send![self.0, setClearColor:clear_color.into()] }
         }
 
         pub fn clear_depth(&self) -> f64 {
-            unsafe { msg_send![*self.mtk_view.as_raw(), clearDepth] }
+            unsafe { msg_send![self.0, clearDepth] }
         }
 
         pub fn set_clear_depth(&mut self, clear_depth: f64) {
-            unsafe { msg_send![*self.mtk_view.as_raw(), setClearDepth:clear_depth] }
+            unsafe { msg_send![self.0, setClearDepth:clear_depth] }
         }
 
         pub fn clear_stencil(&self) -> u32 {
-            unsafe { msg_send![*self.mtk_view.as_raw(), clearStencil] }
+            unsafe { msg_send![self.0, clearStencil] }
         }
 
         pub fn set_clear_stencil(&mut self, clear_stencil: u32) {
-            unsafe { msg_send![*self.mtk_view.as_raw(), setClearStencil:clear_stencil] }
+            unsafe { msg_send![self.0, setClearStencil:clear_stencil] }
         }
 
         pub fn color_pixel_format(&self) -> PixelFormat {
             let pixel_format: MTLPixelFormat = unsafe {
-                msg_send![*self.mtk_view.as_raw(), colorPixelFormat]
+                msg_send![self.0, colorPixelFormat]
             };
             pixel_format.into()
         }
 
         pub fn set_color_pixel_format<P: Into<MTLPixelFormat>>(&mut self, color_pixel_format: P) {
-            unsafe { msg_send![*self.mtk_view.as_raw(), setColorPixelFormat:color_pixel_format.into()] }
+            unsafe { msg_send![self.0, setColorPixelFormat:color_pixel_format.into()] }
         }
 
         pub fn depth_stencil_pixel_format(&self) -> PixelFormat {
-            let pixel_format: MTLPixelFormat = unsafe {
-                msg_send![*self.mtk_view.as_raw(), depthStencilPixelFormat]
-            };
+            let pixel_format: MTLPixelFormat = unsafe { msg_send![self.0, depthStencilPixelFormat] };
             pixel_format.into()
         }
 
         pub fn set_depth_stencil_pixel_format<P: Into<MTLPixelFormat>>(&mut self, depth_stencil_pixel_format: P) {
-            unsafe { msg_send![*self.mtk_view.as_raw(), setDepthStencilPixelFormat:depth_stencil_pixel_format.into()] }
+            unsafe { msg_send![self.0, setDepthStencilPixelFormat:depth_stencil_pixel_format.into()] }
         }
 
         pub fn sample_count(&self) -> usize {
             let sample_count: NSUInteger = unsafe {
-                msg_send![*self.mtk_view.as_raw(), sampleCount]
+                msg_send![self.0, sampleCount]
             };
             sample_count as usize
         }
 
         pub fn set_sample_count(&mut self, sample_count: usize) {
             let sample_count = sample_count as NSUInteger;
-            unsafe { msg_send![*self.mtk_view.as_raw(), setSampleCount:sample_count] }
+            unsafe { msg_send![self.0, setSampleCount:sample_count] }
         }
 
         pub fn current_render_pass_descriptor(&self) -> Option<PhantomRef<RenderPassDescriptor>> {
-            let descriptor: id = unsafe { msg_send![self.raw_view(), currentRenderPassDescriptor] };
+            let descriptor: id = unsafe { msg_send![self.0, currentRenderPassDescriptor] };
             FromRaw::from_raw(descriptor).ok().map(|d| PhantomRef(d, marker::PhantomData))
         }
 
         pub fn current_depth_stencil_texture(&self) -> Option<PhantomRef<Texture>> {
-            let texture: id = unsafe { msg_send![self.raw_view(), depthStencilTexture] };
+            let texture: id = unsafe { msg_send![self.0, depthStencilTexture] };
             FromRaw::from_raw(texture).ok().map(|t| PhantomRef(t, marker::PhantomData))
         }
 
         pub fn multisample_color_texture(&self) -> Option<PhantomRef<Texture>> {
-            let texture: id = unsafe { msg_send![self.raw_view(), multisampleColorTexture] };
+            let texture: id = unsafe { msg_send![self.0, multisampleColorTexture] };
             FromRaw::from_raw(texture).ok().map(|t| PhantomRef(t, marker::PhantomData))
         }
 
         pub fn preferred_frames_per_second(&self) -> usize {
-            let fps: NSUInteger = unsafe { msg_send![self.raw_view(), sampleCount] };
+            let fps: NSUInteger = unsafe { msg_send![self.0, sampleCount] };
             fps as usize
         }
 
         pub fn set_preferred_frames_per_second(&self, preferred_fps: usize) {
             let preferred_fps = preferred_fps as NSUInteger;
-            unsafe { msg_send![self.raw_view(), setPreferredFramesPerSecond:preferred_fps] }
+            unsafe { msg_send![self.0, setPreferredFramesPerSecond:preferred_fps] }
         }
 
         pub fn is_paused(&self) -> bool {
-            let is_paused: BOOL = unsafe { msg_send![self.raw_view(), isPaused] };
+            let is_paused: BOOL = unsafe { msg_send![self.0, isPaused] };
             is_paused == YES
         }
 
         pub fn draw(&self) {
-            unsafe { msg_send![self.raw_view(), draw] }
+            unsafe { msg_send![self.0, draw] }
         }
     }
 
