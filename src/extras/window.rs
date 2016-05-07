@@ -1,14 +1,17 @@
 use cocoa::base::id;
 use cocoa::foundation::NSUInteger;
+use cocoa::appkit::NSWindow;
 use core_graphics::geometry::{CGRect, CGPoint, CGSize};
-use objc::runtime::Class;
-use raw::{AsRaw, FromRaw, FromRawError};
+use objc::runtime::{BOOL, Class, YES};
+use raw::{AsRaw, FromRaw, FromRawError, IntoRaw};
 use std::error::Error;
 use std::fmt;
-use std::ops::Deref;
+use std::marker;
+use std::ops::{Deref, DerefMut};
 use sys::{MTLClearColor, MTLPixelFormat};
 use winit;
-use {ClearColor, Device, PixelFormat};
+use winit::os::macos::WindowExt;
+use {ClearColor, Device, PixelFormat, RenderPassDescriptor, Texture};
 
 pub use winit::{
     CursorState,
@@ -149,9 +152,13 @@ impl WindowBuilder {
     /// out of memory, etc.
     pub fn build(self) -> Result<Window, CreationError> {
         let window = try!(self.window.build());
-        let view = try!(View::new(&window, self.device));	
-        let native_window: id = unsafe { window.platform_window() as id };
-        unsafe { msg_send![native_window, setContentView:view.mtk_view.0] };
+        let view = try!(View::new(&window, self.device));
+
+        unsafe {
+            let native_window: id = window.get_nswindow() as id;
+            native_window.setContentView_(view.mtk_view.0);
+        }
+
         Ok(Window {
             window: window,
             view: view
@@ -188,8 +195,7 @@ impl Window {
 }
 
 pub struct View {
-    mtk_view: MtkView,
-    device: Device
+    mtk_view: MtkView
 }
 
 struct MtkView(id);
@@ -220,21 +226,30 @@ impl View {
             let view_class = Class::get("MTKView").expect("Could not find MTKView class");
             let view: id = msg_send![view_class, alloc];
             msg_send![view, initWithFrame:view_frame
-                                   device:*device.as_raw()]
+                                   device:device.into_raw()]
         };
 
         Ok(View {
             mtk_view: try!(MtkView::from_raw(view_object)),
-            device: device
         })
     }
 
-    pub fn device(&self) -> Option<&Device> {
-        Some(&self.device)
+    fn raw_view(&self) -> id {
+        self.mtk_view.0
     }
 
-    pub fn device_mut(&mut self) -> Option<&mut Device> {
-        Some(&mut self.device)
+    pub fn device<'a>(&self) -> Option<PhantomRef<'a, Device>> {
+        let device = unsafe {
+            Device::from_raw(msg_send![*self.mtk_view.as_raw(), device])
+        };
+        device.ok().map(|d| PhantomRef(d, marker::PhantomData))
+    }
+
+    pub fn device_mut<'a>(&mut self) -> Option<PhantomRefMut<'a, Device>> {
+        let device = unsafe {
+            Device::from_raw(msg_send![*self.mtk_view.as_raw(), device])
+        };
+        device.ok().map(|d| PhantomRefMut(d, marker::PhantomData))
     }
 
     pub fn clear_color(&self) -> ClearColor {
@@ -283,7 +298,7 @@ impl View {
     }
 
     pub fn set_depth_stencil_pixel_format<P: Into<MTLPixelFormat>>(&mut self, depth_stencil_pixel_format: P) {
-        unsafe { msg_send![*self.mtk_view.as_raw(), setDepthPixelFormat:depth_stencil_pixel_format.into()] }
+        unsafe { msg_send![*self.mtk_view.as_raw(), setDepthStencilPixelFormat:depth_stencil_pixel_format.into()] }
     }
 
     pub fn sample_count(&self) -> usize {
@@ -298,9 +313,39 @@ impl View {
         unsafe { msg_send![*self.mtk_view.as_raw(), setSampleCount:sample_count] }
     }
 
+    pub fn current_render_pass_descriptor(&self) -> Option<PhantomRef<RenderPassDescriptor>> {
+        let descriptor: id = unsafe { msg_send![self.raw_view(), currentRenderPassDescriptor] };
+        FromRaw::from_raw(descriptor).ok().map(|d| PhantomRef(d, marker::PhantomData))
+    }
+
+    pub fn current_depth_stencil_texture(&self) -> Option<PhantomRef<Texture>> {
+        let texture: id = unsafe { msg_send![self.raw_view(), depthStencilTexture] };
+        FromRaw::from_raw(texture).ok().map(|t| PhantomRef(t, marker::PhantomData))
+    }
+
+    pub fn multisample_color_texture(&self) -> Option<PhantomRef<Texture>> {
+        let texture: id = unsafe { msg_send![self.raw_view(), multisampleColorTexture] };
+        FromRaw::from_raw(texture).ok().map(|t| PhantomRef(t, marker::PhantomData))
+    }
+
+    pub fn preferred_frames_per_second(&self) -> usize {
+        let fps: NSUInteger = unsafe { msg_send![self.raw_view(), sampleCount] };
+        fps as usize
+    }
+
+    pub fn set_preferred_frames_per_second(&self, preferred_fps: usize) {
+        let preferred_fps = preferred_fps as NSUInteger;
+        unsafe { msg_send![self.raw_view(), setPreferredFramesPerSecond:preferred_fps] }
+    }
+
+    pub fn is_paused(&self) -> bool {
+        let is_paused: BOOL = unsafe { msg_send![self.raw_view(), isPaused] };
+        is_paused == YES
+    }
+
     pub fn draw(&self) {
-        unsafe { msg_send![*self.mtk_view.as_raw(), draw] }
-    } 
+        unsafe { msg_send![self.raw_view(), draw] }
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -353,6 +398,30 @@ impl<'a, T> Deref for Ref<'a, T> {
     type Target = T;
     fn deref(&self) -> &Self::Target {
         self.0
+    }
+}
+
+pub struct PhantomRef<'a, T: 'a>(T, marker::PhantomData<&'a ()>);
+
+impl<'a, T> Deref for PhantomRef<'a, T> {
+    type Target = T;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+pub struct PhantomRefMut<'a, T: 'a>(T, marker::PhantomData<&'a mut ()>);
+
+impl<'a, T> Deref for PhantomRefMut<'a, T> {
+    type Target = T;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<'a, T> DerefMut for PhantomRefMut<'a, T> {
+    fn deref_mut(&mut self) -> &mut <Self as Deref>::Target {
+        &mut self.0
     }
 }
 
