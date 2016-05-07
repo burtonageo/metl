@@ -248,9 +248,7 @@ pub mod window {
         }
 
         pub fn clear_color(&self) -> ClearColor {
-            let color: MTLClearColor = unsafe {
-                msg_send![self.0, clearColor]
-            };
+            let color: MTLClearColor = unsafe { msg_send![self.0, clearColor] };
             color.into()
         }
 
@@ -275,9 +273,7 @@ pub mod window {
         }
 
         pub fn color_pixel_format(&self) -> PixelFormat {
-            let pixel_format: MTLPixelFormat = unsafe {
-                msg_send![self.0, colorPixelFormat]
-            };
+            let pixel_format: MTLPixelFormat = unsafe { msg_send![self.0, colorPixelFormat] };
             pixel_format.into()
         }
 
