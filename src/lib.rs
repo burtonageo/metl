@@ -7,13 +7,14 @@ extern crate metal_sys;
 #[macro_use]
 extern crate objc;
 
-pub mod extras;
-
 #[macro_use]
 mod raw;
 
 #[macro_use]
 mod internal;
+
+#[cfg(feature = "extras")]
+pub mod extras;
 
 mod argument;
 mod array_type;
