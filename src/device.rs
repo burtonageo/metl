@@ -224,7 +224,7 @@ impl_from_into_raw!(Device, of protocol "MTLDevice");
 #[cfg(target_os = "ios")]
 convertible_enum! {
     #[allow(non_camel_case_types)]
-    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub enum FeatureSet: MTLFeatureSet {
         iOSGpuFamily1_v1 => MTLFeatureSet_iOS_GPUFamily1_v1,
         iOSGpuFamily2_v1 => MTLFeatureSet_iOS_GPUFamily2_v1,
@@ -234,13 +234,27 @@ convertible_enum! {
     }
 }
 
+#[cfg(target_os = "ios")]
+impl Default for FeatureSet {
+    fn default() -> Self {
+        FeatureSet::iOSGpuFamily1_v1
+    }
+}
+
 #[cfg(target_os = "macos")]
 convertible_enum! {
     #[allow(non_camel_case_types)]
-    #[derive(Clone, Copy, Eq, Hash, PartialEq)]
+    #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
     pub enum FeatureSet: MTLFeatureSet {
         OsxGpuFamily1_v1 => MTLFeatureSet_OSX_GPUFamily1_v1,
         _non_unary_compile_dummy => _non_unary_compile_dummy
+    }
+}
+
+#[cfg(target_os = "macos")]
+impl Default for FeatureSet {
+    fn default() -> Self {
+        FeatureSet::OsxGpuFamily1_v1
     }
 }
 

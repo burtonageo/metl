@@ -17,7 +17,7 @@ pub mod window {
     use sys::{MTLClearColor, MTLPixelFormat};
     use super::winit;
     use super::winit::os::macos::WindowExt;
-    use {ClearColor, Device, PixelFormat, RenderPassDescriptor, Texture};
+    use {ClearColor, Device, FeatureSet, PixelFormat, RenderPassDescriptor, Texture};
 
     pub use super::winit::{
         CursorState,
@@ -43,13 +43,15 @@ pub mod window {
 
     pub struct WindowBuilder {
         window: winit::WindowBuilder,
-        device: Device
+        device: Device,
+        features: FeatureSet
     }
 
     #[derive(Debug)]
     pub enum CreationError {
         ViewCreation(ViewError),
-        Winit(winit::CreationError)
+        Winit(winit::CreationError),
+        UnsupportedFeatureSet(FeatureSet)
     }
 
     impl fmt::Display for CreationError {
@@ -62,14 +64,16 @@ pub mod window {
         fn description(&self) -> &str {
             match *self {
                 CreationError::ViewCreation(ref e) => e.description(),
-                CreationError::Winit(ref e) => e.description()
+                CreationError::Winit(ref e) => e.description(),
+                CreationError::UnsupportedFeatureSet(_) => "the feature set is not supported"
             }
         }
 
         fn cause(&self) -> Option<&Error> {
             match *self {
                 CreationError::ViewCreation(ref e) => Some(e),
-                CreationError::Winit(ref e) => Some(e)
+                CreationError::Winit(ref e) => Some(e),
+                _ => None
             }
         }
     }
@@ -92,7 +96,8 @@ pub mod window {
         pub fn new(device: Device) -> Self {
             WindowBuilder {
                 window: winit::WindowBuilder::new(),
-                device: device
+                device: device,
+                features: Default::default()
             }
         }
 
@@ -158,6 +163,10 @@ pub mod window {
             WindowBuilder {window: self.window.with_multitouch(), ..self}
         }
 
+        pub fn with_feature_set(self, feature_set: FeatureSet) -> WindowBuilder {
+            WindowBuilder {features: feature_set, ..self}
+        }
+
         /// Builds the window.
         ///
         /// Error should be very rare and only occur in case of permission denied, incompatible system,
@@ -183,7 +192,11 @@ pub mod window {
         /// you what you requested, an `Err` will be returned.
         #[inline]
         pub fn build_strict(self) -> Result<Window, CreationError> {
-            self.build()
+            if self.device.supports_feature_set(self.features) {
+                self.build()
+            } else {
+                Err(CreationError::UnsupportedFeatureSet(self.features))
+            }
         }
     }
 
