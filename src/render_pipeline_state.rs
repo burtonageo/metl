@@ -6,4 +6,4 @@ impl_from_into_raw!(RenderPipelineState, of protocol "MTLRenderPipelineState");
 
 pub struct RenderPipelineDescriptor(id);
 
-impl_from_into_raw!(RenderPipelineState, of class "MTLRenderPipelineDescriptor");
+impl_from_into_raw!(RenderPipelineDescriptor, of class "MTLRenderPipelineDescriptor");
