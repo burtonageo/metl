@@ -120,8 +120,7 @@ fn create_sampler_and_set_label() {
     assert_eq!(sampler_descriptor.label(), SAMPLER_LABEL);
 
     let sampler = device.new_sampler_state(&sampler_descriptor).unwrap();
-    // TODO(burtonageo): Fix getting the label
-    // assert_eq!(sampler.label(), sampler_descriptor.label());
+    assert_eq!(sampler.label(), sampler_descriptor.label());
 }
 
 #[test]
@@ -134,8 +133,7 @@ fn create_depth_stencil_state() {
     assert_eq!(depth_stencil_descriptor.label(), DEPTH_STENCIL_LABEL);
 
     let depth_stencil = device.new_depth_stencil_state(&depth_stencil_descriptor).unwrap();
-    // TODO(burtonageo): Fix getting the label
-    // assert_eq!(depth_stencil.label(), depth_stencil_descriptor.label());
+    assert_eq!(depth_stencil.label(), depth_stencil_descriptor.label());
 }
 
 #[test]
