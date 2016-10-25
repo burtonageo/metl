@@ -22,7 +22,7 @@ impl DerefMut for ParallelRenderCommandEncoder {
 }
 
 impl ParallelRenderCommandEncoder {
-    pub fn render_command_encoder(&self) -> RenderCommandEncoder {
+    pub fn create_render_command_encoder(&self) -> RenderCommandEncoder {
         unimplemented!()
     }
 
