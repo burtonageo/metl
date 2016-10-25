@@ -51,7 +51,12 @@ macro_rules! convertible_enum {
 
 pub fn conforms_to_protocol(object: id, protocol_name: &str) -> bool {
     match Protocol::get(protocol_name) {
-        Some(protocol) => unsafe { &*object }.class().conforms_to(protocol),
+        Some(protocol) => {
+            let does_conform: BOOL = unsafe {
+                msg_send![object, conformsToProtocol:protocol]
+            };
+            does_conform == YES
+        }
         None => false
     }
 }
