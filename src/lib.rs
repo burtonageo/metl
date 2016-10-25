@@ -21,6 +21,7 @@ mod array_type;
 mod blit_command_encoder;
 mod buffer;
 mod command_buffer;
+mod command_encoder;
 mod command_queue;
 mod compile_options;
 mod compute_command_encoder;
@@ -57,6 +58,7 @@ pub use array_type::ArrayType;
 pub use blit_command_encoder::BlitCommandEncoder;
 pub use buffer::Buffer;
 pub use command_buffer::{CommandBuffer, CommandBufferError};
+pub use command_encoder::CommandEncoder;
 pub use command_queue::{CommandQueue, CommandQueueError};
 pub use compile_options::{CompileOptions, LanguageVersion, PreprocessorMacroValue,
                           SpecificLanguageVersion};
